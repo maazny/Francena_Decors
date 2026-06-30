@@ -1,6 +1,8 @@
-@extends('layouts.app')
+@extends('admin.layouts.app')
 
 @section('title', 'Admin Dashboard')
+@section('page-title', 'Dashboard')
+@section('page-description', 'Overview of your admin panel and recent settings.')
 
 @section('content')
 <div class="admin-dashboard py-5">
