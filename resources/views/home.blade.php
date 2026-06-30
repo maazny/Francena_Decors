@@ -4,39 +4,7 @@
 
 @section('content')
   <main>
-    <section id="home" class="hero-section d-flex align-items-center text-white text-center">
-      <div class="overlay"></div>
-      <div class="hero-shapes">
-        <span class="floating-shape shape-1"></span>
-        <span class="floating-shape shape-2"></span>
-        <span class="floating-shape shape-3"></span>
-        <span class="floating-shape shape-4"></span>
-      </div>
-      <canvas id="particleCanvas"></canvas>
-      <div class="hero-slider" id="heroSlider">
-        <div class="hero-slide active" style="background-image:url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')"></div>
-        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1800&q=80')"></div>
-        <div class="hero-slide" style="background-image:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1800&q=80')"></div>
-        <div class="slider-controls" aria-label="Hero slider navigation">
-          <button id="heroPrev" type="button" class="slider-btn prev-slide" aria-label="Previous slide"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
-          <button id="heroNext" type="button" class="slider-btn next-slide" aria-label="Next slide"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
-        </div>
-      </div>
-      <div class="container position-relative z-2">
-        <div class="row justify-content-center">
-          <div class="col-lg-8" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="120">
-            <p class="eyebrow">Luxury Construction & Design</p>
-            <h1 class="display-4 fw-bold">Building Your Dream Into Reality</h1>
-            <p class="typed-text"><span id="typedText"></span><span class="typed-cursor">|</span></p>
-            <p class="lead mx-auto mt-4">Premium craftsmanship for elite residential, commercial and interior architecture.</p>
-            <div class="hero-buttons mt-5">
-              <a href="#contact" class="btn btn-gold btn-lg me-3">Get Quote</a>
-              <a href="#projects" class="btn btn-outline-light btn-lg">Our Projects</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <x-hero-slider />
 
     <section id="about" class="py-5 section-bg">
       <div class="container">

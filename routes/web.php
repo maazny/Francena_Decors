@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\FooterSettingController;
 use App\Http\Controllers\Admin\HeaderLogoController;
 use App\Http\Controllers\Admin\HeaderSettingController;
 use App\Http\Controllers\Admin\HeaderTopbarController;
+use App\Http\Controllers\Admin\HeroSliderController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\ThemeSettingController;
@@ -66,6 +67,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('footer-settings', [FooterSettingController::class, 'edit'])->name('edit');
             Route::put('footer-settings', [FooterSettingController::class, 'update'])->name('update');
         });
+
+        Route::post('hero-sliders/bulk', [HeroSliderController::class, 'bulk'])->name('hero-sliders.bulk');
+        Route::post('hero-sliders/reorder', [HeroSliderController::class, 'reorder'])->name('hero-sliders.reorder');
+        Route::post('hero-sliders/{heroSlider}/toggle-status', [HeroSliderController::class, 'toggleStatus'])->name('hero-sliders.toggle-status');
+        Route::post('hero-sliders/{heroSlider}/duplicate', [HeroSliderController::class, 'duplicate'])->name('hero-sliders.duplicate');
+        Route::post('hero-sliders/{heroSlider}/restore', [HeroSliderController::class, 'restore'])->name('hero-sliders.restore');
+        Route::resource('hero-sliders', HeroSliderController::class);
 
         Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
         Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');

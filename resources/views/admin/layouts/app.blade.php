@@ -66,6 +66,10 @@
             <i class="fa-solid fa-window-maximize fa-fw me-2"></i>
             Footer
           </a>
+          <a href="{{ route('admin.hero-sliders.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.hero-sliders.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-images fa-fw me-2"></i>
+            Hero Slider
+          </a>
           <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.dashboard') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-chart-line me-2"></i>
             Dashboard
