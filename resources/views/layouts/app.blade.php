@@ -64,6 +64,79 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet" />
   <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
+  <style>
+    :root {
+      {!! theme_css_variables() !!}
+    }
+
+    body {
+      font-family: var(--font-family, Inter, system-ui, sans-serif);
+      font-size: var(--base-font-size, 16px);
+      background-color: var(--background-color, #ffffff);
+      color: var(--text-color, #222222);
+    }
+
+    .btn-primary {
+      background-color: var(--button-background, #0d6efd) !important;
+      border-color: var(--button-background, #0d6efd) !important;
+      color: var(--button-text-color, #ffffff) !important;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--button-hover-background, #0b5ed7) !important;
+      color: var(--button-hover-text, #ffffff) !important;
+    }
+
+    a {
+      color: var(--link-color, #0d6efd);
+    }
+
+    a:hover {
+      color: var(--link-hover-color, #0a58ca);
+    }
+
+    .navbar, .header-nav {
+      background-color: var(--navbar-background, #000000) !important;
+      color: var(--navbar-text-color, #ffffff) !important;
+    }
+
+    .footer-copy,
+    .footer-list a,
+    .footer-list li,
+    .footer-list p {
+      color: var(--footer-text-color, #ffffff) !important;
+    }
+
+    .footer-section {
+      background-color: var(--footer-background, #111111) !important;
+    }
+
+    .glass-card,
+    .card,
+    .project-card,
+    .testimonial-item,
+    .process-card,
+    .feature-box,
+    .contact-form,
+    .accordion-item {
+      background-color: var(--card-background, rgba(255, 255, 255, 0.08)) !important;
+      border-color: var(--card-border-color, rgba(255, 255, 255, 0.08)) !important;
+      box-shadow: var(--box-shadow, 0 20px 50px rgba(0,0,0,.08));
+      border-radius: var(--border-radius, 16px) !important;
+    }
+
+    input,
+    textarea,
+    select,
+    .form-control {
+      background-color: var(--input-background, #ffffff) !important;
+      border-color: var(--input-border-color, #ced4da) !important;
+    }
+
+    .section-bg {
+      background-color: var(--surface-color, #0a0a0a) !important;
+    }
+  </style>
 </head>
 <body>
   @include('partials.header')
@@ -75,5 +148,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
   <script src="{{ asset('js/script.js') }}"></script>
+  @if(theme_setting()->custom_js)
+    <script>
+      {!! theme_setting()->safeCustomJs() !!}
+    </script>
+  @endif
 </body>
 </html>

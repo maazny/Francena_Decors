@@ -43,6 +43,12 @@
         </div>
         <div class="mb-4 sidebar-header">Settings</div>
         <div class="nav nav-pills flex-column gap-2">
+          @if(Route::has('theme.settings.edit'))
+            <a href="{{ route('theme.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('theme.settings.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-paintbrush fa-fw me-2"></i>
+              Theme Settings
+            </a>
+          @endif
           <a href="{{ route('admin.site-settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.site-settings.*') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-gear me-2"></i>
             Site Settings

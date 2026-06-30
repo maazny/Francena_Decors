@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\ThemeSettingController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -25,6 +26,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
     Route::middleware('auth')->group(function () {
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::name('theme.settings.')->group(function () {
+            Route::get('theme-settings', [ThemeSettingController::class, 'edit'])->name('edit');
+            Route::put('theme-settings', [ThemeSettingController::class, 'update'])->name('update');
+        });
+
         Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
         Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
