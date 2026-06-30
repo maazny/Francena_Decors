@@ -6,61 +6,7 @@
   <main>
     <x-hero-slider />
 
-    <section id="about" class="py-5 section-bg">
-      <div class="container">
-        <div class="section-header text-center mb-5">
-          <span class="section-label">About Us</span>
-          <h2>Elegant Construction with a Premium Touch</h2>
-          <p>Fancy Decorators builds luxurious residential and commercial spaces with professional craftsmanship, superior materials, and a commitment to on-time delivery. Our team specializes in high-end construction, bespoke interior design, and complete renovation services for discerning clients.</p>
-        </div>
-        <div class="row gy-4 align-items-center">
-          <div class="col-lg-6">
-            <div class="glass-card p-4">
-              <h3>Our Story</h3>
-              <p>Fancy Decorators has been transforming spaces for discerning clients. We combine artistic vision with construction excellence to deliver projects that exceed expectations.</p>
-              <div class="row mt-4">
-                <div class="col-6 mb-3">
-                  <h5>Mission</h5>
-                  <p>To deliver premium construction experiences that feel seamless and indulgent.</p>
-                </div>
-                <div class="col-6 mb-3">
-                  <h5>Vision</h5>
-                  <p>To be the leading luxury builder recognized for craft, trust, and innovation.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-6">
-            <div class="row g-3 counters">
-              <div class="col-6">
-                <div class="counter-card p-4 text-center">
-                  <span class="counter" data-target="320">0</span>
-                  <p>Projects Completed</p>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="counter-card p-4 text-center">
-                  <span class="counter" data-target="240">0</span>
-                  <p>Happy Clients</p>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="counter-card p-4 text-center">
-                  <span class="counter" data-target="18">0</span>
-                  <p>Years Experience</p>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="counter-card p-4 text-center">
-                  <span class="counter" data-target="65">0</span>
-                  <p>Team Members</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <x-about-section />
 
     <section id="services" class="py-5 text-white">
       <div class="container">
@@ -161,59 +107,6 @@
       </div>
     </section>
 
-    <section id="why" class="py-5 section-bg">
-      <div class="container">
-        <div class="section-header text-center mb-5">
-          <span class="section-label">Why Choose Us</span>
-          <h2>Trusted Premium Construction Partner</h2>
-          <p>With decades of luxury construction experience, we deliver exceptional quality, refined aesthetics, and transparent project management for clients who expect the highest standards.</p>
-        </div>
-        <div class="row g-4">
-          <div class="col-md-6 col-lg-4">
-            <div class="feature-box p-4 h-100">
-              <i class="fa-solid fa-gem"></i>
-              <h5>Premium Quality</h5>
-              <p>Top-tier materials and craftsmanship are standard in every project.</p>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="feature-box p-4 h-100">
-              <i class="fa-solid fa-hard-hat"></i>
-              <h5>Experienced Team</h5>
-              <p>Seasoned professionals ensure a flawless and efficient build.</p>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="feature-box p-4 h-100">
-              <i class="fa-solid fa-dollar-sign"></i>
-              <h5>Affordable Pricing</h5>
-              <p>Transparent proposals and premium value at every stage.</p>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="feature-box p-4 h-100">
-              <i class="fa-solid fa-clock"></i>
-              <h5>On-Time Delivery</h5>
-              <p>Projects completed on schedule without compromise.</p>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="feature-box p-4 h-100">
-              <i class="fa-solid fa-wrench"></i>
-              <h5>Modern Equipment</h5>
-              <p>Advanced tools and technology keep work precise and clean.</p>
-            </div>
-          </div>
-          <div class="col-md-6 col-lg-4">
-            <div class="feature-box p-4 h-100">
-              <i class="fa-solid fa-users"></i>
-              <h5>Customer Satisfaction</h5>
-              <p>Strong communication and support from concept to handover.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <section id="projects" class="py-5 text-white">
       <div class="container">

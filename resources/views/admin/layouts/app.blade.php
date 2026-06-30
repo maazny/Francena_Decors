@@ -70,6 +70,10 @@
             <i class="fa-solid fa-images fa-fw me-2"></i>
             Hero Slider
           </a>
+          <a href="{{ route('admin.about-sections.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.about-sections.*') || Route::is('admin.company-values.*') || Route::is('admin.company-timelines.*') || Route::is('admin.why-choose-us.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-circle-info fa-fw me-2"></i>
+            About CMS
+          </a>
           <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.dashboard') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-chart-line me-2"></i>
             Dashboard

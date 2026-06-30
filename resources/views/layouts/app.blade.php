@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Fancy Decorators delivers luxury construction, premium residential and commercial builds, upscale renovations, and bespoke interior design across the metropolitan area." />
-  <meta name="keywords" content="luxury construction, premium builder, residential construction, commercial construction, interior design, home renovation, elite contractors, custom build services" />
+  @php($aboutSeo = about_cms()['section'] ?? null)
+  <meta name="description" content="@yield('meta_description', $aboutSeo?->meta_description ?: 'Fancy Decorators delivers luxury construction, premium residential and commercial builds, upscale renovations, and bespoke interior design across the metropolitan area.')" />
+  <meta name="keywords" content="@yield('meta_keywords', $aboutSeo?->meta_keywords ?: 'luxury construction, premium builder, residential construction, commercial construction, interior design, home renovation, elite contractors, custom build services')" />
   <meta name="robots" content="index, follow" />
-  <title>@yield('title', 'Fancy Decorators | Luxury Construction Company')</title>
+  <title>@yield('title', $aboutSeo?->meta_title ?: 'Fancy Decorators | Luxury Construction Company')</title>
   <meta name="theme-color" content="#d4af5f" />
   <meta property="og:title" content="Fancy Decorators | Luxury Construction Company" />
   <meta property="og:description" content="Premium construction and design services for luxury residential, commercial, and interior projects. Turn your vision into award-worthy spaces." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://www.fancydecorators.com/" />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80" />
+  <meta property="og:image" content="@yield('og_image', $aboutSeo?->ogImage ? image_url($aboutSeo->ogImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')" />
   <meta property="og:site_name" content="Fancy Decorators" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Fancy Decorators | Luxury Construction Company" />
   <meta name="twitter:description" content="Premium construction and design services for luxury residential, commercial, and interior projects." />
-  <meta name="twitter:image" content="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80" />
+  <meta name="twitter:image" content="@yield('twitter_image', $aboutSeo?->ogImage ? image_url($aboutSeo->ogImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')" />
   <meta name="twitter:site" content="@@FancyDecorators" />
   <link rel="canonical" href="https://www.fancydecorators.com/" />
   <script type="application/ld+json">

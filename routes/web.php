@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AboutSectionController;
+use App\Http\Controllers\Admin\CompanyTimelineController;
+use App\Http\Controllers\Admin\CompanyValueController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FooterSettingController;
 use App\Http\Controllers\Admin\HeaderLogoController;
@@ -9,6 +12,7 @@ use App\Http\Controllers\Admin\HeroSliderController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\ThemeSettingController;
+use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -74,6 +78,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('hero-sliders/{heroSlider}/duplicate', [HeroSliderController::class, 'duplicate'])->name('hero-sliders.duplicate');
         Route::post('hero-sliders/{heroSlider}/restore', [HeroSliderController::class, 'restore'])->name('hero-sliders.restore');
         Route::resource('hero-sliders', HeroSliderController::class);
+
+        Route::get('about-sections', [AboutSectionController::class, 'edit'])->name('about-sections.edit');
+        Route::put('about-sections', [AboutSectionController::class, 'update'])->name('about-sections.update');
+        Route::resource('company-values', CompanyValueController::class)->except(['index', 'show']);
+        Route::resource('company-timelines', CompanyTimelineController::class)->except(['index', 'show']);
+        Route::resource('why-choose-us', WhyChooseUsController::class)->except(['index', 'show']);
 
         Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
         Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
