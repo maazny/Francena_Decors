@@ -62,6 +62,10 @@
             <i class="fa-solid fa-header fa-fw me-2"></i>
             Header
           </a>
+          <a href="{{ route('admin.footer.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.footer.settings.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-window-maximize fa-fw me-2"></i>
+            Footer
+          </a>
           <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.dashboard') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-chart-line me-2"></i>
             Dashboard

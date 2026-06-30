@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FooterSettingController;
 use App\Http\Controllers\Admin\HeaderLogoController;
 use App\Http\Controllers\Admin\HeaderSettingController;
 use App\Http\Controllers\Admin\HeaderTopbarController;
@@ -59,6 +60,11 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::name('header.logos.')->group(function () {
             Route::get('header-logos', [HeaderLogoController::class, 'edit'])->name('edit');
             Route::put('header-logos', [HeaderLogoController::class, 'update'])->name('update');
+        });
+
+        Route::name('footer.settings.')->group(function () {
+            Route::get('footer-settings', [FooterSettingController::class, 'edit'])->name('edit');
+            Route::put('footer-settings', [FooterSettingController::class, 'update'])->name('update');
         });
 
         Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');

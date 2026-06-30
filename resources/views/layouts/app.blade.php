@@ -143,7 +143,7 @@
 
   @yield('content')
 
-  @include('partials.footer')
+  <x-footer />
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>

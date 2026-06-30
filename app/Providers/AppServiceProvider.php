@@ -20,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
         require_once app_path('Helpers/theme.php');
         require_once app_path('Helpers/media.php');
         require_once app_path('Helpers/header.php');
+        require_once app_path('Helpers/footer.php');
     }
 
     /**
@@ -33,19 +34,19 @@ class AppServiceProvider extends ServiceProvider
             if (Schema::hasTable('header_settings')) {
                 $view->with('headerSettings', HeaderSetting::getCached());
             } else {
-                $view->with('headerSettings', new HeaderSetting());
+                $view->with('headerSettings', new HeaderSetting);
             }
 
             if (Schema::hasTable('header_topbars')) {
                 $view->with('headerTopbar', HeaderTopbar::firstOrCreate([]));
             } else {
-                $view->with('headerTopbar', new HeaderTopbar());
+                $view->with('headerTopbar', new HeaderTopbar);
             }
 
             if (Schema::hasTable('header_logos')) {
                 $view->with('headerLogo', HeaderLogo::firstOrCreate([]));
             } else {
-                $view->with('headerLogo', new HeaderLogo());
+                $view->with('headerLogo', new HeaderLogo);
             }
         });
     }
