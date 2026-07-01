@@ -32,23 +32,33 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         View::composer('*', function ($view) {
-            $view->with('themeSettings', ThemeSetting::getCached());
+            try {
+                $view->with('themeSettings', ThemeSetting::getCached());
+            } catch (\Throwable $e) {
+                $view->with('themeSettings', new ThemeSetting);
+            }
 
-            if (Schema::hasTable('header_settings')) {
-                $view->with('headerSettings', HeaderSetting::getCached());
-            } else {
+            try {
+                if (Schema::hasTable('header_settings')) {
+                    $view->with('headerSettings', HeaderSetting::getCached());
+                } else {
+                    $view->with('headerSettings', new HeaderSetting);
+                }
+
+                if (Schema::hasTable('header_topbars')) {
+                    $view->with('headerTopbar', HeaderTopbar::firstOrCreate([]));
+                } else {
+                    $view->with('headerTopbar', new HeaderTopbar);
+                }
+
+                if (Schema::hasTable('header_logos')) {
+                    $view->with('headerLogo', HeaderLogo::firstOrCreate([]));
+                } else {
+                    $view->with('headerLogo', new HeaderLogo);
+                }
+            } catch (\Throwable $e) {
                 $view->with('headerSettings', new HeaderSetting);
-            }
-
-            if (Schema::hasTable('header_topbars')) {
-                $view->with('headerTopbar', HeaderTopbar::firstOrCreate([]));
-            } else {
                 $view->with('headerTopbar', new HeaderTopbar);
-            }
-
-            if (Schema::hasTable('header_logos')) {
-                $view->with('headerLogo', HeaderLogo::firstOrCreate([]));
-            } else {
                 $view->with('headerLogo', new HeaderLogo);
             }
         });
