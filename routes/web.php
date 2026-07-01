@@ -13,12 +13,15 @@ use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SiteSettingController;
+use App\Http\Controllers\Admin\TestimonialCategoryController;
+use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\ThemeSettingController;
 use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\TestimonialsController;
 use Illuminate\Support\Facades\Route;
 
 Route::put('/admin/theme-settings/update', [ThemeSettingController::class, 'update'])
@@ -31,6 +34,10 @@ Route::get('/', function () {
 Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
 Route::get('/projects/{project:slug}', [ProjectsController::class, 'show'])->name('projects.show');
 Route::get('/projects/category/{projectCategory:slug}', [ProjectsController::class, 'category'])->name('projects.category');
+
+Route::get('/testimonials', [TestimonialsController::class, 'index'])->name('testimonials.index');
+Route::get('/testimonials/{testimonial}', [TestimonialsController::class, 'show'])->name('testimonials.show');
+Route::get('/testimonials/category/{testimonialCategory:slug}', [TestimonialsController::class, 'byCategory'])->name('testimonials.category');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
@@ -115,6 +122,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('projects/{project}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
         Route::post('projects/{project}/duplicate', [ProjectController::class, 'duplicate'])->name('projects.duplicate');
         Route::resource('projects', ProjectController::class)->except(['show']);
+
+        Route::post('testimonial-categories/bulk', [TestimonialCategoryController::class, 'bulk'])->name('testimonial-categories.bulk');
+        Route::post('testimonial-categories/{testimonialCategory}/toggle-status', [TestimonialCategoryController::class, 'toggleStatus'])->name('testimonial-categories.toggle-status');
+        Route::post('testimonial-categories/{testimonialCategory}/restore', [TestimonialCategoryController::class, 'restore'])->name('testimonial-categories.restore');
+        Route::resource('testimonial-categories', TestimonialCategoryController::class)->except(['show']);
+
+        Route::post('testimonials/bulk', [TestimonialController::class, 'bulk'])->name('testimonials.bulk');
+        Route::post('testimonials/{testimonial}/toggle-status', [TestimonialController::class, 'toggleStatus'])->name('testimonials.toggle-status');
+        Route::post('testimonials/{testimonial}/restore', [TestimonialController::class, 'restore'])->name('testimonials.restore');
+        Route::post('testimonials/{testimonial}/duplicate', [TestimonialController::class, 'duplicate'])->name('testimonials.duplicate');
+        Route::resource('testimonials', TestimonialController::class)->except(['show']);
 
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     });
