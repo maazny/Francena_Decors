@@ -31,6 +31,13 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+// Frontend Team pages
+use App\Http\Controllers\TeamController;
+
+Route::get('/team', [TeamController::class, 'index'])->name('team.index');
+Route::get('/team/department/{team_department:slug}', [TeamController::class, 'department'])->name('team.department');
+Route::get('/team/{team_member:slug}', [TeamController::class, 'show'])->name('team.show');
+
 Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
 Route::get('/projects/{project:slug}', [ProjectsController::class, 'show'])->name('projects.show');
 Route::get('/projects/category/{projectCategory:slug}', [ProjectsController::class, 'category'])->name('projects.category');
@@ -135,5 +142,35 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('testimonials', TestimonialController::class)->except(['show']);
 
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+        // Team CMS - Admin
+        Route::post('team-departments/reorder', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'reorder'])->name('team-departments.reorder');
+        Route::post('team-departments/bulk', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'bulk'])->name('team-departments.bulk');
+        Route::post('team-departments/{team_department}/restore', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'restore'])->name('team-departments.restore');
+        Route::post('team-departments/{team_department}/toggle-status', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'toggleStatus'])->name('team-departments.toggle-status');
+        Route::resource('team-departments', \App\Http\Controllers\Admin\TeamDepartmentController::class)->except(['show']);
+
+        Route::post('team-members/reorder', [\App\Http\Controllers\Admin\TeamMemberController::class, 'reorder'])->name('team-members.reorder');
+        Route::post('team-members/bulk', [\App\Http\Controllers\Admin\TeamMemberController::class, 'bulk'])->name('team-members.bulk');
+        Route::post('team-members/{team_member}/restore', [\App\Http\Controllers\Admin\TeamMemberController::class, 'restore'])->name('team-members.restore');
+        Route::post('team-members/{team_member}/toggle-status', [\App\Http\Controllers\Admin\TeamMemberController::class, 'toggleStatus'])->name('team-members.toggle-status');
+        Route::post('team-members/{team_member}/duplicate', [\App\Http\Controllers\Admin\TeamMemberController::class, 'duplicate'])->name('team-members.duplicate');
+        Route::resource('team-members', \App\Http\Controllers\Admin\TeamMemberController::class)->except(['show']);
+
+        // Nested resource actions for social links, skills and certifications
+        Route::post('team-members/{team_member}/social-links', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'store'])->name('team-members.social-links.store');
+        Route::put('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'update'])->name('team-social-links.update');
+        Route::delete('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'destroy'])->name('team-social-links.destroy');
+        Route::post('team-social-links/reorder', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'reorder'])->name('team-social-links.reorder');
+
+        Route::post('team-members/{team_member}/skills', [\App\Http\Controllers\Admin\TeamSkillController::class, 'store'])->name('team-members.skills.store');
+        Route::put('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'update'])->name('team-skills.update');
+        Route::delete('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'destroy'])->name('team-skills.destroy');
+        Route::post('team-skills/reorder', [\App\Http\Controllers\Admin\TeamSkillController::class, 'reorder'])->name('team-skills.reorder');
+
+        Route::post('team-members/{team_member}/certifications', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'store'])->name('team-members.certifications.store');
+        Route::put('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'update'])->name('team-certifications.update');
+        Route::delete('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'destroy'])->name('team-certifications.destroy');
+        Route::post('team-certifications/reorder', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'reorder'])->name('team-certifications.reorder');
     });
 });

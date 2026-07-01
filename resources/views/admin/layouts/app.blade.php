@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>@yield('title', 'Admin Panel') | Fancy Decorators</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
@@ -109,5 +110,87 @@
   </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
-</body>
+  <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+      
+      document.querySelectorAll('.rich-editor').forEach((textarea) => {
+        if (textarea._ckEditor) return;
+        ClassicEditor.create(textarea).then(editor => { textarea._ckEditor = editor; }).catch(err => console.error(err));
+      });
+
+      document.querySelectorAll('input[type="hidden"][id$="_id"]').forEach((input) => {
+        const preview = document.getElementById(input.id + '_preview');
+        if (! preview) return;
+        if (preview.nextElementSibling && preview.nextElementSibling.classList && preview.nextElementSibling.classList.contains('js-media-clear')) return;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn btn-sm btn-outline-danger mt-2 js-media-clear';
+        btn.textContent = 'Clear';
+        btn.addEventListener('click', () => {
+          input.value = '';
+          if (preview.tagName === 'IMG') { preview.src = ''; preview.classList.add('d-none'); } else { preview.textContent = ''; }
+        });
+        preview.insertAdjacentElement('afterend', btn);
+      });
+
+      document.querySelectorAll('[data-ajax-submit]').forEach((form) => {
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          const submitButton = form.querySelector('button[type="submit"]');
+          const url = form.action;
+          const method = form.method.toUpperCase() || 'POST';
+          const formData = new FormData(form);
+          const response = await fetch(url, {
+            method,
+            headers: {
+              'X-CSRF-TOKEN': csrfToken,
+              'Accept': 'application/json',
+            },
+            body: formData,
+          });
+
+          if (! response.ok) {
+            const text = await response.text();
+            console.error('AJAX submit failed', response.status, text);
+            return;
+          }
+
+          const json = await response.json();
+          const target = document.getElementById(form.dataset.ajaxTarget);
+          if (target && json.html) {
+            target.innerHTML = json.html;
+          }
+
+          form.reset();
+          form.querySelectorAll('img[id$="_preview"]').forEach((img) => {
+            img.src = '';
+            img.classList.add('d-none');
+          });
+
+          if (submitButton) {
+            submitButton.blur();
+          }
+        });
+      });
+
+      document.querySelectorAll('[data-ajax-delete]').forEach((button) => {
+        button.addEventListener('click', async (event) => {
+          event.preventDefault();
+          const url = button.dataset.action;
+          const row = button.closest('[data-nested-item]');
+          const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+              'X-CSRF-TOKEN': csrfToken,
+              'Accept': 'application/json',
+            },
+          });
+          if (! response.ok) {
+            console.error('AJAX delete failed', response.status);
+            return;
+          }
+          if (row) row.remove();
+        });
 </html>
