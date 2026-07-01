@@ -10,12 +10,15 @@ use App\Http\Controllers\Admin\HeaderSettingController;
 use App\Http\Controllers\Admin\HeaderTopbarController;
 use App\Http\Controllers\Admin\HeroSliderController;
 use App\Http\Controllers\Admin\MediaController;
+use App\Http\Controllers\Admin\ProjectCategoryController;
+use App\Http\Controllers\Admin\ProjectController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\ThemeSettingController;
 use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ProjectsController;
 use Illuminate\Support\Facades\Route;
 
 Route::put('/admin/theme-settings/update', [ThemeSettingController::class, 'update'])
@@ -23,7 +26,11 @@ Route::put('/admin/theme-settings/update', [ThemeSettingController::class, 'upda
 
 Route::get('/', function () {
     return view('home');
-});
+})->name('home');
+
+Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
+Route::get('/projects/{project:slug}', [ProjectsController::class, 'show'])->name('projects.show');
+Route::get('/projects/category/{projectCategory:slug}', [ProjectsController::class, 'category'])->name('projects.category');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
@@ -93,6 +100,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
         Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
+
+        Route::post('project-categories/bulk', [ProjectCategoryController::class, 'bulk'])->name('project-categories.bulk');
+        Route::post('project-categories/{projectCategory}/toggle-status', [ProjectCategoryController::class, 'toggleStatus'])->name('project-categories.toggle-status');
+        Route::post('project-categories/{projectCategory}/restore', [ProjectCategoryController::class, 'restore'])->name('project-categories.restore');
+        Route::resource('project-categories', ProjectCategoryController::class)->except(['show']);
+
+        Route::post('projects/bulk', [ProjectController::class, 'bulk'])->name('projects.bulk');
+        Route::post('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->name('projects.toggle-status');
+        Route::post('projects/{project}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
+        Route::post('projects/{project}/duplicate', [ProjectController::class, 'duplicate'])->name('projects.duplicate');
+        Route::resource('projects', ProjectController::class)->except(['show']);
+
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
     });
 });

@@ -57,6 +57,14 @@
             <i class="fa-solid fa-photo-film fa-fw me-2"></i>
             Media Library
           </a>
+          <a href="{{ route('admin.project-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.project-categories.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-folder-tree fa-fw me-2"></i>
+            Project Categories
+          </a>
+          <a href="{{ route('admin.projects.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.projects.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-diagram-project fa-fw me-2"></i>
+            Projects
+          </a>
           <div class="mt-4 sidebar-header">Appearance</div>
           <a href="{{ route('admin.header.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.header.settings.*') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-header fa-fw me-2"></i>
