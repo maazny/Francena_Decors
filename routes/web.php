@@ -18,9 +18,15 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
+Route::put('/admin/theme-settings/update', [ThemeSettingController::class, 'update'])
+    ->name('theme.settings.update');
+
 Route::get('/', function () {
     return view('home');
 });
+
+Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('login', [LoginController::class, 'login'])->name('login.submit');
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::middleware('guest')->group(function () {
