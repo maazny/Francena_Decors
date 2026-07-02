@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBlogPostRequest;
 use App\Http\Requests\UpdateBlogPostRequest;
 use App\Models\BlogPost;
+use App\Models\BlogCategory;
+use App\Models\BlogTag;
+use App\Models\Media;
+use App\Models\User;
 use App\Services\BlogService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -40,6 +44,10 @@ class BlogPostController extends Controller
     {
         return view('admin.blog-posts.create', [
             'post' => new BlogPost(['display_order' => BlogPost::withTrashed()->max('display_order') + 1, 'status' => false, 'is_featured' => false, 'is_homepage_featured' => false]),
+            'categories' => BlogCategory::active()->ordered()->get(),
+            'tags' => BlogTag::active()->ordered()->get(),
+            'imageOptions' => Media::where('is_image', true)->where('status', true)->latest()->get(),
+            'authors' => User::orderBy('name')->get(),
         ]);
     }
 
@@ -67,7 +75,13 @@ class BlogPostController extends Controller
 
     public function edit(BlogPost $blog_post): View
     {
-        return view('admin.blog-posts.edit', ['post' => $blog_post->load(['tags'])]);
+        return view('admin.blog-posts.edit', [
+            'post' => $blog_post->load(['tags']),
+            'categories' => BlogCategory::active()->ordered()->get(),
+            'tags' => BlogTag::active()->ordered()->get(),
+            'imageOptions' => Media::where('is_image', true)->where('status', true)->latest()->get(),
+            'authors' => User::orderBy('name')->get(),
+        ]);
     }
 
     public function update(UpdateBlogPostRequest $request, BlogPost $blog_post): RedirectResponse
@@ -97,9 +111,9 @@ class BlogPostController extends Controller
         return redirect()->route('admin.blog-posts.index')->with('success', 'Post deleted successfully.');
     }
 
-    public function restore(int $blogPost): RedirectResponse
+    public function restore(int $blog_post): RedirectResponse
     {
-        $post = BlogPost::withTrashed()->findOrFail($blogPost);
+        $post = BlogPost::withTrashed()->findOrFail($blog_post);
         $post->restore();
 
         return redirect()->route('admin.blog-posts.index')->with('success', 'Post restored successfully.');

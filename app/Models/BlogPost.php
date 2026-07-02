@@ -25,8 +25,10 @@ class BlogPost extends Model
         'banner_image_id',
         'display_order',
         'is_featured',
+        'is_homepage_featured',
         'status',
         'published_at',
+        'reading_time',
         'seo_title',
         'seo_description',
         'seo_keywords',
@@ -100,10 +102,10 @@ class BlogPost extends Model
         return str($this->content)->limit(200)->toString();
     }
 
-    public function getReadingTimeAttribute(): int
+    public function getReadingTimeAttribute($value): int
     {
-        if ($this->reading_time !== null) {
-            return (int) $this->reading_time;
+        if ($value !== null) {
+            return (int) $value;
         }
 
         return (new \App\Services\BlogService())->estimateReadingTime($this->content ?? '');

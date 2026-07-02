@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBlogCategoryRequest;
 use App\Http\Requests\UpdateBlogCategoryRequest;
 use App\Models\BlogCategory;
+use App\Models\Media;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -30,6 +31,7 @@ class BlogCategoryController extends Controller
     {
         return view('admin.blog-categories.create', [
             'category' => new BlogCategory(['display_order' => BlogCategory::withTrashed()->max('display_order') + 1, 'status' => true]),
+            'imageOptions' => Media::where('is_image', true)->where('status', true)->latest()->get(),
         ]);
     }
 
@@ -47,7 +49,10 @@ class BlogCategoryController extends Controller
 
     public function edit(BlogCategory $blog_category): View
     {
-        return view('admin.blog-categories.edit', ['category' => $blog_category]);
+        return view('admin.blog-categories.edit', [
+            'category' => $blog_category,
+            'imageOptions' => Media::where('is_image', true)->where('status', true)->latest()->get(),
+        ]);
     }
 
     public function update(UpdateBlogCategoryRequest $request, BlogCategory $blog_category): RedirectResponse
@@ -70,9 +75,9 @@ class BlogCategoryController extends Controller
         return redirect()->route('admin.blog-categories.index')->with('success', 'Category deleted successfully.');
     }
 
-    public function restore(int $blogCategory): RedirectResponse
+    public function restore(int $blog_category): RedirectResponse
     {
-        $category = BlogCategory::withTrashed()->findOrFail($blogCategory);
+        $category = BlogCategory::withTrashed()->findOrFail($blog_category);
         $category->restore();
 
         return redirect()->route('admin.blog-categories.index')->with('success', 'Category restored successfully.');

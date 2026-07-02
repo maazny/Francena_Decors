@@ -33,6 +33,9 @@ class UpdateBlogPostRequest extends FormRequest
             'published_at' => ['nullable', 'date'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['integer', 'exists:blog_tags,id'],
+            'seo_title' => ['nullable', 'string', 'max:191'],
+            'seo_description' => ['nullable', 'string', 'max:255'],
+            'seo_keywords' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

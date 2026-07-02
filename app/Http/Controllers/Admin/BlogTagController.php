@@ -66,9 +66,9 @@ class BlogTagController extends Controller
         return redirect()->route('admin.blog-tags.index')->with('success', 'Tag deleted successfully.');
     }
 
-    public function restore(int $blogTag): RedirectResponse
+    public function restore(int $blog_tag): RedirectResponse
     {
-        $tag = BlogTag::withTrashed()->findOrFail($blogTag);
+        $tag = BlogTag::withTrashed()->findOrFail($blog_tag);
         $tag->restore();
 
         return redirect()->route('admin.blog-tags.index')->with('success', 'Tag restored successfully.');

@@ -91,6 +91,19 @@
             <i class="fa-solid fa-briefcase fa-fw me-2"></i>
             Services
           </a>
+          <div class="mt-4 sidebar-header">Blog CMS</div>
+          <a href="{{ route('admin.blog-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-categories.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-list fa-fw me-2"></i>
+            Blog Categories
+          </a>
+          <a href="{{ route('admin.blog-tags.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-tags.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-tags fa-fw me-2"></i>
+            Blog Tags
+          </a>
+          <a href="{{ route('admin.blog-posts.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-posts.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-file-pen fa-fw me-2"></i>
+            Blog Posts
+          </a>
           <a href="{{ route('admin.about-sections.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.about-sections.*') || Route::is('admin.company-values.*') || Route::is('admin.company-timelines.*') || Route::is('admin.why-choose-us.*') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-circle-info fa-fw me-2"></i>
             About CMS

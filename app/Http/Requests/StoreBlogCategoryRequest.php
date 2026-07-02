@@ -18,8 +18,13 @@ class StoreBlogCategoryRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:191', 'unique:blog_categories,slug'],
             'short_description' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'featured_image_id' => ['nullable', 'exists:media,id'],
+            'banner_image_id' => ['nullable', 'exists:media,id'],
             'display_order' => ['nullable', 'integer'],
             'status' => ['sometimes', 'boolean'],
+            'seo_title' => ['nullable', 'string', 'max:191'],
+            'seo_description' => ['nullable', 'string', 'max:255'],
+            'seo_keywords' => ['nullable', 'string', 'max:255'],
         ];
     }
 }
