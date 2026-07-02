@@ -216,6 +216,34 @@
       </div>
     </section>
 
+    <section id="blog" class="py-5 text-white">
+      <div class="container">
+        <div class="section-header text-center mb-5">
+          <span class="section-label">Our Journal</span>
+          <h2>Latest Insights & Elegance</h2>
+          <p>Read our latest articles on luxury architectural design, home renovation tips, and corporate fit-outs.</p>
+        </div>
+        <div class="row g-4">
+          @forelse($latestPosts as $post)
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->iteration * 100 }}">
+              <x-blog-card :post="$post" />
+            </div>
+          @empty
+            <div class="col-12 text-center py-4">
+              <div class="glass-card p-5">
+                <i class="fa-solid fa-newspaper fa-3x mb-3 text-muted"></i>
+                <h5>No articles published yet</h5>
+                <p class="text-muted mb-0">Check back soon for insights from our luxury designers.</p>
+              </div>
+            </div>
+          @endforelse
+        </div>
+        <div class="text-center mt-5" data-aos="fade-up">
+          <a href="{{ route('blog.index') }}" class="btn btn-outline-light btn-lg text-uppercase px-4 py-3 fw-bold" style="font-size: 0.85rem; letter-spacing: 1px;">View Entire Journal</a>
+        </div>
+      </div>
+    </section>
+
     <section id="process" class="py-5 text-white">
       <div class="container">
         <div class="section-header text-center mb-5">

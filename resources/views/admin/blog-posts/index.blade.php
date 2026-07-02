@@ -15,6 +15,53 @@
       <a href="{{ route('admin.blog-posts.create') }}" class="btn btn-primary btn-sm">New Post</a>
     </div>
 
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card bg-dark text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-muted">Total Posts</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogPost::withTrashed()->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-file-lines fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-success text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-white-50">Published</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogPost::where('status', true)->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-circle-check fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-warning text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-white-50">Drafts</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogPost::where('status', false)->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-pen-to-square fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-info text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-white-50">Featured</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogPost::where('is_featured', true)->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-star fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <form method="GET" class="row g-2 mb-4">
       <div class="col-md-5">
         <input type="text" name="search" class="form-control" placeholder="Search by title" value="{{ $search }}">
@@ -77,6 +124,7 @@
                       <button class="btn btn-sm btn-outline-success">Restore</button>
                     </form>
                   @else
+                    <a href="{{ route('admin.blog-posts.preview', $post) }}" class="btn btn-sm btn-outline-success" target="_blank">Preview</a>
                     <a href="{{ route('admin.blog-posts.edit', $post) }}" class="btn btn-sm btn-outline-primary">Edit</a>
                     <form action="{{ route('admin.blog-posts.toggle-status', $post) }}" method="POST" class="d-inline">
                       @csrf

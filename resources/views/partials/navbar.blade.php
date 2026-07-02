@@ -11,12 +11,13 @@
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="navMenu">
     <ul class="navbar-nav align-items-center">
-      <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
-      <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
-      <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
-      <li class="nav-item"><a class="nav-link" href="#projects">Projects</a></li>
-      <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
-      <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+      <li class="nav-item"><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ request()->is('/') ? '#home' : '/#home' }}">Home</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#about' : '/#about' }}">About</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#services' : '/#services' }}">Services</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#projects' : '/#projects' }}">Projects</a></li>
+      <li class="nav-item"><a class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}" href="{{ route('blog.index') }}">Blog</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#testimonials' : '/#testimonials' }}">Testimonials</a></li>
+      <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#contact' : '/#contact' }}">Contact</a></li>
       <li class="nav-item ms-3">
         <button id="themeToggle" type="button" class="btn btn-outline-light btn-sm" aria-label="Toggle color theme"><i class="fa-solid fa-moon"></i></button>
       </li>

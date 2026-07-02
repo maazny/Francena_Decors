@@ -161,4 +161,11 @@ class BlogPostController extends Controller
 
         return redirect()->route('admin.blog-posts.index')->with('success', 'Bulk action completed successfully.');
     }
+
+    public function preview(BlogPost $blog_post): View
+    {
+        return view('admin.blog-posts.preview', [
+            'post' => $blog_post->load(['category', 'tags', 'galleries.media', 'featuredImage', 'bannerImage']),
+        ]);
+    }
 }

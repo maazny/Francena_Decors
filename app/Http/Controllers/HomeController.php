@@ -11,6 +11,11 @@ class HomeController extends Controller
     {
         return view('home', [
             'serviceFaqs' => ServiceFaq::active()->ordered()->take(6)->get(),
+            'latestPosts' => \App\Models\BlogPost::where('status', true)
+                ->where('published_at', '<=', now())
+                ->latest('published_at')
+                ->take(3)
+                ->get(),
         ]);
     }
 }

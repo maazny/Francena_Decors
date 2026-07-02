@@ -58,6 +58,10 @@ Route::get('/services', [ServicePageController::class, 'index'])->name('services
 Route::get('/services/category/{slug}', [ServicePageController::class, 'category'])->name('services.category');
 Route::get('/services/{slug}', [ServicePageController::class, 'show'])->name('services.show');
 
+// Frontend Blog pages
+Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{blog_post:slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
+
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
 
@@ -151,6 +155,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('blog-posts/{blog_post}/toggle-status', [\App\Http\Controllers\Admin\BlogPostController::class, 'toggleStatus'])->name('blog-posts.toggle-status');
         Route::post('blog-posts/{blog_post}/restore', [\App\Http\Controllers\Admin\BlogPostController::class, 'restore'])->name('blog-posts.restore');
         Route::post('blog-posts/{blog_post}/duplicate', [\App\Http\Controllers\Admin\BlogPostController::class, 'duplicate'])->name('blog-posts.duplicate');
+        Route::get('blog-posts/{blog_post}/preview', [\App\Http\Controllers\Admin\BlogPostController::class, 'preview'])->name('blog-posts.preview');
         Route::resource('blog-posts', \App\Http\Controllers\Admin\BlogPostController::class)->except(['show']);
 
         Route::post('services/bulk', [ServiceController::class, 'bulk'])->name('services.bulk');

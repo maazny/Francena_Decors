@@ -15,6 +15,53 @@
       <a href="{{ route('admin.blog-categories.create') }}" class="btn btn-primary btn-sm">New Category</a>
     </div>
 
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card bg-dark text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-muted">Total Categories</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogCategory::withTrashed()->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-list fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-success text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-white-50">Active</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogCategory::active()->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-circle-check fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-warning text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-between justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-white-50">Inactive</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogCategory::where('status', false)->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-circle-xmark fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-danger text-white p-3 shadow-sm border-0">
+          <div class="d-flex align-items-center justify-content-between">
+            <div>
+              <h6 class="text-uppercase small mb-1 text-white-50">Trashed</h6>
+              <h3 class="mb-0">{{ \App\Models\BlogCategory::onlyTrashed()->count() }}</h3>
+            </div>
+            <i class="fa-solid fa-trash-can fa-2x opacity-50"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <form method="GET" class="row g-2 mb-4">
       <div class="col-md-6">
         <input type="text" name="search" class="form-control" placeholder="Search categories" value="{{ $search }}">
