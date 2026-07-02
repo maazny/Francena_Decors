@@ -20,14 +20,17 @@ class ServiceController extends Controller
     public function index(Request $request): View
     {
         $search = trim((string) $request->query('search'));
+        $status = $request->query('status');
+
         $services = Service::with(['category', 'featuredImage'])
             ->withTrashed()
             ->when($search, fn ($query) => $query->where('title', 'like', "%{$search}%"))
+            ->when($status !== null, fn ($query) => $query->where('status', $status))
             ->ordered()
             ->paginate(15)
             ->withQueryString();
 
-        return view('admin.services.index', compact('services', 'search'));
+        return view('admin.services.index', compact('services', 'search', 'status'));
     }
 
     public function create(): View

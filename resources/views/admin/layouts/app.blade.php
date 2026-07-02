@@ -83,6 +83,14 @@
             <i class="fa-solid fa-images fa-fw me-2"></i>
             Hero Slider
           </a>
+          <a href="{{ route('admin.service-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.service-categories.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-tags fa-fw me-2"></i>
+            Service Categories
+          </a>
+          <a href="{{ route('admin.services.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.services.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-briefcase fa-fw me-2"></i>
+            Services
+          </a>
           <a href="{{ route('admin.about-sections.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.about-sections.*') || Route::is('admin.company-values.*') || Route::is('admin.company-timelines.*') || Route::is('admin.why-choose-us.*') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-circle-info fa-fw me-2"></i>
             About CMS

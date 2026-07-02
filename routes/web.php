@@ -13,6 +13,9 @@ use App\Http\Controllers\Admin\HeroSliderController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ServiceCategoryController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ServiceFaqController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\TestimonialCategoryController;
 use App\Http\Controllers\Admin\TestimonialController;
@@ -22,16 +25,16 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ClientsBrandsController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\TestimonialsController;
 use Illuminate\Support\Facades\Route;
 
 Route::put('/admin/theme-settings/update', [ThemeSettingController::class, 'update'])
     ->name('theme.settings.update');
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Frontend Team pages
 use App\Http\Controllers\TeamController;
@@ -50,6 +53,10 @@ Route::get('/testimonials/category/{testimonialCategory:slug}', [TestimonialsCon
 
 Route::get('/clients-brands', [ClientsBrandsController::class, 'index'])->name('clients-brands.index');
 Route::get('/clients-brands/{clientBrand:slug}', [ClientsBrandsController::class, 'show'])->name('clients-brands.show');
+
+Route::get('/services', [ServicePageController::class, 'index'])->name('services.index');
+Route::get('/services/category/{slug}', [ServicePageController::class, 'category'])->name('services.category');
+Route::get('/services/{slug}', [ServicePageController::class, 'show'])->name('services.show');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
@@ -124,12 +131,23 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
         Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
 
-        Route::post('project-categories/bulk', [ProjectCategoryController::class, 'bulk'])->name('project-categories.bulk');
-        Route::post('project-categories/{projectCategory}/toggle-status', [ProjectCategoryController::class, 'toggleStatus'])->name('project-categories.toggle-status');
-        Route::post('project-categories/{projectCategory}/restore', [ProjectCategoryController::class, 'restore'])->name('project-categories.restore');
-        Route::resource('project-categories', ProjectCategoryController::class)->except(['show']);
+        Route::post('service-categories/bulk', [ServiceCategoryController::class, 'bulk'])->name('service-categories.bulk');
+        Route::post('service-categories/{serviceCategory}/toggle-status', [ServiceCategoryController::class, 'toggleStatus'])->name('service-categories.toggle-status');
+        Route::post('service-categories/{serviceCategory}/restore', [ServiceCategoryController::class, 'restore'])->name('service-categories.restore');
+        Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
 
-        Route::post('projects/bulk', [ProjectController::class, 'bulk'])->name('projects.bulk');
+        Route::post('services/bulk', [ServiceController::class, 'bulk'])->name('services.bulk');
+        Route::post('services/{service}/toggle-status', [ServiceController::class, 'toggleStatus'])->name('services.toggle-status');
+        Route::post('services/{service}/restore', [ServiceController::class, 'restore'])->name('services.restore');
+        Route::post('services/{service}/duplicate', [ServiceController::class, 'duplicate'])->name('services.duplicate');
+        Route::resource('services', ServiceController::class)->except(['show']);
+
+        Route::post('services/{service}/faqs', [ServiceFaqController::class, 'store'])->name('services.faqs.store');
+        Route::put('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'update'])->name('service-faqs.update');
+        Route::delete('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'destroy'])->name('service-faqs.destroy');
+        Route::post('service-faqs/{serviceFaq}/toggle-status', [ServiceFaqController::class, 'toggleStatus'])->name('service-faqs.toggle-status');
+
+        Route::post('project-categories/bulk', [ProjectCategoryController::class, 'bulk'])->name('project-categories.bulk');
         Route::post('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->name('projects.toggle-status');
         Route::post('projects/{project}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
         Route::post('projects/{project}/duplicate', [ProjectController::class, 'duplicate'])->name('projects.duplicate');
