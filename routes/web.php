@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AboutSectionController;
+use App\Http\Controllers\Admin\ClientBrandController;
 use App\Http\Controllers\Admin\CompanyTimelineController;
 use App\Http\Controllers\Admin\CompanyValueController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ClientsBrandsController;
 use App\Http\Controllers\ProjectsController;
 use App\Http\Controllers\TestimonialsController;
 use Illuminate\Support\Facades\Route;
@@ -45,6 +47,9 @@ Route::get('/projects/category/{projectCategory:slug}', [ProjectsController::cla
 Route::get('/testimonials', [TestimonialsController::class, 'index'])->name('testimonials.index');
 Route::get('/testimonials/{testimonial}', [TestimonialsController::class, 'show'])->name('testimonials.show');
 Route::get('/testimonials/category/{testimonialCategory:slug}', [TestimonialsController::class, 'byCategory'])->name('testimonials.category');
+
+Route::get('/clients-brands', [ClientsBrandsController::class, 'index'])->name('clients-brands.index');
+Route::get('/clients-brands/{clientBrand:slug}', [ClientsBrandsController::class, 'show'])->name('clients-brands.show');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
@@ -140,6 +145,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('testimonials/{testimonial}/restore', [TestimonialController::class, 'restore'])->name('testimonials.restore');
         Route::post('testimonials/{testimonial}/duplicate', [TestimonialController::class, 'duplicate'])->name('testimonials.duplicate');
         Route::resource('testimonials', TestimonialController::class)->except(['show']);
+
+        Route::post('client-brands/bulk', [ClientBrandController::class, 'bulk'])->name('client-brands.bulk');
+        Route::post('client-brands/{clientBrand}/toggle-status', [ClientBrandController::class, 'toggleStatus'])->name('client-brands.toggle-status');
+        Route::post('client-brands/{clientBrand}/restore', [ClientBrandController::class, 'restore'])->name('client-brands.restore');
+        Route::post('client-brands/{clientBrand}/duplicate', [ClientBrandController::class, 'duplicate'])->name('client-brands.duplicate');
+        Route::resource('client-brands', ClientBrandController::class)->except(['show']);
 
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 

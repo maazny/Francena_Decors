@@ -66,6 +66,10 @@
             <i class="fa-solid fa-diagram-project fa-fw me-2"></i>
             Projects
           </a>
+          <a href="{{ route('admin.client-brands.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.client-brands.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-handshake fa-fw me-2"></i>
+            Clients & Brands
+          </a>
           <div class="mt-4 sidebar-header">Appearance</div>
           <a href="{{ route('admin.header.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.header.settings.*') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-header fa-fw me-2"></i>

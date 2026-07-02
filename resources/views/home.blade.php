@@ -183,6 +183,8 @@
       </div>
     </section>
 
+    @include('partials.homepage-client-brands')
+
     <section id="testimonials" class="py-5 section-bg">
       <div class="container">
         <div class="section-header text-center mb-5">
