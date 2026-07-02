@@ -136,6 +136,23 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('service-categories/{serviceCategory}/restore', [ServiceCategoryController::class, 'restore'])->name('service-categories.restore');
         Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
 
+        // Blog CMS - Admin (Module 21)
+        Route::post('blog-categories/bulk', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'bulk'])->name('blog-categories.bulk');
+        Route::post('blog-categories/{blogCategory}/toggle-status', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'toggleStatus'])->name('blog-categories.toggle-status');
+        Route::post('blog-categories/{blogCategory}/restore', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'restore'])->name('blog-categories.restore');
+        Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->except(['show']);
+
+        Route::post('blog-tags/bulk', [\App\Http\Controllers\Admin\BlogTagController::class, 'bulk'])->name('blog-tags.bulk');
+        Route::post('blog-tags/{blogTag}/toggle-status', [\App\Http\Controllers\Admin\BlogTagController::class, 'toggleStatus'])->name('blog-tags.toggle-status');
+        Route::post('blog-tags/{blogTag}/restore', [\App\Http\Controllers\Admin\BlogTagController::class, 'restore'])->name('blog-tags.restore');
+        Route::resource('blog-tags', \App\Http\Controllers\Admin\BlogTagController::class)->except(['show']);
+
+        Route::post('blog-posts/bulk', [\App\Http\Controllers\Admin\BlogPostController::class, 'bulk'])->name('blog-posts.bulk');
+        Route::post('blog-posts/{blogPost}/toggle-status', [\App\Http\Controllers\Admin\BlogPostController::class, 'toggleStatus'])->name('blog-posts.toggle-status');
+        Route::post('blog-posts/{blogPost}/restore', [\App\Http\Controllers\Admin\BlogPostController::class, 'restore'])->name('blog-posts.restore');
+        Route::post('blog-posts/{blogPost}/duplicate', [\App\Http\Controllers\Admin\BlogPostController::class, 'duplicate'])->name('blog-posts.duplicate');
+        Route::resource('blog-posts', \App\Http\Controllers\Admin\BlogPostController::class)->except(['show']);
+
         Route::post('services/bulk', [ServiceController::class, 'bulk'])->name('services.bulk');
         Route::post('services/{service}/toggle-status', [ServiceController::class, 'toggleStatus'])->name('services.toggle-status');
         Route::post('services/{service}/restore', [ServiceController::class, 'restore'])->name('services.restore');
