@@ -163,7 +163,7 @@
           </div>
           <div class="col-sm-6 col-lg-4 project-item residential interior">
             <article class="project-card">
-              <img src="https://images.unsplash.com/photo-15129150965-9f3f5fcbafc7?auto=format&fit=crop&w=900&q=80" alt="Elegant residential interior construction and renovation" loading="lazy" decoding="async" />
+              <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=80" alt="Elegant residential interior construction and renovation" loading="lazy" decoding="async" />
               <div class="project-info">
                 <h5>Elegant Residence</h5>
                 <p>Residential / Interior</p>
@@ -172,7 +172,7 @@
           </div>
           <div class="col-sm-6 col-lg-4 project-item commercial exterior">
             <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1505693416388-7b9d7ed04e46?auto=format&fit=crop&w=900&q=80" alt="Luxury commercial exterior construction and landscaping" loading="lazy" decoding="async" />
+              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80" alt="Luxury commercial exterior construction and landscaping" loading="lazy" decoding="async" />
               <div class="project-info">
                 <h5>Signature Plaza</h5>
                 <p>Commercial / Exterior</p>

@@ -5,6 +5,9 @@ namespace Database\Seeders;
 use App\Models\Testimonial;
 use App\Models\TestimonialCategory;
 use App\Models\User;
+use App\Models\ServiceCategory;
+use App\Models\Service;
+use App\Models\ServiceFaq;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -148,6 +151,128 @@ class DatabaseSeeder extends Seeder
             'seo_title' => 'Jennifer Lee - Fashion Boutique Testimonial',
             'seo_description' => 'Jennifer Lee shares how Fancy Decorators transformed her fashion boutique.',
             'seo_keywords' => 'boutique decoration, retail design, brand aesthetic',
+        ]);
+
+        // Seed Service Categories
+        $residentialCategory = ServiceCategory::create([
+            'name' => 'Residential Construction',
+            'slug' => 'residential-construction',
+            'short_description' => 'High-end home builds and upscale renovations.',
+            'description' => 'We create luxury living spaces tailored to your lifestyle, focusing on superior craftsmanship and custom finishes.',
+            'status' => true,
+            'display_order' => 1,
+        ]);
+
+        $commercialCategory = ServiceCategory::create([
+            'name' => 'Commercial Construction',
+            'slug' => 'commercial-construction',
+            'short_description' => 'Sophisticated retail and office development.',
+            'description' => 'Elite commercial building services that translate corporate vision into functional, stunning architectural reality.',
+            'status' => true,
+            'display_order' => 2,
+        ]);
+
+        $interiorCategory = ServiceCategory::create([
+            'name' => 'Interior Design',
+            'slug' => 'interior-design',
+            'short_description' => 'Bespoke interior planning and styling.',
+            'description' => 'Sophisticated interior environments curated with premium materials and artisan detail.',
+            'status' => true,
+            'display_order' => 3,
+        ]);
+
+        // Seed Services
+        $customBuilds = Service::create([
+            'category_id' => $residentialCategory->id,
+            'title' => 'Custom Home Builds',
+            'slug' => 'custom-home-builds',
+            'short_description' => 'Tailored architectural masterpieces built from the ground up.',
+            'description' => 'Creating custom luxury estates designed to last generations.',
+            'status' => true,
+            'is_featured' => true,
+            'display_order' => 1,
+        ]);
+
+        $renovations = Service::create([
+            'category_id' => $residentialCategory->id,
+            'title' => 'Home Renovations',
+            'slug' => 'home-renovations',
+            'short_description' => 'Premium home remodeling and space optimization.',
+            'description' => 'Revitalizing kitchens, master suites, and whole properties with modern luxury standards.',
+            'status' => true,
+            'is_featured' => true,
+            'display_order' => 2,
+        ]);
+
+        $commercialBuildouts = Service::create([
+            'category_id' => $commercialCategory->id,
+            'title' => 'Retail & Office Buildouts',
+            'slug' => 'retail-office-buildouts',
+            'short_description' => 'Premium commercial interior spaces.',
+            'description' => 'Delivering corporate environments and boutique shops with high efficiency.',
+            'status' => true,
+            'is_featured' => true,
+            'display_order' => 3,
+        ]);
+
+        $bespokeInteriors = Service::create([
+            'category_id' => $interiorCategory->id,
+            'title' => 'Bespoke Interior Design',
+            'slug' => 'bespoke-interior-design',
+            'short_description' => 'Artisanal styling and custom millwork curation.',
+            'description' => 'Crafting beautiful interiors that express unique personality.',
+            'status' => true,
+            'is_featured' => true,
+            'display_order' => 4,
+        ]);
+
+        // Seed Service FAQs
+        ServiceFaq::create([
+            'service_id' => $customBuilds->id,
+            'question' => 'What is the typical timeline for a custom luxury home build?',
+            'answer' => 'Typically, a custom luxury home construction takes between 10 to 18 months, depending on the scale and complexity of the architectural design.',
+            'status' => true,
+            'display_order' => 1,
+        ]);
+
+        ServiceFaq::create([
+            'service_id' => $customBuilds->id,
+            'question' => 'Can I bring my own architect, or do you provide design services?',
+            'answer' => 'We can collaborate seamlessly with your chosen architect, or we can offer our full in-house design-build team to guide your project from concept to completion.',
+            'status' => true,
+            'display_order' => 2,
+        ]);
+
+        ServiceFaq::create([
+            'service_id' => $renovations->id,
+            'question' => 'Do I need to vacate my home during a major renovation?',
+            'answer' => 'While not always mandatory, we highly recommend vacating during major structural or whole-home renovations for your safety and comfort, and to accelerate the timeline.',
+            'status' => true,
+            'display_order' => 3,
+        ]);
+
+        ServiceFaq::create([
+            'service_id' => $commercialBuildouts->id,
+            'question' => 'Do you help with zoning approvals and building permits?',
+            'answer' => 'Yes, our team handles the entire permitting process, including coordination with local zoning boards and building authorities.',
+            'status' => true,
+            'display_order' => 4,
+        ]);
+
+        ServiceFaq::create([
+            'service_id' => $bespokeInteriors->id,
+            'question' => 'How do you source the materials and furnishings for interior projects?',
+            'answer' => 'We source high-end, premium materials, custom cabinetry, and luxury furnishings from our global network of elite suppliers and artisans.',
+            'status' => true,
+            'display_order' => 5,
+        ]);
+
+        ServiceFaq::create([
+            'service_id' => $bespokeInteriors->id,
+            'question' => 'Do you offer physical consultations or virtual design sessions?',
+            'answer' => 'We offer comprehensive in-person design sessions at our showroom or your property, as well as high-definition 3D rendering presentations.',
+            'status' => true,
+            'display_order' => 6,
         ]);
     }
 }

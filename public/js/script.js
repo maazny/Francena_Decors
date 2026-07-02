@@ -32,11 +32,13 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 
 window.addEventListener('load', () => {
   const preloader = document.getElementById('preloader');
-  setTimeout(() => {
-    preloader.style.opacity = '0';
-    preloader.style.visibility = 'hidden';
-    preloader.style.pointerEvents = 'none';
-  }, 700);
+  if (preloader) {
+    setTimeout(() => {
+      preloader.style.opacity = '0';
+      preloader.style.visibility = 'hidden';
+      preloader.style.pointerEvents = 'none';
+    }, 700);
+  }
   if (!prefersReducedMotion) {
     initAOS();
     initTypedAnimation();
