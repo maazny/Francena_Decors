@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AboutSectionController;
+use App\Http\Controllers\Admin\ClientBrandController;
 use App\Http\Controllers\Admin\CompanyTimelineController;
 use App\Http\Controllers\Admin\CompanyValueController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -12,6 +13,9 @@ use App\Http\Controllers\Admin\HeroSliderController;
 use App\Http\Controllers\Admin\MediaController;
 use App\Http\Controllers\Admin\ProjectCategoryController;
 use App\Http\Controllers\Admin\ProjectController;
+use App\Http\Controllers\Admin\ServiceCategoryController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\ServiceFaqController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\TestimonialCategoryController;
 use App\Http\Controllers\Admin\TestimonialController;
@@ -20,16 +24,24 @@ use App\Http\Controllers\Admin\WhyChooseUsController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ClientsBrandsController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\TestimonialsController;
 use Illuminate\Support\Facades\Route;
 
 Route::put('/admin/theme-settings/update', [ThemeSettingController::class, 'update'])
     ->name('theme.settings.update');
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Frontend Team pages
+use App\Http\Controllers\TeamController;
+
+Route::get('/team', [TeamController::class, 'index'])->name('team.index');
+Route::get('/team/department/{team_department:slug}', [TeamController::class, 'department'])->name('team.department');
+Route::get('/team/{team_member:slug}', [TeamController::class, 'show'])->name('team.show');
 
 Route::get('/projects', [ProjectsController::class, 'index'])->name('projects.index');
 Route::get('/projects/{project:slug}', [ProjectsController::class, 'show'])->name('projects.show');
@@ -38,6 +50,13 @@ Route::get('/projects/category/{projectCategory:slug}', [ProjectsController::cla
 Route::get('/testimonials', [TestimonialsController::class, 'index'])->name('testimonials.index');
 Route::get('/testimonials/{testimonial}', [TestimonialsController::class, 'show'])->name('testimonials.show');
 Route::get('/testimonials/category/{testimonialCategory:slug}', [TestimonialsController::class, 'byCategory'])->name('testimonials.category');
+
+Route::get('/clients-brands', [ClientsBrandsController::class, 'index'])->name('clients-brands.index');
+Route::get('/clients-brands/{clientBrand:slug}', [ClientsBrandsController::class, 'show'])->name('clients-brands.show');
+
+Route::get('/services', [ServicePageController::class, 'index'])->name('services.index');
+Route::get('/services/category/{slug}', [ServicePageController::class, 'category'])->name('services.category');
+Route::get('/services/{slug}', [ServicePageController::class, 'show'])->name('services.show');
 
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
@@ -112,9 +131,23 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
         Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
 
+        Route::post('service-categories/bulk', [ServiceCategoryController::class, 'bulk'])->name('service-categories.bulk');
+        Route::post('service-categories/{serviceCategory}/toggle-status', [ServiceCategoryController::class, 'toggleStatus'])->name('service-categories.toggle-status');
+        Route::post('service-categories/{serviceCategory}/restore', [ServiceCategoryController::class, 'restore'])->name('service-categories.restore');
+        Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
+
+        Route::post('services/bulk', [ServiceController::class, 'bulk'])->name('services.bulk');
+        Route::post('services/{service}/toggle-status', [ServiceController::class, 'toggleStatus'])->name('services.toggle-status');
+        Route::post('services/{service}/restore', [ServiceController::class, 'restore'])->name('services.restore');
+        Route::post('services/{service}/duplicate', [ServiceController::class, 'duplicate'])->name('services.duplicate');
+        Route::resource('services', ServiceController::class)->except(['show']);
+
+        Route::post('services/{service}/faqs', [ServiceFaqController::class, 'store'])->name('services.faqs.store');
+        Route::put('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'update'])->name('service-faqs.update');
+        Route::delete('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'destroy'])->name('service-faqs.destroy');
+        Route::post('service-faqs/{serviceFaq}/toggle-status', [ServiceFaqController::class, 'toggleStatus'])->name('service-faqs.toggle-status');
+
         Route::post('project-categories/bulk', [ProjectCategoryController::class, 'bulk'])->name('project-categories.bulk');
-        Route::post('project-categories/{projectCategory}/toggle-status', [ProjectCategoryController::class, 'toggleStatus'])->name('project-categories.toggle-status');
-        Route::post('project-categories/{projectCategory}/restore', [ProjectCategoryController::class, 'restore'])->name('project-categories.restore');
         Route::resource('project-categories', ProjectCategoryController::class)->except(['show']);
 
         Route::post('projects/bulk', [ProjectController::class, 'bulk'])->name('projects.bulk');
@@ -134,6 +167,42 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('testimonials/{testimonial}/duplicate', [TestimonialController::class, 'duplicate'])->name('testimonials.duplicate');
         Route::resource('testimonials', TestimonialController::class)->except(['show']);
 
+        Route::post('client-brands/bulk', [ClientBrandController::class, 'bulk'])->name('client-brands.bulk');
+        Route::post('client-brands/{clientBrand}/toggle-status', [ClientBrandController::class, 'toggleStatus'])->name('client-brands.toggle-status');
+        Route::post('client-brands/{clientBrand}/restore', [ClientBrandController::class, 'restore'])->name('client-brands.restore');
+        Route::post('client-brands/{clientBrand}/duplicate', [ClientBrandController::class, 'duplicate'])->name('client-brands.duplicate');
+        Route::resource('client-brands', ClientBrandController::class)->except(['show']);
+
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+
+        // Team CMS - Admin
+        Route::post('team-departments/reorder', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'reorder'])->name('team-departments.reorder');
+        Route::post('team-departments/bulk', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'bulk'])->name('team-departments.bulk');
+        Route::post('team-departments/{team_department}/restore', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'restore'])->name('team-departments.restore');
+        Route::post('team-departments/{team_department}/toggle-status', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'toggleStatus'])->name('team-departments.toggle-status');
+        Route::resource('team-departments', \App\Http\Controllers\Admin\TeamDepartmentController::class)->except(['show']);
+
+        Route::post('team-members/reorder', [\App\Http\Controllers\Admin\TeamMemberController::class, 'reorder'])->name('team-members.reorder');
+        Route::post('team-members/bulk', [\App\Http\Controllers\Admin\TeamMemberController::class, 'bulk'])->name('team-members.bulk');
+        Route::post('team-members/{team_member}/restore', [\App\Http\Controllers\Admin\TeamMemberController::class, 'restore'])->name('team-members.restore');
+        Route::post('team-members/{team_member}/toggle-status', [\App\Http\Controllers\Admin\TeamMemberController::class, 'toggleStatus'])->name('team-members.toggle-status');
+        Route::post('team-members/{team_member}/duplicate', [\App\Http\Controllers\Admin\TeamMemberController::class, 'duplicate'])->name('team-members.duplicate');
+        Route::resource('team-members', \App\Http\Controllers\Admin\TeamMemberController::class)->except(['show']);
+
+        // Nested resource actions for social links, skills and certifications
+        Route::post('team-members/{team_member}/social-links', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'store'])->name('team-members.social-links.store');
+        Route::put('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'update'])->name('team-social-links.update');
+        Route::delete('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'destroy'])->name('team-social-links.destroy');
+        Route::post('team-social-links/reorder', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'reorder'])->name('team-social-links.reorder');
+
+        Route::post('team-members/{team_member}/skills', [\App\Http\Controllers\Admin\TeamSkillController::class, 'store'])->name('team-members.skills.store');
+        Route::put('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'update'])->name('team-skills.update');
+        Route::delete('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'destroy'])->name('team-skills.destroy');
+        Route::post('team-skills/reorder', [\App\Http\Controllers\Admin\TeamSkillController::class, 'reorder'])->name('team-skills.reorder');
+
+        Route::post('team-members/{team_member}/certifications', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'store'])->name('team-members.certifications.store');
+        Route::put('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'update'])->name('team-certifications.update');
+        Route::delete('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'destroy'])->name('team-certifications.destroy');
+        Route::post('team-certifications/reorder', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'reorder'])->name('team-certifications.reorder');
     });
 });

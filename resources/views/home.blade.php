@@ -183,6 +183,8 @@
       </div>
     </section>
 
+    @include('partials.homepage-client-brands')
+
     <section id="testimonials" class="py-5 section-bg">
       <div class="container">
         <div class="section-header text-center mb-5">
@@ -269,30 +271,18 @@
           <p>Answers to common questions about our luxury construction process.</p>
         </div>
         <div class="accordion" id="faqAccordion">
-          <div class="accordion-item glass-card">
-            <h2 class="accordion-header" id="faqOne">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">How long does a custom project take?</button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-              <div class="accordion-body">Project timelines depend on scope, but most residential and interior projects complete in 12-24 weeks with our premium process.</div>
+          @forelse($serviceFaqs as $index => $faq)
+            <div class="accordion-item glass-card">
+              <h2 class="accordion-header" id="faqHeading{{ $index }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $index }}">{{ $faq->question }}</button>
+              </h2>
+              <div id="collapse{{ $index }}" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">{{ $faq->answer }}</div>
+              </div>
             </div>
-          </div>
-          <div class="accordion-item glass-card">
-            <h2 class="accordion-header" id="faqTwo">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">Do you handle permits and approvals?</button>
-            </h2>
-            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-              <div class="accordion-body">Yes, our team coordinates necessary permits, approvals, and compliance so you can enjoy a smooth project experience.</div>
-            </div>
-          </div>
-          <div class="accordion-item glass-card">
-            <h2 class="accordion-header" id="faqThree">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">Can you renovate existing luxury spaces?</button>
-            </h2>
-            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-              <div class="accordion-body">Absolutely. We specialize in premium renovations that refresh and elevate existing homes and commercial interiors.</div>
-            </div>
-          </div>
+          @empty
+            <div class="alert alert-light">No FAQs are available at the moment.</div>
+          @endforelse
         </div>
       </div>
     </section>

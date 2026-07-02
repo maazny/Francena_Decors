@@ -17,7 +17,6 @@ class StoreServiceFaqRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'service_id' => ['required', 'exists:services,id'],
             'question' => ['required', 'string', 'max:255'],
             'answer' => ['nullable', 'string', 'max:3000'],
             'display_order' => ['required', 'integer', 'between:0,9999'],
