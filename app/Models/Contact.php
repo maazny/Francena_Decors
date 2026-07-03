@@ -8,6 +8,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use App\Enums\ContactSource;
+use App\Enums\ContactStatus;
+use App\Enums\ContactPriority;
+
 class Contact extends Model
 {
     use HasFactory, SoftDeletes;
@@ -32,6 +36,9 @@ class Contact extends Model
     ];
 
     protected $casts = [
+        'source' => ContactSource::class,
+        'status' => ContactStatus::class,
+        'priority' => ContactPriority::class,
         'follow_up_at' => 'datetime',
         'is_read' => 'boolean',
     ];

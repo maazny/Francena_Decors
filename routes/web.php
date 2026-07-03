@@ -68,6 +68,9 @@ Route::get('/careers/jobs', [\App\Http\Controllers\CareersController::class, 'jo
 Route::get('/careers/jobs/{slug}', [\App\Http\Controllers\CareersController::class, 'show'])->name('careers.show');
 Route::post('/careers/jobs/{slug}/apply', [\App\Http\Controllers\CareersController::class, 'apply'])->name('careers.apply');
 
+// Frontend Contact CMS (Module 23)
+Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
+
 // XML Sitemap Route
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
@@ -275,6 +278,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('applications/{job_application}/restore', [\App\Http\Controllers\Admin\JobApplicationController::class, 'restore'])->name('applications.restore');
             Route::post('applications/{job_application}/toggle-status', [\App\Http\Controllers\Admin\JobApplicationController::class, 'toggleStatus'])->name('applications.toggle-status');
             Route::resource('applications', \App\Http\Controllers\Admin\JobApplicationController::class)->except(['edit']);
+        });
+
+        // Contact CMS - Admin (Module 23)
+        Route::prefix('contacts')->name('contacts.')->group(function () {
+            // Categories
+            Route::post('categories/bulk-delete', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
+            Route::post('categories/bulk-status', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'bulkStatus'])->name('categories.bulk-status');
+            Route::post('categories/{category}/restore', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'restore'])->name('categories.restore');
+            Route::post('categories/{category}/toggle-status', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+            Route::resource('categories', \App\Http\Controllers\Admin\ContactCategoryController::class)->except(['show']);
+
+            // Inquiries (Contacts)
+            Route::post('inquiries/bulk-delete', [\App\Http\Controllers\Admin\ContactController::class, 'bulkDelete'])->name('inquiries.bulk-delete');
+            Route::post('inquiries/bulk-status', [\App\Http\Controllers\Admin\ContactController::class, 'bulkStatus'])->name('inquiries.bulk-status');
+            Route::post('inquiries/bulk-assign', [\App\Http\Controllers\Admin\ContactController::class, 'bulkAssign'])->name('inquiries.bulk-assign');
+            Route::post('inquiries/{contact}/restore', [\App\Http\Controllers\Admin\ContactController::class, 'restore'])->name('inquiries.restore');
+            Route::post('inquiries/{contact}/assign', [\App\Http\Controllers\Admin\ContactController::class, 'assign'])->name('inquiries.assign');
+            Route::post('inquiries/{contact}/status', [\App\Http\Controllers\Admin\ContactController::class, 'updateStatus'])->name('inquiries.status');
+            Route::post('inquiries/{contact}/follow-up', [\App\Http\Controllers\Admin\ContactController::class, 'setFollowUp'])->name('inquiries.follow-up');
+            Route::post('inquiries/{contact}/toggle-read', [\App\Http\Controllers\Admin\ContactController::class, 'toggleRead'])->name('inquiries.toggle-read');
+            
+            // Nested replies & notes
+            Route::post('inquiries/{contact}/reply', [\App\Http\Controllers\Admin\ContactReplyController::class, 'store'])->name('inquiries.reply');
+            Route::post('inquiries/{contact}/note', [\App\Http\Controllers\Admin\ContactNoteController::class, 'store'])->name('inquiries.note');
+
+            Route::resource('inquiries', \App\Http\Controllers\Admin\ContactController::class);
         });
     });
 });
