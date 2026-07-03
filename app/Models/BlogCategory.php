@@ -30,6 +30,13 @@ class BlogCategory extends Model
         'status' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => \App\Services\BlogService::clearCache());
+        static::deleted(fn () => \App\Services\BlogService::clearCache());
+        static::restored(fn () => \App\Services\BlogService::clearCache());
+    }
+
     public function posts(): HasMany
     {
         return $this->hasMany(BlogPost::class, 'category_id');

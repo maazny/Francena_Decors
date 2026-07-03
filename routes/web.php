@@ -62,6 +62,9 @@ Route::get('/services/{slug}', [ServicePageController::class, 'show'])->name('se
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog_post:slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
+// XML Sitemap Route
+Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
+
 Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('login', [LoginController::class, 'login'])->name('login.submit');
 

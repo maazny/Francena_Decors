@@ -70,11 +70,13 @@ class BlogController extends Controller
             ->withQueryString();
 
         // Sidebar categories with active post count
-        $sidebarCategories = BlogCategory::where('status', true)
-            ->withCount(['posts' => function ($q) {
-                $q->where('status', true)->where('published_at', '<=', now());
-            }])
-            ->get();
+        $sidebarCategories = \Illuminate\Support\Facades\Cache::remember('blog.categories', 3600, function () {
+            return BlogCategory::where('status', true)
+                ->withCount(['posts' => function ($q) {
+                    $q->where('status', true)->where('published_at', '<=', now());
+                }])
+                ->get();
+        });
 
         // Sidebar tags
         $sidebarTags = BlogTag::where('status', true)->get();
@@ -97,12 +99,14 @@ class BlogController extends Controller
         })->values();
 
         // Featured posts for sidebar/highlights
-        $featuredPosts = BlogPost::where('status', true)
-            ->where('published_at', '<=', now())
-            ->where('is_featured', true)
-            ->latest('published_at')
-            ->take(3)
-            ->get();
+        $featuredPosts = \Illuminate\Support\Facades\Cache::remember('blog.featured_posts', 3600, function () {
+            return BlogPost::where('status', true)
+                ->where('published_at', '<=', now())
+                ->where('is_featured', true)
+                ->latest('published_at')
+                ->take(3)
+                ->get();
+        });
 
         return view('blog.index', compact('posts', 'sidebarCategories', 'sidebarTags', 'sidebarArchives', 'featuredPosts'));
     }
@@ -131,26 +135,32 @@ class BlogController extends Controller
             ->get();
 
         // Popular posts (based on display_order/featured status)
-        $popularPosts = BlogPost::where('status', true)
-            ->where('published_at', '<=', now())
-            ->orderBy('is_featured', 'desc')
-            ->orderBy('display_order', 'asc')
-            ->take(5)
-            ->get();
+        $popularPosts = \Illuminate\Support\Facades\Cache::remember('blog.popular_posts', 3600, function () {
+            return BlogPost::where('status', true)
+                ->where('published_at', '<=', now())
+                ->orderBy('is_featured', 'desc')
+                ->orderBy('display_order', 'asc')
+                ->take(5)
+                ->get();
+        });
 
         // Latest posts
-        $latestPosts = BlogPost::where('status', true)
-            ->where('published_at', '<=', now())
-            ->latest('published_at')
-            ->take(5)
-            ->get();
+        $latestPosts = \Illuminate\Support\Facades\Cache::remember('blog.latest_posts', 3600, function () {
+            return BlogPost::where('status', true)
+                ->where('published_at', '<=', now())
+                ->latest('published_at')
+                ->take(5)
+                ->get();
+        });
 
         // Categories list for sidebar
-        $sidebarCategories = BlogCategory::where('status', true)
-            ->withCount(['posts' => function ($q) {
-                $q->where('status', true)->where('published_at', '<=', now());
-            }])
-            ->get();
+        $sidebarCategories = \Illuminate\Support\Facades\Cache::remember('blog.categories', 3600, function () {
+            return BlogCategory::where('status', true)
+                ->withCount(['posts' => function ($q) {
+                    $q->where('status', true)->where('published_at', '<=', now());
+                }])
+                ->get();
+        });
 
         return view('blog.show', compact('post', 'relatedPosts', 'popularPosts', 'latestPosts', 'sidebarCategories'));
     }

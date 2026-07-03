@@ -13,6 +13,36 @@
 @section('twitter_image', $post->featuredImage ? image_url($post->featuredImage) : ($post->bannerImage ? image_url($post->bannerImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80'))
 @section('canonical', route('blog.show', $post))
 
+@section('schema')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BlogPosting",
+  "headline": "{{ $post->title }}",
+  "description": "{{ Str::limit(strip_tags($post->excerpt ?: $post->content), 150) }}",
+  "image": "{{ $post->featuredImage ? image_url($post->featuredImage) : ($post->bannerImage ? image_url($post->bannerImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80') }}",
+  "datePublished": "{{ $post->published_at?->toIso8601String() ?? $post->created_at->toIso8601String() }}",
+  "dateModified": "{{ $post->updated_at->toIso8601String() }}",
+  "author": {
+    "@@type": "Person",
+    "name": "{{ $post->author?->name ?? 'Admin' }}"
+  },
+  "publisher": {
+    "@@type": "Organization",
+    "name": "Fancy Decorators",
+    "logo": {
+      "@@type": "ImageObject",
+      "url": "{{ url('/logo.png') }}"
+    }
+  },
+  "mainEntityOfPage": {
+    "@@type": "WebPage",
+    "@@id": "{{ route('blog.show', $post) }}"
+  }
+}
+</script>
+@endsection
+
 @section('content')
 <article class="py-5" style="background-color: var(--background-color, #ffffff); color: var(--text-color, #222222);">
   <div class="container">

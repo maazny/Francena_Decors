@@ -41,6 +41,13 @@ class BlogPost extends Model
         'published_at' => 'datetime',
     ];
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => \App\Services\BlogService::clearCache());
+        static::deleted(fn () => \App\Services\BlogService::clearCache());
+        static::restored(fn () => \App\Services\BlogService::clearCache());
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(BlogCategory::class, 'category_id');

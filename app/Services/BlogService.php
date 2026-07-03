@@ -30,4 +30,13 @@ class BlogService
         $words = str_word_count(strip_tags($content));
         return (int) max(1, round($words / 200));
     }
+
+    public static function clearCache(): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('blog.homepage_posts');
+        \Illuminate\Support\Facades\Cache::forget('blog.latest_posts');
+        \Illuminate\Support\Facades\Cache::forget('blog.featured_posts');
+        \Illuminate\Support\Facades\Cache::forget('blog.popular_posts');
+        \Illuminate\Support\Facades\Cache::forget('blog.categories');
+    }
 }

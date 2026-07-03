@@ -23,6 +23,13 @@ class BlogTag extends Model
         'status' => 'boolean',
     ];
 
+    protected static function booted(): void
+    {
+        static::saved(fn () => \App\Services\BlogService::clearCache());
+        static::deleted(fn () => \App\Services\BlogService::clearCache());
+        static::restored(fn () => \App\Services\BlogService::clearCache());
+    }
+
     public function posts(): BelongsToMany
     {
         return $this->belongsToMany(BlogPost::class, 'blog_post_tag');
