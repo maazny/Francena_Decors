@@ -42,4 +42,28 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    /**
+     * Get the contact inquiries assigned to the user.
+     */
+    public function contacts(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Contact::class, 'assigned_to');
+    }
+
+    /**
+     * Get the replies sent by the user.
+     */
+    public function contactReplies(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ContactReply::class, 'user_id');
+    }
+
+    /**
+     * Get the internal notes written by the user.
+     */
+    public function contactNotes(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(ContactNote::class, 'user_id');
+    }
 }

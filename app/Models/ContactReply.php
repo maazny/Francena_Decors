@@ -12,14 +12,9 @@ class ContactReply extends Model
 
     protected $fillable = [
         'contact_id',
-        'sender_id',
-        'subject',
+        'user_id',
         'message',
-        'sent_at',
-    ];
-
-    protected $casts = [
-        'sent_at' => 'datetime',
+        'attachment',
     ];
 
     /**
@@ -31,10 +26,18 @@ class ContactReply extends Model
     }
 
     /**
-     * Get the sender user of the reply.
+     * Get the user who sent the reply.
      */
-    public function sender(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'sender_id');
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Get the media record uploaded as an attachment.
+     */
+    public function attachmentMedia(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'attachment');
     }
 }

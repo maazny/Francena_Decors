@@ -17,12 +17,40 @@ class Contact extends Model
         'name',
         'email',
         'phone',
+        'company',
         'subject',
         'message',
+        'attachment',
+        'source',
         'status',
+        'priority',
+        'assigned_to',
+        'follow_up_at',
         'ip_address',
         'user_agent',
+        'is_read',
     ];
+
+    protected $casts = [
+        'follow_up_at' => 'datetime',
+        'is_read' => 'boolean',
+    ];
+
+    /**
+     * Get the media record uploaded as an attachment.
+     */
+    public function attachmentMedia(): BelongsTo
+    {
+        return $this->belongsTo(Media::class, 'attachment');
+    }
+
+    /**
+     * Get the user who is assigned to this contact.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
 
     /**
      * Get the category that owns the contact.
