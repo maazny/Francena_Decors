@@ -104,6 +104,29 @@
             <i class="fa-solid fa-file-pen fa-fw me-2"></i>
             Blog Posts
           </a>
+
+          <div class="mt-4 sidebar-header">Careers CMS</div>
+          <a href="{{ route('admin.careers.departments.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.departments.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-building fa-fw me-2"></i>
+            Job Departments
+          </a>
+          <a href="{{ route('admin.careers.categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.categories.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-list-check fa-fw me-2"></i>
+            Job Categories
+          </a>
+          <a href="{{ route('admin.careers.locations.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.locations.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-location-dot fa-fw me-2"></i>
+            Job Locations
+          </a>
+          <a href="{{ route('admin.careers.jobs.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.jobs.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-briefcase fa-fw me-2"></i>
+            Job Openings
+          </a>
+          <a href="{{ route('admin.careers.applications.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.applications.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-user-tie fa-fw me-2"></i>
+            Job Applications
+          </a>
+
           <a href="{{ route('admin.about-sections.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.about-sections.*') || Route::is('admin.company-values.*') || Route::is('admin.company-timelines.*') || Route::is('admin.why-choose-us.*') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-circle-info fa-fw me-2"></i>
             About CMS
@@ -218,4 +241,10 @@
           }
           if (row) row.remove();
         });
+      });
+    });
+  </script>
+  @yield('scripts')
+  @stack('scripts')
+</body>
 </html>
