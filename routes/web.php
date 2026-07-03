@@ -229,5 +229,46 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::put('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'update'])->name('team-certifications.update');
         Route::delete('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'destroy'])->name('team-certifications.destroy');
         Route::post('team-certifications/reorder', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'reorder'])->name('team-certifications.reorder');
+
+        // Careers CMS - Admin
+        Route::prefix('careers')->name('careers.')->group(function () {
+            // Job Departments
+            Route::post('departments/bulk-delete', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'bulkDelete'])->name('departments.bulk-delete');
+            Route::post('departments/bulk-status', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'bulkStatus'])->name('departments.bulk-status');
+            Route::post('departments/{job_department}/restore', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'restore'])->name('departments.restore');
+            Route::post('departments/{job_department}/toggle-status', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'toggleStatus'])->name('departments.toggle-status');
+            Route::resource('departments', \App\Http\Controllers\Admin\JobDepartmentController::class)->except(['show']);
+
+            // Job Categories
+            Route::post('categories/bulk-delete', [\App\Http\Controllers\Admin\JobCategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
+            Route::post('categories/bulk-status', [\App\Http\Controllers\Admin\JobCategoryController::class, 'bulkStatus'])->name('categories.bulk-status');
+            Route::post('categories/{job_category}/restore', [\App\Http\Controllers\Admin\JobCategoryController::class, 'restore'])->name('categories.restore');
+            Route::post('categories/{job_category}/toggle-status', [\App\Http\Controllers\Admin\JobCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+            Route::resource('categories', \App\Http\Controllers\Admin\JobCategoryController::class)->except(['show']);
+
+            // Job Locations
+            Route::post('locations/bulk-delete', [\App\Http\Controllers\Admin\JobLocationController::class, 'bulkDelete'])->name('locations.bulk-delete');
+            Route::post('locations/bulk-status', [\App\Http\Controllers\Admin\JobLocationController::class, 'bulkStatus'])->name('locations.bulk-status');
+            Route::post('locations/{job_location}/restore', [\App\Http\Controllers\Admin\JobLocationController::class, 'restore'])->name('locations.restore');
+            Route::post('locations/{job_location}/toggle-status', [\App\Http\Controllers\Admin\JobLocationController::class, 'toggleStatus'])->name('locations.toggle-status');
+            Route::resource('locations', \App\Http\Controllers\Admin\JobLocationController::class)->except(['show']);
+
+            // Job Openings
+            Route::post('jobs/bulk-delete', [\App\Http\Controllers\Admin\JobOpeningController::class, 'bulkDelete'])->name('jobs.bulk-delete');
+            Route::post('jobs/bulk-status', [\App\Http\Controllers\Admin\JobOpeningController::class, 'bulkStatus'])->name('jobs.bulk-status');
+            Route::post('jobs/{job}/restore', [\App\Http\Controllers\Admin\JobOpeningController::class, 'restore'])->name('jobs.restore');
+            Route::post('jobs/{job}/toggle-status', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleStatus'])->name('jobs.toggle-status');
+            Route::post('jobs/{job}/toggle-featured', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleFeatured'])->name('jobs.toggle-featured');
+            Route::post('jobs/{job}/toggle-homepage-featured', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleHomepageFeatured'])->name('jobs.toggle-homepage-featured');
+            Route::post('jobs/{job}/duplicate', [\App\Http\Controllers\Admin\JobOpeningController::class, 'duplicate'])->name('jobs.duplicate');
+            Route::resource('jobs', \App\Http\Controllers\Admin\JobOpeningController::class);
+
+            // Job Applications
+            Route::post('applications/bulk-delete', [\App\Http\Controllers\Admin\JobApplicationController::class, 'bulkDelete'])->name('applications.bulk-delete');
+            Route::post('applications/bulk-status', [\App\Http\Controllers\Admin\JobApplicationController::class, 'bulkStatus'])->name('applications.bulk-status');
+            Route::post('applications/{job_application}/restore', [\App\Http\Controllers\Admin\JobApplicationController::class, 'restore'])->name('applications.restore');
+            Route::post('applications/{job_application}/toggle-status', [\App\Http\Controllers\Admin\JobApplicationController::class, 'toggleStatus'])->name('applications.toggle-status');
+            Route::resource('applications', \App\Http\Controllers\Admin\JobApplicationController::class)->except(['edit']);
+        });
     });
 });
