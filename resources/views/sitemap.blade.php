@@ -26,6 +26,11 @@
         <priority>0.9</priority>
         <changefreq>daily</changefreq>
     </url>
+    <url>
+        <loc>{{ route('contact.index') }}</loc>
+        <priority>0.8</priority>
+        <changefreq>monthly</changefreq>
+    </url>
 
     <!-- Services Dynamic pages -->
     @foreach($services as $service)

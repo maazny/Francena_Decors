@@ -137,4 +137,14 @@ class ContactsModuleTest extends TestCase
 
         $this->assertEquals('contacted', $contact->fresh()->status->value);
     }
+
+    /**
+     * Test public contact page renders successfully.
+     */
+    public function test_public_user_can_view_contact_page(): void
+    {
+        $response = $this->get(route('contact.index'));
+        $response->assertOk();
+        $response->assertSee('Contact Us');
+    }
 }

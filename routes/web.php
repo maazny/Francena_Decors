@@ -69,6 +69,7 @@ Route::get('/careers/jobs/{slug}', [\App\Http\Controllers\CareersController::cla
 Route::post('/careers/jobs/{slug}/apply', [\App\Http\Controllers\CareersController::class, 'apply'])->name('careers.apply');
 
 // Frontend Contact CMS (Module 23)
+Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
 // XML Sitemap Route

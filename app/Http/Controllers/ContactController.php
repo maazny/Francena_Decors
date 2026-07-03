@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreContactRequest;
 use App\Services\ContactService;
+use App\Models\ContactCategory;
+use App\Models\SiteSetting;
 use Illuminate\Http\JsonResponse;
+use Illuminate\View\View;
 
 class ContactController extends Controller
 {
@@ -13,6 +16,16 @@ class ContactController extends Controller
     public function __construct(ContactService $contactService)
     {
         $this->contactService = $contactService;
+    }
+
+    /**
+     * Display the public contact page.
+     */
+    public function index(): View
+    {
+        $siteSetting = SiteSetting::first() ?? new SiteSetting();
+        $categories = ContactCategory::active()->ordered()->get();
+        return view('contact.index', compact('siteSetting', 'categories'));
     }
 
     /**
