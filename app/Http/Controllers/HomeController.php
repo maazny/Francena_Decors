@@ -18,6 +18,15 @@ class HomeController extends Controller
                     ->take(3)
                     ->get();
             }),
+            'homepageJobs' => \Illuminate\Support\Facades\Cache::remember('careers.homepage_jobs', 3600, function() {
+                return \App\Models\JobOpening::with('location')
+                    ->active()
+                    ->published()
+                    ->homepageFeatured()
+                    ->ordered()
+                    ->take(3)
+                    ->get();
+            }),
         ]);
     }
 }

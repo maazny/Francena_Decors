@@ -10,7 +10,9 @@ class JobCategoryService
     public function create(array $data): JobCategory
     {
         $data['slug'] = $data['slug'] ?? $this->generateUniqueSlug($data['name']);
-        return JobCategory::create($data);
+        $cat = JobCategory::create($data);
+        JobOpeningService::clearCache();
+        return $cat;
     }
 
     public function update(JobCategory $category, array $data): JobCategory
@@ -19,6 +21,7 @@ class JobCategoryService
             $data['slug'] = $this->generateUniqueSlug($data['name'], $category->id);
         }
         $category->update($data);
+        JobOpeningService::clearCache();
         return $category;
     }
 
@@ -27,23 +30,30 @@ class JobCategoryService
         $category->update([
             'status' => ! $category->status,
         ]);
+        JobOpeningService::clearCache();
         return $category;
     }
 
     public function restore(int $id): bool
     {
         $category = JobCategory::onlyTrashed()->findOrFail($id);
-        return $category->restore();
+        $res = $category->restore();
+        JobOpeningService::clearCache();
+        return $res;
     }
 
     public function bulkDelete(array $ids): int
     {
-        return JobCategory::whereIn('id', $ids)->delete();
+        $count = JobCategory::whereIn('id', $ids)->delete();
+        JobOpeningService::clearCache();
+        return $count;
     }
 
     public function bulkStatus(array $ids, bool $status): int
     {
-        return JobCategory::whereIn('id', $ids)->update(['status' => $status]);
+        $count = JobCategory::whereIn('id', $ids)->update(['status' => $status]);
+        JobOpeningService::clearCache();
+        return $count;
     }
 
     public function generateUniqueSlug(string $name, ?int $ignoreId = null): string

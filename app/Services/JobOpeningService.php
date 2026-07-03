@@ -8,12 +8,29 @@ use Illuminate\Support\Facades\DB;
 
 class JobOpeningService
 {
+    public static function clearCache(?string $slug = null): void
+    {
+        \Illuminate\Support\Facades\Cache::forget('careers.featured_jobs');
+        \Illuminate\Support\Facades\Cache::forget('careers.latest_jobs');
+        \Illuminate\Support\Facades\Cache::forget('careers.stats');
+        \Illuminate\Support\Facades\Cache::forget('careers.homepage_jobs');
+        \Illuminate\Support\Facades\Cache::forget('careers.filter_departments');
+        \Illuminate\Support\Facades\Cache::forget('careers.filter_categories');
+        \Illuminate\Support\Facades\Cache::forget('careers.filter_locations');
+        if ($slug) {
+            \Illuminate\Support\Facades\Cache::forget("careers.job.{$slug}");
+            \Illuminate\Support\Facades\Cache::forget("careers.job_related.{$slug}");
+        }
+    }
+
     public function create(array $data): JobOpening
     {
         return DB::transaction(function () use ($data) {
             $data['slug'] = $data['slug'] ?? $this->generateUniqueSlug($data['title']);
             $opening = JobOpening::create($data);
             $this->syncRelations($opening, $data);
+            self::clearCache();
+            \Illuminate\Support\Facades\Log::info("Job Created: [ID: {$opening->id}] {$opening->title}");
             return $opening;
         });
     }
@@ -21,11 +38,17 @@ class JobOpeningService
     public function update(JobOpening $opening, array $data): JobOpening
     {
         return DB::transaction(function () use ($opening, $data) {
+            $oldSlug = $opening->slug;
             if (isset($data['title']) && (!isset($data['slug']) || empty($data['slug']))) {
                 $data['slug'] = $this->generateUniqueSlug($data['title'], $opening->id);
             }
             $opening->update($data);
             $this->syncRelations($opening, $data);
+            self::clearCache($oldSlug);
+            if ($opening->slug !== $oldSlug) {
+                self::clearCache($opening->slug);
+            }
+            \Illuminate\Support\Facades\Log::info("Job Updated: [ID: {$opening->id}] {$opening->title}");
             return $opening;
         });
     }
@@ -60,6 +83,8 @@ class JobOpeningService
                 ]);
             }
 
+            self::clearCache();
+            \Illuminate\Support\Facades\Log::info("Job Created (Duplicated): [ID: {$newOpening->id}] {$newOpening->title}");
             return $newOpening;
         });
     }
@@ -69,6 +94,8 @@ class JobOpeningService
         $opening->update([
             'status' => ! $opening->status,
         ]);
+        self::clearCache($opening->slug);
+        \Illuminate\Support\Facades\Log::info("Job Updated (Status Toggled): [ID: {$opening->id}] {$opening->title}");
         return $opening;
     }
 
@@ -77,6 +104,8 @@ class JobOpeningService
         $opening->update([
             'featured' => ! $opening->featured,
         ]);
+        self::clearCache($opening->slug);
+        \Illuminate\Support\Facades\Log::info("Job Updated (Featured Toggled): [ID: {$opening->id}] {$opening->title}");
         return $opening;
     }
 
@@ -85,23 +114,40 @@ class JobOpeningService
         $opening->update([
             'homepage_featured' => ! $opening->homepage_featured,
         ]);
+        self::clearCache($opening->slug);
+        \Illuminate\Support\Facades\Log::info("Job Updated (Homepage Featured Toggled): [ID: {$opening->id}] {$opening->title}");
         return $opening;
     }
 
     public function restore(int $id): bool
     {
         $opening = JobOpening::onlyTrashed()->findOrFail($id);
-        return $opening->restore();
+        $res = $opening->restore();
+        self::clearCache($opening->slug);
+        \Illuminate\Support\Facades\Log::info("Job Restored: [ID: {$opening->id}] {$opening->title}");
+        return $res;
     }
 
     public function bulkDelete(array $ids): int
     {
-        return JobOpening::whereIn('id', $ids)->delete();
+        $openings = JobOpening::whereIn('id', $ids)->get();
+        $count = JobOpening::whereIn('id', $ids)->delete();
+        foreach ($openings as $opening) {
+            self::clearCache($opening->slug);
+            \Illuminate\Support\Facades\Log::info("Job Deleted (Bulk): [ID: {$opening->id}] {$opening->title}");
+        }
+        return $count;
     }
 
     public function bulkStatus(array $ids, bool $status): int
     {
-        return JobOpening::whereIn('id', $ids)->update(['status' => $status]);
+        $openings = JobOpening::whereIn('id', $ids)->get();
+        $count = JobOpening::whereIn('id', $ids)->update(['status' => $status]);
+        foreach ($openings as $opening) {
+            self::clearCache($opening->slug);
+            \Illuminate\Support\Facades\Log::info("Job Status Updated (Bulk): [ID: {$opening->id}] to " . ($status ? 'Active' : 'Inactive'));
+        }
+        return $count;
     }
 
     protected function syncRelations(JobOpening $opening, array $data): void

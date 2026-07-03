@@ -1,0 +1,34 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class ContactNote extends Model
+{
+    use HasFactory;
+
+    protected $fillable = [
+        'contact_id',
+        'user_id',
+        'note',
+    ];
+
+    /**
+     * Get the contact that owns the note.
+     */
+    public function contact(): BelongsTo
+    {
+        return $this->belongsTo(Contact::class, 'contact_id');
+    }
+
+    /**
+     * Get the user who wrote the note.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+}

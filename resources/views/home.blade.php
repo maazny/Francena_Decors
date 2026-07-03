@@ -213,6 +213,48 @@
             <button id="testNext" type="button" class="btn btn-outline-light btn-sm next-slide" aria-label="Next testimonial"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
           </div>
         </div>
+    <section id="careers" class="py-5 section-bg text-white">
+      <div class="container">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6" data-aos="fade-right">
+            <span class="section-label">Join Our Team</span>
+            <h2>Build Your Legacy With Us</h2>
+            <p class="opacity-75 my-4">At Fancy Decorators, we craft sophistication and luxury. We are constantly searching for talented designers, architects, and project managers to join our team.</p>
+            <div class="row g-3 mb-4">
+              <div class="col-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-circle-check text-primary" style="color: var(--button-background, #d4af5f) !important;"></i>
+                  <span>Elite Projects</span>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-flex align-items-center gap-2">
+                  <i class="fa-solid fa-circle-check text-primary" style="color: var(--button-background, #d4af5f) !important;"></i>
+                  <span>Competitive Salaries</span>
+                </div>
+              </div>
+            </div>
+            <a href="{{ route('careers.index') }}" class="btn btn-gold btn-lg rounded-pill px-4" style="background-color: var(--button-background, #d4af5f) !important; border-color: var(--button-background, #d4af5f) !important; color: #fff !important;">Careers Portal</a>
+          </div>
+          <div class="col-lg-6" data-aos="fade-left">
+            <div class="card border-0 glass-card p-4">
+              <h4 class="fw-bold mb-4 font-serif text-white">Featured Openings</h4>
+              <div class="d-flex flex-column gap-3">
+                @forelse($homepageJobs as $job)
+                  <div class="p-3 bg-dark rounded d-flex justify-content-between align-items-center">
+                    <div>
+                      <h6 class="fw-bold mb-1 text-white">{{ $job->title }}</h6>
+                      <span class="small text-muted"><i class="fa-solid fa-location-dot me-1"></i> {{ $job->location?->city }} • {{ $job->employment_type }}</span>
+                    </div>
+                    <a href="{{ route('careers.show', $job->slug) }}" class="btn btn-sm btn-outline-primary rounded-pill">Apply</a>
+                  </div>
+                @empty
+                  <p class="text-muted mb-0">No active positions available right now.</p>
+                @endforelse
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -66,4 +66,24 @@
             <changefreq>weekly</changefreq>
         </url>
     @endforeach
+
+    <!-- Careers Pages -->
+    <url>
+        <loc>{{ route('careers.index') }}</loc>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    <url>
+        <loc>{{ route('careers.jobs') }}</loc>
+        <priority>0.8</priority>
+        <changefreq>weekly</changefreq>
+    </url>
+    @foreach($jobs as $job)
+        <url>
+            <loc>{{ route('careers.show', $job->slug) }}</loc>
+            <lastmod>{{ $job->updated_at->toAtomString() }}</lastmod>
+            <priority>0.7</priority>
+            <changefreq>monthly</changefreq>
+        </url>
+    @endforeach
 </urlset>

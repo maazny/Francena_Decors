@@ -10,7 +10,9 @@ class JobLocationService
     public function create(array $data): JobLocation
     {
         $data['slug'] = $data['slug'] ?? $this->generateUniqueSlug($data['name']);
-        return JobLocation::create($data);
+        $loc = JobLocation::create($data);
+        JobOpeningService::clearCache();
+        return $loc;
     }
 
     public function update(JobLocation $location, array $data): JobLocation
@@ -19,6 +21,7 @@ class JobLocationService
             $data['slug'] = $this->generateUniqueSlug($data['name'], $location->id);
         }
         $location->update($data);
+        JobOpeningService::clearCache();
         return $location;
     }
 
@@ -27,23 +30,30 @@ class JobLocationService
         $location->update([
             'status' => ! $location->status,
         ]);
+        JobOpeningService::clearCache();
         return $location;
     }
 
     public function restore(int $id): bool
     {
         $location = JobLocation::onlyTrashed()->findOrFail($id);
-        return $location->restore();
+        $res = $location->restore();
+        JobOpeningService::clearCache();
+        return $res;
     }
 
     public function bulkDelete(array $ids): int
     {
-        return JobLocation::whereIn('id', $ids)->delete();
+        $count = JobLocation::whereIn('id', $ids)->delete();
+        JobOpeningService::clearCache();
+        return $count;
     }
 
     public function bulkStatus(array $ids, bool $status): int
     {
-        return JobLocation::whereIn('id', $ids)->update(['status' => $status]);
+        $count = JobLocation::whereIn('id', $ids)->update(['status' => $status]);
+        JobOpeningService::clearCache();
+        return $count;
     }
 
     public function generateUniqueSlug(string $name, ?int $ignoreId = null): string

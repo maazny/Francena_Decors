@@ -10,7 +10,9 @@ class JobDepartmentService
     public function create(array $data): JobDepartment
     {
         $data['slug'] = $data['slug'] ?? $this->generateUniqueSlug($data['name']);
-        return JobDepartment::create($data);
+        $dept = JobDepartment::create($data);
+        JobOpeningService::clearCache();
+        return $dept;
     }
 
     public function update(JobDepartment $department, array $data): JobDepartment
@@ -19,6 +21,7 @@ class JobDepartmentService
             $data['slug'] = $this->generateUniqueSlug($data['name'], $department->id);
         }
         $department->update($data);
+        JobOpeningService::clearCache();
         return $department;
     }
 
@@ -27,23 +30,30 @@ class JobDepartmentService
         $department->update([
             'status' => ! $department->status,
         ]);
+        JobOpeningService::clearCache();
         return $department;
     }
 
     public function restore(int $id): bool
     {
         $department = JobDepartment::onlyTrashed()->findOrFail($id);
-        return $department->restore();
+        $res = $department->restore();
+        JobOpeningService::clearCache();
+        return $res;
     }
 
     public function bulkDelete(array $ids): int
     {
-        return JobDepartment::whereIn('id', $ids)->delete();
+        $count = JobDepartment::whereIn('id', $ids)->delete();
+        JobOpeningService::clearCache();
+        return $count;
     }
 
     public function bulkStatus(array $ids, bool $status): int
     {
-        return JobDepartment::whereIn('id', $ids)->update(['status' => $status]);
+        $count = JobDepartment::whereIn('id', $ids)->update(['status' => $status]);
+        JobOpeningService::clearCache();
+        return $count;
     }
 
     public function generateUniqueSlug(string $name, ?int $ignoreId = null): string

@@ -32,7 +32,12 @@ class SitemapController extends Controller
             ->orderBy('updated_at', 'desc')
             ->get();
 
-        $content = view('sitemap', compact('posts', 'services', 'projects', 'teamMembers'))->render();
+        $jobs = \App\Models\JobOpening::active()
+            ->published()
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        $content = view('sitemap', compact('posts', 'services', 'projects', 'teamMembers', 'jobs'))->render();
 
         return response($content, 200, [
             'Content-Type' => 'application/xml'
