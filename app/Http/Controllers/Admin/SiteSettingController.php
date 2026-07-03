@@ -38,6 +38,7 @@ class SiteSettingController extends Controller
         }
 
         $siteSetting->update($data);
+        \Illuminate\Support\Facades\Cache::forget('contact.site_settings');
 
         return redirect()->route('admin.site-settings.edit')->with('success', 'Site settings were updated successfully.');
     }

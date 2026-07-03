@@ -23,8 +23,12 @@ class ContactController extends Controller
      */
     public function index(): View
     {
-        $siteSetting = SiteSetting::first() ?? new SiteSetting();
-        $categories = ContactCategory::active()->ordered()->get();
+        $siteSetting = \Illuminate\Support\Facades\Cache::remember('contact.site_settings', 3600, function () {
+            return SiteSetting::first() ?? new SiteSetting();
+        });
+        $categories = \Illuminate\Support\Facades\Cache::remember('contact.active_categories', 3600, function () {
+            return ContactCategory::active()->ordered()->get();
+        });
         return view('contact.index', compact('siteSetting', 'categories'));
     }
 

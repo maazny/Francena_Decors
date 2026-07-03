@@ -3,14 +3,22 @@
 namespace App\Services;
 
 use App\Models\ContactCategory;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class ContactCategoryService
 {
+    public static function clearCache(): void
+    {
+        Cache::forget('contact.active_categories');
+    }
+
     public function create(array $data): ContactCategory
     {
         $data['slug'] = $data['slug'] ?? $this->generateUniqueSlug($data['name']);
-        return ContactCategory::create($data);
+        $category = ContactCategory::create($data);
+        self::clearCache();
+        return $category;
     }
 
     public function update(ContactCategory $category, array $data): ContactCategory
@@ -19,6 +27,7 @@ class ContactCategoryService
             $data['slug'] = $this->generateUniqueSlug($data['name'], $category->id);
         }
         $category->update($data);
+        self::clearCache();
         return $category;
     }
 
@@ -27,23 +36,30 @@ class ContactCategoryService
         $category->update([
             'status' => ! $category->status,
         ]);
+        self::clearCache();
         return $category;
     }
 
     public function restore(int $id): bool
     {
         $category = ContactCategory::onlyTrashed()->findOrFail($id);
-        return $category->restore();
+        $res = $category->restore();
+        self::clearCache();
+        return $res;
     }
 
     public function bulkDelete(array $ids): int
     {
-        return ContactCategory::whereIn('id', $ids)->delete();
+        $res = ContactCategory::whereIn('id', $ids)->delete();
+        self::clearCache();
+        return $res;
     }
 
     public function bulkStatus(array $ids, bool $status): int
     {
-        return ContactCategory::whereIn('id', $ids)->update(['status' => $status]);
+        $res = ContactCategory::whereIn('id', $ids)->update(['status' => $status]);
+        self::clearCache();
+        return $res;
     }
 
     public function generateUniqueSlug(string $name, ?int $ignoreId = null): string

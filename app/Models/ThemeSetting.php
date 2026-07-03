@@ -92,6 +92,7 @@ class ThemeSetting extends Model
     public static function clearCache(): void
     {
         Cache::forget('theme_settings');
+        Cache::forget('contact.site_settings');
     }
 
     /**

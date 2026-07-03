@@ -46,13 +46,28 @@
   </div>
 </section>
 
+<!-- Company Introduction Intro Block -->
+<section class="py-5 bg-dark text-white text-center border-bottom border-secondary">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        <span class="text-warning small text-uppercase tracking-wider mb-2 d-block">Fancy Decorators Philosophy</span>
+        <h2 class="h3 fw-bold mb-3">Crafting Landmarks of Luxury & Distinction</h2>
+        <p class="text-white-50 lead fs-6">
+          At Fancy Decorators, we shape luxurious spaces and build landmarks of distinction. Whether you are seeking a custom residential build, a sophisticated commercial fit-out, or elite interior styling, our specialists are ready to consult on your vision.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Contact Section -->
 <section class="py-5 text-white bg-dark">
   <div class="container py-4">
     <div class="row g-5">
       <!-- Left Column: Contact Form -->
       <div class="col-lg-7">
-        <div class="glass-card p-4 p-md-5 rounded shadow-lg border border-secondary">
+        <div class="glass-card p-4 p-md-5 rounded shadow-lg border border-secondary" style="background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(10px);">
           <h2 class="h3 fw-bold mb-2">Send Us a Message</h2>
           <p class="text-white-50 mb-4">Complete the inquiry form below, and a lead coordinator will contact you within 24 hours.</p>
 
@@ -125,12 +140,12 @@
         </div>
       </div>
 
-      <!-- Right Column: Contact Details & Map -->
+      <!-- Right Column: Contact Details & Map & Branches -->
       <div class="col-lg-5">
         <div class="card bg-transparent border-0 h-100">
           <h2 class="h3 fw-bold mb-4">Contact Details</h2>
 
-          <div class="vstack gap-4 mb-5">
+          <div class="vstack gap-4 mb-4">
             <!-- Office Address -->
             <div class="d-flex align-items-start">
               <div class="text-warning me-3 fs-4">
@@ -154,8 +169,8 @@
               <div>
                 <h5 class="h6 fw-bold mb-1">Email Inquiries</h5>
                 <p class="text-white-50 mb-0">
-                  General: <a href="mailto:{{ $siteSetting->company_email ?: 'info@fancydecorators.com' }}" class="text-warning">{{ $siteSetting->company_email ?: 'info@fancydecorators.com' }}</a><br>
-                  Support: <a href="mailto:{{ $siteSetting->support_email ?: 'support@fancydecorators.com' }}" class="text-warning">{{ $siteSetting->support_email ?: 'support@fancydecorators.com' }}</a>
+                  General: <a href="mailto:{{ $siteSetting->company_email ?: 'info@fancydecorators.com' }}" class="text-warning text-decoration-none">{{ $siteSetting->company_email ?: 'info@fancydecorators.com' }}</a><br>
+                  Support: <a href="mailto:{{ $siteSetting->support_email ?: 'support@fancydecorators.com' }}" class="text-warning text-decoration-none">{{ $siteSetting->support_email ?: 'support@fancydecorators.com' }}</a>
                 </p>
               </div>
             </div>
@@ -168,8 +183,8 @@
               <div>
                 <h5 class="h6 fw-bold mb-1">Phone Numbers</h5>
                 <p class="text-white-50 mb-0">
-                  Office: <a href="tel:{{ $siteSetting->phone ?: '+1234567890' }}" class="text-warning">{{ $siteSetting->phone ?: '+1 234 567 890' }}</a><br>
-                  Mobile: <a href="tel:{{ $siteSetting->mobile ?: '+1987654321' }}" class="text-warning">{{ $siteSetting->mobile ?: '+1 987 654 321' }}</a>
+                  Office: <a href="tel:{{ $siteSetting->phone ?: '+1234567890' }}" class="text-warning text-decoration-none">{{ $siteSetting->phone ?: '+1 234 567 890' }}</a><br>
+                  Mobile: <a href="tel:{{ $siteSetting->mobile ?: '+1987654321' }}" class="text-warning text-decoration-none">{{ $siteSetting->mobile ?: '+1 987 654 321' }}</a>
                 </p>
               </div>
             </div>
@@ -188,14 +203,48 @@
             </div>
           </div>
 
+          <!-- Emergency Contact box -->
+          <div class="p-3 mb-4 rounded border border-warning" style="background: rgba(212, 175, 95, 0.05);">
+            <div class="d-flex align-items-center mb-1">
+              <i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>
+              <h6 class="mb-0 fw-bold text-warning">Urgent Consultation Hotline</h6>
+            </div>
+            <p class="small text-white-50 mb-0">
+              Need immediate design support? Call our priority line: <a href="tel:+1800555GOLD" class="text-warning fw-bold text-decoration-none">+1 800 555-GOLD</a> (Active 24/7 for premium clients).
+            </p>
+          </div>
+
+          <!-- Office Locations (Future-ready) -->
+          <div class="mb-4">
+            <h5 class="h6 fw-bold mb-2">Our Branch Network</h5>
+            <ul class="list-unstyled text-white-50 small mb-0">
+              <li class="mb-1"><i class="bi bi-circle-fill text-warning me-2" style="font-size: 0.5rem;"></i><strong>Headquarters & Showroom</strong>: 25 Royal Avenue, Downtown City</li>
+              <li><i class="bi bi-circle-fill text-warning me-2" style="font-size: 0.5rem;"></i><strong>Design Studio</strong>: 100 Creative Plaza, Uptown District</li>
+            </ul>
+          </div>
+
           <!-- Dynamic Google Maps iframe embed -->
           @if($siteSetting->google_map)
-            <div class="rounded overflow-hidden shadow-lg border border-secondary flex-grow-1" style="min-height: 250px;">
+            <div class="rounded overflow-hidden shadow-lg border border-secondary" style="min-height: 220px;">
               {!! $siteSetting->google_map !!}
             </div>
           @endif
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- Call-to-Action Section -->
+<section class="py-5 bg-dark border-top border-secondary text-white text-center">
+  <div class="container py-3">
+    <h2 class="h3 fw-bold mb-3">Let's Build Something Extraordinary Together</h2>
+    <p class="text-white-50 mb-4 justify-content-center d-flex mx-auto col-md-8">
+      Ready to start your upscale residential or commercial project? Browse our portfolio to see how we bring elite concepts to life.
+    </p>
+    <div class="d-flex gap-3 justify-content-center">
+      <a href="{{ route('projects.index') }}" class="btn btn-warning text-dark fw-bold px-4 py-2">Explore Featured Projects</a>
+      <a href="{{ route('services.index') }}" class="btn btn-outline-light px-4 py-2">Our Services</a>
     </div>
   </div>
 </section>
