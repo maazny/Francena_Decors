@@ -9,18 +9,19 @@
   <meta name="robots" content="index, follow" />
   <title>@yield('title', $aboutSeo?->meta_title ?: 'Fancy Decorators | Luxury Construction Company')</title>
   <meta name="theme-color" content="#d4af5f" />
-  <meta property="og:title" content="Fancy Decorators | Luxury Construction Company" />
-  <meta property="og:description" content="Premium construction and design services for luxury residential, commercial, and interior projects. Turn your vision into award-worthy spaces." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://www.fancydecorators.com/" />
+  <meta property="og:title" content="@yield('og_title', 'Fancy Decorators | Luxury Construction Company')" />
+  <meta property="og:description" content="@yield('og_description', 'Premium construction and design services for luxury residential, commercial, and interior projects. Turn your vision into award-worthy spaces.')" />
+  <meta property="og:type" content="@yield('og_type', 'website')" />
+  <meta property="og:url" content="@yield('og_url', request()->url())" />
   <meta property="og:image" content="@yield('og_image', $aboutSeo?->ogImage ? image_url($aboutSeo->ogImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')" />
   <meta property="og:site_name" content="Fancy Decorators" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Fancy Decorators | Luxury Construction Company" />
-  <meta name="twitter:description" content="Premium construction and design services for luxury residential, commercial, and interior projects." />
+  <meta name="twitter:title" content="@yield('twitter_title', 'Fancy Decorators | Luxury Construction Company')" />
+  <meta name="twitter:description" content="@yield('twitter_description', 'Premium construction and design services for luxury residential, commercial, and interior projects.')" />
   <meta name="twitter:image" content="@yield('twitter_image', $aboutSeo?->ogImage ? image_url($aboutSeo->ogImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')" />
-  <meta name="twitter:site" content="@@FancyDecorators" />
-  <link rel="canonical" href="https://www.fancydecorators.com/" />
+  <meta name="twitter:site" content="@FancyDecorators" />
+  <link rel="canonical" href="@yield('canonical', request()->url())" />
+  @yield('schema')
   <script type="application/ld+json">
   {
     "@@context": "https://schema.org",

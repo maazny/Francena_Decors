@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('title', $testimonial->seo_title ?? $testimonial->client_name . ' Testimonial')
+@section('meta_description', $testimonial->seo_description ?: $testimonial->testimonial)
+@section('meta_keywords', $testimonial->seo_keywords)
+@section('og_title', $testimonial->seo_title ?: $testimonial->client_name . ' Testimonial')
+@section('og_description', $testimonial->seo_description ?: $testimonial->testimonial)
+@section('og_type', 'website')
+@section('og_url', route('testimonials.show', $testimonial))
+@section('og_image', $testimonial->clientPhoto ? image_url($testimonial->clientPhoto) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('twitter_title', $testimonial->seo_title ?: $testimonial->client_name . ' Testimonial')
+@section('twitter_description', $testimonial->seo_description ?: $testimonial->testimonial)
+@section('twitter_image', $testimonial->clientPhoto ? image_url($testimonial->clientPhoto) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('canonical', route('testimonials.show', $testimonial))
 
 @section('content')
 <div class="page-header py-5 bg-light">

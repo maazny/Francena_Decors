@@ -3,6 +3,15 @@
 @section('title', $post->seo_title ?: $post->title)
 @section('meta_description', $post->seo_description ?: $post->excerpt)
 @section('meta_keywords', $post->seo_keywords)
+@section('og_title', $post->seo_title ?: $post->title)
+@section('og_description', $post->seo_description ?: $post->excerpt)
+@section('og_type', 'article')
+@section('og_url', route('blog.show', $post))
+@section('og_image', $post->featuredImage ? image_url($post->featuredImage) : ($post->bannerImage ? image_url($post->bannerImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80'))
+@section('twitter_title', $post->seo_title ?: $post->title)
+@section('twitter_description', $post->seo_description ?: $post->excerpt)
+@section('twitter_image', $post->featuredImage ? image_url($post->featuredImage) : ($post->bannerImage ? image_url($post->bannerImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80'))
+@section('canonical', route('blog.show', $post))
 
 @section('content')
 <article class="py-5" style="background-color: var(--background-color, #ffffff); color: var(--text-color, #222222);">

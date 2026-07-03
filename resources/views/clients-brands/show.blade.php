@@ -1,6 +1,17 @@
 @extends('layouts.app')
 
 @section('title', $brand->name)
+@section('meta_description', $brand->description)
+@section('og_title', $brand->name)
+@section('og_description', $brand->description)
+@section('og_type', 'website')
+@section('og_url', route('clients-brands.show', $brand))
+@section('og_image', $brand->logo ? image_url($brand->logo) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('twitter_title', $brand->name)
+@section('twitter_description', $brand->description)
+@section('twitter_image', $brand->logo ? image_url($brand->logo) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('canonical', route('clients-brands.show', $brand))
+
 @section('content')
 <div class="container py-5">
   <div class="row g-4 align-items-center">

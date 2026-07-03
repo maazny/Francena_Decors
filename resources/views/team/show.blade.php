@@ -1,5 +1,18 @@
 @extends('layouts.app')
 
+@section('title', $teamMember->seo_title ?: $teamMember->full_name)
+@section('meta_description', $teamMember->seo_description ?: $teamMember->designation)
+@section('meta_keywords', $teamMember->seo_keywords)
+@section('og_title', $teamMember->seo_title ?: $teamMember->full_name)
+@section('og_description', $teamMember->seo_description ?: $teamMember->designation)
+@section('og_type', 'profile')
+@section('og_url', route('team.show', $teamMember))
+@section('og_image', $teamMember->profilePhoto ? image_url($teamMember->profilePhoto) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('twitter_title', $teamMember->seo_title ?: $teamMember->full_name)
+@section('twitter_description', $teamMember->seo_description ?: $teamMember->designation)
+@section('twitter_image', $teamMember->profilePhoto ? image_url($teamMember->profilePhoto) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('canonical', route('team.show', $teamMember))
+
 @section('content')
 <div class="container">
     <div class="row">

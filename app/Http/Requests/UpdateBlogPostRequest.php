@@ -36,6 +36,10 @@ class UpdateBlogPostRequest extends FormRequest
             'seo_title' => ['nullable', 'string', 'max:191'],
             'seo_description' => ['nullable', 'string', 'max:255'],
             'seo_keywords' => ['nullable', 'string', 'max:255'],
+            'gallery_media_ids' => ['nullable', 'array'],
+            'gallery_media_ids.*' => ['integer', 'exists:media,id'],
+            'gallery_captions' => ['nullable', 'array'],
+            'gallery_captions.*' => ['nullable', 'string', 'max:191'],
         ];
     }
 }

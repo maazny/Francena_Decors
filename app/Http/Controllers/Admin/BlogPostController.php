@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateBlogPostRequest;
 use App\Models\BlogPost;
 use App\Models\BlogCategory;
 use App\Models\BlogTag;
+use App\Models\BlogGallery;
 use App\Models\Media;
 use App\Models\User;
 use App\Services\BlogService;
@@ -66,6 +67,8 @@ class BlogPostController extends Controller
 
         $post = BlogPost::create($data);
 
+        $this->syncRelatedData($post, $request);
+
         if (! empty($data['tags'])) {
             $post->tags()->sync($data['tags']);
         }
@@ -100,6 +103,8 @@ class BlogPostController extends Controller
         $blog_post->update($data);
 
         $blog_post->tags()->sync($data['tags'] ?? []);
+
+        $this->syncRelatedData($blog_post, $request);
 
         return redirect()->route('admin.blog-posts.edit', $blog_post)->with('success', 'Post updated successfully.');
     }
@@ -167,5 +172,21 @@ class BlogPostController extends Controller
         return view('admin.blog-posts.preview', [
             'post' => $blog_post->load(['category', 'tags', 'galleries.media', 'featuredImage', 'bannerImage']),
         ]);
+    }
+
+    private function syncRelatedData(BlogPost $post, Request $request): void
+    {
+        $post->galleries()->delete();
+
+        $galleryIds = (array) $request->input('gallery_media_ids', []);
+        foreach ($galleryIds as $index => $mediaId) {
+            BlogGallery::create([
+                'blog_post_id' => $post->id,
+                'media_id' => $mediaId,
+                'caption' => $request->input('gallery_captions.'.$index),
+                'display_order' => $index + 1,
+                'status' => true,
+            ]);
+        }
     }
 }

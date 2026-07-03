@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
-@section('title', $project->title)
+@section('title', $project->seo_title ?: $project->title)
+@section('meta_description', $project->seo_description ?: $project->short_description)
+@section('meta_keywords', $project->seo_keywords)
+@section('og_title', $project->seo_title ?: $project->title)
+@section('og_description', $project->seo_description ?: $project->short_description)
+@section('og_type', 'website')
+@section('og_url', route('projects.show', $project))
+@section('og_image', $project->coverImage ? image_url($project->coverImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('twitter_title', $project->seo_title ?: $project->title)
+@section('twitter_description', $project->seo_description ?: $project->short_description)
+@section('twitter_image', $project->coverImage ? image_url($project->coverImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('canonical', route('projects.show', $project))
+
 @section('content')
 <div class="container py-5">
   <div class="row g-4">
