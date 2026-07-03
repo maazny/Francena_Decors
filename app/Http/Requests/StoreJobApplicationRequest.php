@@ -11,6 +11,19 @@ class StoreJobApplicationRequest extends FormRequest
         return true; // Candidates can submit applications publicly
     }
 
+    protected function prepareForValidation()
+    {
+        $slug = $this->route('slug');
+        if ($slug) {
+            $job = \App\Models\JobOpening::where('slug', $slug)->first();
+            if ($job) {
+                $this->merge([
+                    'job_opening_id' => $job->id,
+                ]);
+            }
+        }
+    }
+
     public function rules(): array
     {
         return [

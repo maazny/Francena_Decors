@@ -16,6 +16,7 @@
       <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#services' : '/#services' }}">Services</a></li>
       <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#projects' : '/#projects' }}">Projects</a></li>
       <li class="nav-item"><a class="nav-link {{ request()->routeIs('blog.*') ? 'active' : '' }}" href="{{ route('blog.index') }}">Blog</a></li>
+      <li class="nav-item"><a class="nav-link {{ request()->routeIs('careers.*') ? 'active' : '' }}" href="{{ route('careers.index') }}">Careers</a></li>
       <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#testimonials' : '/#testimonials' }}">Testimonials</a></li>
       <li class="nav-item"><a class="nav-link" href="{{ request()->is('/') ? '#contact' : '/#contact' }}">Contact</a></li>
       <li class="nav-item ms-3">

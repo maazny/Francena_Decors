@@ -62,6 +62,12 @@ Route::get('/services/{slug}', [ServicePageController::class, 'show'])->name('se
 Route::get('/blog', [\App\Http\Controllers\BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog_post:slug}', [\App\Http\Controllers\BlogController::class, 'show'])->name('blog.show');
 
+// Frontend Careers pages
+Route::get('/careers', [\App\Http\Controllers\CareersController::class, 'index'])->name('careers.index');
+Route::get('/careers/jobs', [\App\Http\Controllers\CareersController::class, 'jobs'])->name('careers.jobs');
+Route::get('/careers/jobs/{slug}', [\App\Http\Controllers\CareersController::class, 'show'])->name('careers.show');
+Route::post('/careers/jobs/{slug}/apply', [\App\Http\Controllers\CareersController::class, 'apply'])->name('careers.apply');
+
 // XML Sitemap Route
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
