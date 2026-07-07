@@ -127,6 +127,24 @@
             Job Applications
           </a>
 
+          <div class="mt-4 sidebar-header">Newsletter CMS</div>
+          <a href="{{ route('admin.newsletter.campaigns.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.campaigns.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-paper-plane fa-fw me-2"></i>
+            Campaigns
+          </a>
+          <a href="{{ route('admin.newsletter.templates.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.templates.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-envelope-open-text fa-fw me-2"></i>
+            Templates
+          </a>
+          <a href="{{ route('admin.newsletter.groups.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.groups.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-users-rectangle fa-fw me-2"></i>
+            Groups / Segments
+          </a>
+          <a href="{{ route('admin.newsletter.subscribers.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.subscribers.*') ? 'active' : 'text-white' }}">
+            <i class="fa-solid fa-users fa-fw me-2"></i>
+            Subscribers
+          </a>
+
           <a href="{{ route('admin.about-sections.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.about-sections.*') || Route::is('admin.company-values.*') || Route::is('admin.company-timelines.*') || Route::is('admin.why-choose-us.*') ? 'active' : 'text-white' }}">
             <i class="fa-solid fa-circle-info fa-fw me-2"></i>
             About CMS

@@ -72,6 +72,11 @@ Route::post('/careers/jobs/{slug}/apply', [\App\Http\Controllers\CareersControll
 Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index'])->name('contact.index');
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
+// Frontend Newsletter CMS
+Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
+Route::get('/newsletter/verify/{token}', [\App\Http\Controllers\NewsletterController::class, 'verify'])->name('newsletter.verify');
+Route::get('/newsletter/unsubscribe/{token}', [\App\Http\Controllers\NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+
 // XML Sitemap Route
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');
 
@@ -305,6 +310,31 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('inquiries/{contact}/note', [\App\Http\Controllers\Admin\ContactNoteController::class, 'store'])->name('inquiries.note');
 
             Route::resource('inquiries', \App\Http\Controllers\Admin\ContactController::class);
+        });
+
+        // Newsletter CMS - Admin
+        Route::prefix('newsletter')->name('newsletter.')->group(function () {
+            // Subscribers
+            Route::post('subscribers/bulk-delete', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'bulkDelete'])->name('subscribers.bulk-delete');
+            Route::post('subscribers/bulk-status', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'bulkStatus'])->name('subscribers.bulk-status');
+            Route::post('subscribers/{subscriber}/toggle-status', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'toggleStatus'])->name('subscribers.toggle-status');
+            Route::resource('subscribers', \App\Http\Controllers\Admin\NewsletterSubscriberController::class);
+
+            // Groups
+            Route::post('groups/bulk-delete', [\App\Http\Controllers\Admin\NewsletterGroupController::class, 'bulkDelete'])->name('groups.bulk-delete');
+            Route::post('groups/{group}/toggle-status', [\App\Http\Controllers\Admin\NewsletterGroupController::class, 'toggleStatus'])->name('groups.toggle-status');
+            Route::resource('groups', \App\Http\Controllers\Admin\NewsletterGroupController::class);
+
+            // Templates
+            Route::post('templates/bulk-delete', [\App\Http\Controllers\Admin\NewsletterCampaignTemplateController::class, 'bulkDelete'])->name('templates.bulk-delete');
+            Route::resource('templates', \App\Http\Controllers\Admin\NewsletterCampaignTemplateController::class);
+
+            // Campaigns
+            Route::post('campaigns/bulk-delete', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'bulkDelete'])->name('campaigns.bulk-delete');
+            Route::post('campaigns/{campaign}/send', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'send'])->name('campaigns.send');
+            Route::get('campaigns/{campaign}/preview', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'preview'])->name('campaigns.preview');
+            Route::get('campaigns/{campaign}/logs', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'logs'])->name('campaigns.logs');
+            Route::resource('campaigns', \App\Http\Controllers\Admin\NewsletterCampaignController::class);
         });
     });
 });

@@ -37,12 +37,61 @@
               <p class="mb-0">{{ $footer->newsletter_description }}</p>
             @endif
           </div>
-          <form class="footer-newsletter-form" action="#" method="GET">
+          <form class="footer-newsletter-form" action="{{ route('newsletter.subscribe') }}" method="POST" id="footer-newsletter-form">
+            @csrf
             <label class="visually-hidden" for="footer_newsletter_email">Email address</label>
-            <input id="footer_newsletter_email" type="email" class="form-control" placeholder="{{ $footer->newsletter_placeholder ?: 'Email address' }}">
+            <input id="footer_newsletter_email" type="email" name="email" class="form-control" placeholder="{{ $footer->newsletter_placeholder ?: 'Email address' }}" required>
             <button type="submit" class="btn btn-primary">{{ $footer->newsletter_button_text ?: 'Subscribe' }}</button>
           </form>
+          <div id="newsletter-message" class="mt-2 d-none fw-semibold"></div>
         </div>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              const form = document.getElementById('footer-newsletter-form');
+              const msgDiv = document.getElementById('newsletter-message');
+              
+              if (form) {
+                  form.addEventListener('submit', function(e) {
+                      e.preventDefault();
+                      
+                      msgDiv.className = 'mt-2 text-info small fw-semibold';
+                      msgDiv.textContent = 'Subscribing...';
+                      msgDiv.classList.remove('d-none');
+                      
+                      const formData = new FormData(form);
+                      
+                      fetch(form.action, {
+                          method: 'POST',
+                          headers: {
+                              'X-Requested-With': 'XMLHttpRequest',
+                              'Accept': 'application/json'
+                          },
+                          body: formData
+                      })
+                      .then(response => response.json().then(data => ({ status: response.status, body: data })))
+                      .then(result => {
+                          if (result.status === 200 && result.body.success) {
+                              msgDiv.className = 'mt-2 text-success small fw-semibold';
+                              msgDiv.textContent = result.body.message;
+                              form.reset();
+                          } else {
+                              msgDiv.className = 'mt-2 text-danger small fw-semibold';
+                              if (result.body.errors && result.body.errors.email) {
+                                  msgDiv.textContent = result.body.errors.email[0];
+                              } else {
+                                  msgDiv.textContent = result.body.message || 'An error occurred. Please try again.';
+                              }
+                          }
+                      })
+                      .catch(error => {
+                          msgDiv.className = 'mt-2 text-danger small fw-semibold';
+                          msgDiv.textContent = 'Connection error. Please try again later.';
+                      });
+                  });
+              }
+          });
+        </script>
       @endif
 
       <div class="row gy-4">
