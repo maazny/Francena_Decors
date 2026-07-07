@@ -76,6 +76,9 @@ Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'submit
 Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/newsletter/verify/{token}', [\App\Http\Controllers\NewsletterController::class, 'verify'])->name('newsletter.verify');
 Route::get('/newsletter/unsubscribe/{token}', [\App\Http\Controllers\NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');
+Route::post('/newsletter/unsubscribe/{token}', [\App\Http\Controllers\NewsletterController::class, 'postUnsubscribe'])->name('newsletter.post-unsubscribe');
+Route::get('/newsletter/preferences/{token}', [\App\Http\Controllers\NewsletterController::class, 'preferences'])->name('newsletter.preferences')->middleware('signed');
+Route::post('/newsletter/preferences/{token}', [\App\Http\Controllers\NewsletterController::class, 'updatePreferences'])->name('newsletter.update-preferences')->middleware('signed');
 
 // XML Sitemap Route
 Route::get('/sitemap.xml', [\App\Http\Controllers\SitemapController::class, 'index'])->name('sitemap');

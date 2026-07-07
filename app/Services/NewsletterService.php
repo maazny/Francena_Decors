@@ -25,6 +25,7 @@ class NewsletterService
     public function subscribe(array $data): NewsletterSubscriber
     {
         $email = $data['email'];
+        $doubleOptIn = config('newsletter.double_opt_in', true);
         
         $subscriber = NewsletterSubscriber::withTrashed()->where('email', $email)->first();
 
@@ -45,25 +46,30 @@ class NewsletterService
             $subscriber->update([
                 'name' => $data['name'] ?? $subscriber->name,
                 'phone' => $data['phone'] ?? $subscriber->phone,
-                'status' => SubscriptionStatus::PENDING,
-                'verification_status' => false,
-                'verification_token' => $verificationToken,
+                'preferred_language' => $data['preferred_language'] ?? $subscriber->preferred_language,
+                'status' => $doubleOptIn ? SubscriptionStatus::PENDING : SubscriptionStatus::ACTIVE,
+                'verification_status' => !$doubleOptIn,
+                'verification_token' => $doubleOptIn ? $verificationToken : null,
                 'unsubscribe_token' => $unsubscribeToken,
+                'verified_at' => !$doubleOptIn ? Carbon::now() : null,
+                'subscribed_at' => !$doubleOptIn ? Carbon::now() : null,
             ]);
         } else {
             $subscriber = NewsletterSubscriber::create([
                 'name' => $data['name'] ?? null,
                 'email' => $email,
                 'phone' => $data['phone'] ?? null,
-                'status' => SubscriptionStatus::PENDING,
+                'status' => $doubleOptIn ? SubscriptionStatus::PENDING : SubscriptionStatus::ACTIVE,
                 'source' => $data['source'] ?? SubscriberSource::WEBSITE,
-                'verification_status' => false,
-                'verification_token' => $verificationToken,
+                'verification_status' => !$doubleOptIn,
+                'verification_token' => $doubleOptIn ? $verificationToken : null,
                 'unsubscribe_token' => $unsubscribeToken,
                 'ip_address' => request()->ip(),
                 'user_agent' => request()->userAgent(),
                 'preferred_language' => $data['preferred_language'] ?? 'en',
                 'tags' => $data['tags'] ?? [],
+                'verified_at' => !$doubleOptIn ? Carbon::now() : null,
+                'subscribed_at' => !$doubleOptIn ? Carbon::now() : null,
             ]);
         }
 
@@ -72,11 +78,13 @@ class NewsletterService
             $subscriber->groups()->sync($data['groups']);
         }
 
-        // Send verification email
-        try {
-            Mail::to($subscriber->email)->send(new VerifySubscriptionMail($subscriber));
-        } catch (\Exception $e) {
-            Log::error("Failed to send newsletter verification email to {$subscriber->email}: " . $e->getMessage());
+        if ($doubleOptIn) {
+            // Send verification email
+            try {
+                Mail::to($subscriber->email)->send(new VerifySubscriptionMail($subscriber));
+            } catch (\Exception $e) {
+                Log::error("Failed to send newsletter verification email to {$subscriber->email}: " . $e->getMessage());
+            }
         }
 
         return $subscriber;
@@ -111,16 +119,73 @@ class NewsletterService
      */
     public function unsubscribe(string $token): bool
     {
+        return $this->unsubscribeWithReason($token);
+    }
+
+    /**
+     * Unsubscribe a user using their unsubscribe token with an optional feedback reason.
+     */
+    public function unsubscribeWithReason(string $token, ?string $reason = null): bool
+    {
         $subscriber = NewsletterSubscriber::where('unsubscribe_token', $token)->first();
 
         if (!$subscriber) {
             return false;
         }
 
+        $currentTags = $subscriber->tags ?: [];
+        if ($reason) {
+            $currentTags['unsubscribe_reason'] = $reason;
+        }
+
         $subscriber->update([
             'status' => SubscriptionStatus::UNSUBSCRIBED,
             'unsubscribed_at' => Carbon::now(),
+            'tags' => $currentTags,
         ]);
+
+        return true;
+    }
+
+    /**
+     * Update subscriber preferences.
+     */
+    public function updatePreferences(NewsletterSubscriber $subscriber, array $data): bool
+    {
+        $updateData = [
+            'name' => $data['name'] ?? $subscriber->name,
+            'preferred_language' => $data['preferred_language'] ?? $subscriber->preferred_language,
+        ];
+
+        // Check email change
+        if (isset($data['email']) && $data['email'] !== $subscriber->email) {
+            // Validate unique
+            $exists = NewsletterSubscriber::where('email', $data['email'])
+                ->where('id', '!=', $subscriber->id)
+                ->exists();
+
+            if (!$exists) {
+                $updateData['email'] = $data['email'];
+            }
+        }
+
+        // Keep or change status
+        if (isset($data['status']) && $data['status'] === 'unsubscribe') {
+            $updateData['status'] = SubscriptionStatus::UNSUBSCRIBED;
+            $updateData['unsubscribed_at'] = Carbon::now();
+        } elseif ($subscriber->status === SubscriptionStatus::UNSUBSCRIBED) {
+            $updateData['status'] = SubscriptionStatus::ACTIVE;
+            $updateData['subscribed_at'] = Carbon::now();
+        }
+
+        $subscriber->update($updateData);
+
+        // Manage group segment subscriptions
+        if (isset($data['groups']) && is_array($data['groups'])) {
+            $subscriber->groups()->sync($data['groups']);
+        } else {
+            $subscriber->groups()->detach();
+        }
 
         return true;
     }
