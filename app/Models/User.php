@@ -66,4 +66,60 @@ class User extends Authenticatable
     {
         return $this->hasMany(ContactNote::class, 'user_id');
     }
+
+    /**
+     * Map many roles assigned to the user.
+     */
+    public function roles(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Role::class, 'user_role');
+    }
+
+    /**
+     * Map many direct overriding permissions assigned to the user.
+     */
+    public function directPermissions(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'user_permission');
+    }
+
+    /**
+     * Check if user holds specific role identifier keys.
+     */
+    public function hasRole(string|array $role): bool
+    {
+        if (is_array($role)) {
+            return $this->roles()->whereIn('name', $role)->exists();
+        }
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    /**
+     * Check if user holds any of the provided role identifier keys.
+     */
+    public function hasAnyRole(array $roles): bool
+    {
+        return $this->hasRole($roles);
+    }
+
+    /**
+     * Check if user holds a specific authorization permission.
+     */
+    public function hasPermission(string $permission): bool
+    {
+        // 1. Super Admin bypass
+        if ($this->hasRole('super_admin')) {
+            return true;
+        }
+
+        // 2. Check direct permission overrides
+        if ($this->directPermissions()->where('name', $permission)->exists()) {
+            return true;
+        }
+
+        // 3. Check roles permissions linkage
+        return $this->roles()->whereHas('permissions', function ($query) use ($permission) {
+            $query->where('name', $permission);
+        })->exists();
+    }
 }

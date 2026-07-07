@@ -1,0 +1,127 @@
+<?php
+
+namespace Tests\Feature;
+
+use App\Models\User;
+use App\Models\Role;
+use App\Models\PermissionGroup;
+use App\Models\Permission;
+use Database\Seeders\RbacSeeder;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+class RbacModuleTest extends TestCase
+{
+    use RefreshDatabase;
+
+    /**
+     * Test role assignments and relation mapping.
+     */
+    public function test_user_roles_relation_mapping(): void
+    {
+        $user = User::factory()->create();
+        
+        $role = Role::create([
+            'name' => 'editor',
+            'label' => 'Editor User',
+            'is_system' => false,
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        $this->assertTrue($user->hasRole('editor'));
+        $this->assertFalse($user->hasRole('super_admin'));
+    }
+
+    /**
+     * Test super admin bypass.
+     */
+    public function test_super_admin_bypass_authorizes_everything(): void
+    {
+        $user = User::factory()->create();
+
+        $role = Role::create([
+            'name' => 'super_admin',
+            'label' => 'Super Admin Lock',
+            'is_system' => true,
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        // Super admin bypass should immediately return true for any random permission
+        $this->assertTrue($user->hasPermission('view_restricted_widgets'));
+        $this->assertTrue($user->hasPermission('delete_system_database'));
+    }
+
+    /**
+     * Test normal role-based action permission matching.
+     */
+    public function test_normal_role_permission_matching(): void
+    {
+        $user = User::factory()->create();
+
+        $role = Role::create([
+            'name' => 'editor',
+            'label' => 'Editor User',
+            'is_system' => false,
+        ]);
+
+        $group = PermissionGroup::create([
+            'name' => 'Blog Module',
+        ]);
+
+        $perm = Permission::create([
+            'permission_group_id' => $group->id,
+            'name' => 'publish_blog',
+            'label' => 'Publish Blog Posts',
+        ]);
+
+        $role->permissions()->attach($perm->id);
+        $user->roles()->attach($role->id);
+
+        $this->assertTrue($user->hasPermission('publish_blog'));
+        $this->assertFalse($user->hasPermission('delete_blog'));
+    }
+
+    /**
+     * Test direct permission overrides bypassing roles.
+     */
+    public function test_direct_permission_overrides(): void
+    {
+        $user = User::factory()->create();
+
+        $group = PermissionGroup::create([
+            'name' => 'SEO Module',
+        ]);
+
+        $perm = Permission::create([
+            'permission_group_id' => $group->id,
+            'name' => 'configure_seo',
+            'label' => 'Configure SEO settings',
+        ]);
+
+        $user->directPermissions()->attach($perm->id);
+
+        // Has no roles but holds direct override
+        $this->assertTrue($user->hasPermission('configure_seo'));
+        $this->assertFalse($user->hasPermission('view_seo'));
+    }
+
+    /**
+     * Test that RBAC seeders execute idempotently.
+     */
+    public function test_rbac_seeder_runs_idempotently(): void
+    {
+        $this->seed(RbacSeeder::class);
+        $countGroup = PermissionGroup::count();
+        $countPerm = Permission::count();
+        $countRole = Role::count();
+
+        // Seed again
+        $this->seed(RbacSeeder::class);
+
+        $this->assertEquals($countGroup, PermissionGroup::count());
+        $this->assertEquals($countPerm, Permission::count());
+        $this->assertEquals($countRole, Role::count());
+    }
+}
