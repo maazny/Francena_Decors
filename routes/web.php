@@ -422,6 +422,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('user/{user}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'userActivities'])->name('user');
             Route::get('module/{module}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'moduleActivities'])->name('module');
             Route::get('export', [\App\Http\Controllers\Admin\ActivityLogController::class, 'export'])->name('export')->middleware('can:export_activity_logs');
+            Route::get('{id}/print', [\App\Http\Controllers\Admin\ActivityLogController::class, 'print'])->name('print');
             Route::get('{id}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('show');
         });
     });

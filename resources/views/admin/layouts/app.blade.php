@@ -197,6 +197,14 @@
             </a>
           @endcan
 
+          @can('view_activity_logs')
+            <div class="mt-4 sidebar-header">System</div>
+            <a href="{{ route('admin.activity-logs.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.activity-logs.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-clock-rotate-left fa-fw me-2"></i>
+              Activity Logs
+            </a>
+          @endcan
+
           @can('view_dashboard')
             <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.dashboard') ? 'active' : 'text-white' }}">
               <i class="fa-solid fa-chart-line me-2"></i>

@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
+use App\Models\ActivityLog;
+use App\Models\Role;
+
 /**
  * Class ActivityLogController
  * @package App\Http\Controllers\Admin
@@ -32,24 +35,56 @@ class ActivityLogController extends Controller
      * Display a listing of the resource.
      *
      * @param Request $request
-     * @return JsonResponse
+     * @return mixed
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
-        $logs = $this->service->getLogs([], (int) $request->get('per_page', 20));
-        return response()->json($logs);
+        if ($request->ajax() || $request->wantsJson()) {
+            $filters = $request->only([
+                'user_id', 'role_id', 'module', 'action', 'status',
+                'date_from', 'date_to', 'keyword', 'ip_address',
+                'browser', 'device', 'operating_system'
+            ]);
+            $logs = $this->service->getLogs($filters, (int) $request->get('length', 20));
+            return response()->json($logs);
+        }
+
+        $users = User::select('id', 'name', 'email')->orderBy('name')->get();
+        $roles = Role::select('id', 'name', 'label')->orderBy('label')->get();
+        $statistics = $this->service->getDashboardStatistics();
+
+        // Retrieve list of unique modules historically logged to populate filters
+        $modules = ActivityLog::select('module')->distinct()->orderBy('module')->pluck('module')->toArray();
+        $actions = \App\Enums\ActivityAction::cases();
+
+        return view('admin.activity-logs.index', compact('users', 'roles', 'statistics', 'modules', 'actions'));
     }
 
     /**
      * Display the specified resource.
      *
      * @param int $id
-     * @return JsonResponse
+     * @return mixed
      */
-    public function show(int $id): JsonResponse
+    public function show(int $id)
     {
         $log = $this->service->getLogById($id);
-        return response()->json($log);
+        if (request()->ajax() || request()->wantsJson()) {
+            return response()->json($log);
+        }
+        return view('admin.activity-logs.show', compact('log'));
+    }
+
+    /**
+     * Print the specified resource.
+     *
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function print(int $id)
+    {
+        $log = $this->service->getLogById($id);
+        return view('admin.activity-logs.print', compact('log'));
     }
 
     /**
@@ -132,21 +167,60 @@ class ActivityLogController extends Controller
      * Export activity logs data foundation stream.
      *
      * @param ActivityLogFilterRequest $request
-     * @return JsonResponse
+     * @return mixed
      */
-    public function export(ActivityLogFilterRequest $request): JsonResponse
+    public function export(ActivityLogFilterRequest $request)
     {
         $filters = $request->validated();
         $logs = $this->service->getExportData($filters);
 
         $exportType = $filters['export_type'] ?? 'csv';
 
-        // Provide foundation response payload mapping for Part 3 integration
-        return response()->json([
-            'success' => true,
-            'export_type' => $exportType,
-            'count' => $logs->count(),
-            'data' => $logs,
-        ]);
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'export_type' => $exportType,
+                'count' => $logs->count(),
+                'data' => $logs,
+            ]);
+        }
+
+        // Support direct CSV streaming download for CSV/Excel requests
+        if ($exportType === 'csv' || $exportType === 'excel') {
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => 'attachment; filename="activity_logs_' . date('Ymd_His') . '.csv"',
+            ];
+
+            $callback = function () use ($logs) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, ['ID', 'UUID', 'User', 'Role', 'Module', 'Action', 'Description', 'IP Address', 'Browser', 'Device', 'OS', 'Status', 'Timestamp']);
+
+                foreach ($logs as $log) {
+                    fputcsv($file, [
+                        $log->id,
+                        $log->uuid,
+                        $log->user ? $log->user->name : 'System',
+                        $log->role ? $log->role->label : 'N/A',
+                        $log->module,
+                        $log->action->value,
+                        $log->description,
+                        $log->ip_address,
+                        $log->browser,
+                        $log->device,
+                        $log->operating_system,
+                        $log->status->value,
+                        $log->created_at,
+                    ]);
+                }
+
+                fclose($file);
+            };
+
+            return response()->stream($callback, 200, $headers);
+        }
+
+        // PDF and Print fallback
+        return view('admin.activity-logs.print', ['logs' => $logs, 'is_list' => true]);
     }
 }
