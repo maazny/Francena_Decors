@@ -96,6 +96,9 @@ class ActivityLogModuleTest extends TestCase
      */
     public function test_statistics_aggregation(): void
     {
+        ActivityLog::query()->delete();
+        Cache::forget('activity_logs:statistics');
+
         $this->service->log([
             'user_id' => $this->admin->id,
             'module' => 'blog',
@@ -149,5 +152,88 @@ class ActivityLogModuleTest extends TestCase
         $response = $this->actingAs($this->admin)
             ->get(route('admin.activity-logs.statistics'));
         $response->assertOk();
+    }
+
+    /**
+     * Test dynamic model observer audits Eloquent event hooks automatically.
+     */
+    public function test_observer_audits_model_events(): void
+    {
+        $department = \App\Models\JobDepartment::create([
+            'name' => 'Engineering',
+            'slug' => 'engineering',
+            'description' => 'Engineering department',
+            'status' => true,
+        ]);
+
+        // Trigger model creation on Careers job category
+        $category = \App\Models\JobCategory::create([
+            'department_id' => $department->id,
+            'name' => 'Architecture and Construction',
+            'slug' => 'architecture-construction',
+            'description' => 'Construction management positions.',
+            'status' => true,
+        ]);
+
+        $this->assertDatabaseHas('activity_logs', [
+            'model_type' => \App\Models\JobCategory::class,
+            'model_id' => $category->id,
+            'action' => 'create',
+            'module' => 'job_category',
+        ]);
+
+        // Trigger model update
+        $category->update(['name' => 'Luxury Architecture']);
+
+        $this->assertDatabaseHas('activity_logs', [
+            'model_type' => \App\Models\JobCategory::class,
+            'model_id' => $category->id,
+            'action' => 'update',
+            'module' => 'job_category',
+        ]);
+    }
+
+    /**
+     * Test authentication listener records login actions automatically.
+     */
+    public function test_auth_subscriber_logs_authentication(): void
+    {
+        // Fake authentication login event
+        event(new \Illuminate\Auth\Events\Login('web', $this->admin, false));
+
+        $this->assertDatabaseHas('activity_logs', [
+            'user_id' => $this->admin->id,
+            'module' => 'authentication',
+            'action' => 'login',
+            'status' => 'success',
+        ]);
+    }
+
+    /**
+     * Test cleanup Artisan command prunes older records correctly.
+     */
+    public function test_cleanup_artisan_command(): void
+    {
+        // Seed logs with a custom past created_at date
+        $oldLog = ActivityLog::create([
+            'user_id' => $this->admin->id,
+            'module' => 'blog',
+            'action' => ActivityAction::CREATE,
+            'status' => ActivityStatus::SUCCESS,
+            'uuid' => (string) \Illuminate\Support\Str::uuid(),
+        ]);
+        // Modify date in database manually
+        \Illuminate\Support\Facades\DB::table('activity_logs')
+            ->where('id', $oldLog->id)
+            ->update(['created_at' => now()->subDays(100)]);
+
+        config(['activitylog.retention_days' => 90]);
+
+        $this->artisan('activitylog:cleanup')
+            ->expectsOutput("Pruning activity logs older than 90 days...")
+            ->expectsOutput("Pruned 1 log entries successfully.")
+            ->assertExitCode(0);
+
+        $this->assertDatabaseMissing('activity_logs', ['id' => $oldLog->id]);
     }
 }

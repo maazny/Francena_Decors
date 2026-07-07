@@ -106,5 +106,9 @@ class AppServiceProvider extends ServiceProvider
             \App\Events\UserRoleAssigned::class,
             \App\Events\UserRoleRemoved::class,
         ], \App\Listeners\SendRbacSecurityNotification::class);
+
+        // Register Activity Log Event Subscribers (Module 27)
+        \Illuminate\Support\Facades\Event::subscribe(\App\Listeners\AuditModelSubscriber::class);
+        \Illuminate\Support\Facades\Event::subscribe(\App\Listeners\AuditAuthSubscriber::class);
     }
 }
