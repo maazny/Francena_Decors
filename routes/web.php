@@ -361,5 +361,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('sitemaps', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'index'])->name('sitemaps.index');
             Route::post('sitemaps/generate', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'generate'])->name('sitemaps.generate');
         });
+
+        // Roles & Permissions CMS - Admin
+        Route::prefix('rbac')->group(function () {
+            Route::get('roles/{role}/permissions', [\App\Http\Controllers\Admin\RoleController::class, 'editPermissions'])->name('roles.permissions.edit');
+            Route::put('roles/{role}/permissions', [\App\Http\Controllers\Admin\RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
+            
+            Route::resource('roles', \App\Http\Controllers\Admin\RoleController::class);
+            Route::resource('permissions', \App\Http\Controllers\Admin\PermissionController::class);
+            Route::resource('permission-groups', \App\Http\Controllers\Admin\PermissionGroupController::class);
+            Route::resource('users-roles', \App\Http\Controllers\Admin\UserRoleController::class)->only(['index', 'edit', 'update']);
+        });
     });
 });

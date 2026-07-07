@@ -69,5 +69,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('layouts.app', \App\View\Composers\SeoViewComposer::class);
+
+        // Bootstrap Dynamic RBAC Gates
+        (new \App\Services\AuthorizationService())->bootstrapGates();
     }
 }

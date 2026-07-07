@@ -124,4 +124,35 @@ class RbacModuleTest extends TestCase
         $this->assertEquals($countPerm, Permission::count());
         $this->assertEquals($countRole, Role::count());
     }
+
+    /**
+     * Test system roles protection triggers validation exception.
+     */
+    public function test_system_role_deletion_blocked(): void
+    {
+        $role = Role::create([
+            'name' => 'super_admin',
+            'label' => 'Super Administrator',
+            'is_system' => true,
+        ]);
+
+        $service = new \App\Services\RoleService();
+
+        $this->expectException(\InvalidArgumentException::class);
+        $service->deleteRole($role);
+    }
+
+    /**
+     * Test authorization permission matrix compiles structure.
+     */
+    public function test_matrix_generation_matches_schema(): void
+    {
+        $this->seed(RbacSeeder::class);
+
+        $service = new \App\Services\AuthorizationService();
+        $matrix = $service->getPermissionMatrix();
+
+        $this->assertArrayHasKey('roles', $matrix);
+        $this->assertArrayHasKey('matrix', $matrix);
+    }
 }
