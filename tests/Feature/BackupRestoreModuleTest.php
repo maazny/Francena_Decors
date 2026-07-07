@@ -116,12 +116,25 @@ class BackupRestoreModuleTest extends TestCase
     public function test_admin_routes_accessibility(): void
     {
         $response = $this->actingAs($this->admin)
-            ->getJson(route('admin.backups.index'));
+            ->get(route('admin.backups.index'));
         $response->assertOk();
+        $response->assertSee('History');
+
+        $backup = $this->service->createBackup([
+            'backup_name' => 'Details View Test',
+            'backup_type' => BackupType::DATABASE,
+            'created_by' => $this->admin->id,
+        ]);
 
         $response = $this->actingAs($this->admin)
-            ->getJson(route('admin.backups.statistics'));
+            ->get(route('admin.backups.show', $backup->id));
         $response->assertOk();
+        $response->assertSee('Archive Name');
+
+        $response = $this->actingAs($this->admin)
+            ->get(route('admin.backup-schedules.index'));
+        $response->assertOk();
+        $response->assertSee('Schedule Timers');
     }
 
     /**
