@@ -156,4 +156,61 @@ class BackupRestoreModuleTest extends TestCase
             'frequency' => 'daily',
         ]);
     }
+
+    /**
+     * Test console commands.
+     */
+    public function test_commands_execute_cleanly(): void
+    {
+        $this->artisan('backup:run database')
+            ->expectsOutputToContain('Starting manual system backup')
+            ->assertExitCode(0);
+
+        $this->artisan('backup:cleanup')
+            ->expectsOutputToContain('Starting historical backup cleanup')
+            ->assertExitCode(0);
+
+        $this->artisan('backup:health')
+            ->expectsOutputToContain('Running Backup System Health diagnostics')
+            ->assertExitCode(0);
+    }
+
+    /**
+     * Test notification dispatches.
+     */
+    public function test_backup_sends_notification(): void
+    {
+        \Illuminate\Support\Facades\Notification::fake();
+
+        $this->service->createBackup([
+            'backup_name' => 'Notification Success Test',
+            'backup_type' => BackupType::DATABASE,
+            'created_by' => $this->admin->id,
+        ]);
+
+        \Illuminate\Support\Facades\Notification::assertSentTo(
+            $this->admin,
+            \App\Notifications\BackupCompletedNotification::class
+        );
+    }
+
+    /**
+     * Test corrupted checksum blocks restoration.
+     */
+    public function test_corrupted_checksum_fails_restoration(): void
+    {
+        $backup = $this->service->createBackup([
+            'backup_name' => 'Corrupt Restore Test',
+            'backup_type' => BackupType::DATABASE,
+            'created_by' => $this->admin->id,
+        ]);
+
+        // Purposefully tamper with checksum database record
+        $backup->update(['checksum' => 'tampered_sha_256_hash']);
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Restore aborting: Backup file checksum mismatch.');
+
+        $this->service->restoreBackup($backup, $this->admin->id);
+    }
 }

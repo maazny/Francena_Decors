@@ -369,10 +369,18 @@ class BackupService implements BackupServiceInterface
                 'model_id' => $backup->id,
             ]);
 
+            $this->notifyAdmins(new \App\Notifications\BackupCompletedNotification($backup));
+
         } catch (\Throwable $e) {
             if (file_exists($tempZipPath)) {
                 unlink($tempZipPath);
             }
+            $backup->update([
+                'status' => BackupStatus::FAILED,
+                'failure_reason' => $e->getMessage(),
+                'completed_at' => now(),
+            ]);
+            $this->notifyAdmins(new \App\Notifications\BackupFailedNotification($backup));
             throw $e;
         }
     }
@@ -432,10 +440,17 @@ class BackupService implements BackupServiceInterface
                 'model_id' => $backup->id,
             ]);
 
+            $this->notifyAdmins(new \App\Notifications\RestoreCompletedNotification($backup));
+
         } catch (\Throwable $e) {
             if (file_exists($tempZip)) {
                 unlink($tempZip);
             }
+            $backup->update([
+                'status' => BackupStatus::FAILED,
+                'failure_reason' => 'Restore failed: ' . $e->getMessage(),
+            ]);
+            $this->notifyAdmins(new \App\Notifications\RestoreFailedNotification($backup, $e->getMessage()));
             throw $e;
         }
     }
@@ -501,5 +516,23 @@ class BackupService implements BackupServiceInterface
     protected function clearCache(): void
     {
         Cache::forget('backups:statistics');
+    }
+
+    /**
+     * Send backup notifications to super administrator accounts.
+     */
+    protected function notifyAdmins($notification): void
+    {
+        try {
+            $admins = \App\Models\User::whereHas('roles', function ($q) {
+                $q->where('name', 'super_admin');
+            })->get();
+
+            foreach ($admins as $admin) {
+                $admin->notify($notification);
+            }
+        } catch (\Throwable $e) {
+            // Silently ignore to avoid blocking backup routines on email configuration issues
+        }
     }
 }
