@@ -226,4 +226,14 @@ class SeoModuleTest extends TestCase
             'theme_color' => '#ffffff',
         ]);
     }
+
+    /**
+     * Test admin can access dashboard.
+     */
+    public function test_admin_can_access_seo_dashboard(): void
+    {
+        $response = $this->actingAs($this->admin)
+            ->get(route('admin.seo.sitemaps.index')); // Let's check sitemaps index
+        $response->assertStatus(200);
+    }
 }
