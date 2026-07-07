@@ -339,5 +339,27 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('campaigns/{campaign}/logs', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'logs'])->name('campaigns.logs');
             Route::resource('campaigns', \App\Http\Controllers\Admin\NewsletterCampaignController::class);
         });
+
+        // SEO CMS - Admin
+        Route::prefix('seo')->name('seo.')->group(function () {
+            // Settings
+            Route::get('settings', [\App\Http\Controllers\Admin\SeoSettingController::class, 'edit'])->name('settings.edit');
+            Route::put('settings', [\App\Http\Controllers\Admin\SeoSettingController::class, 'update'])->name('settings.update');
+
+            // Pages
+            Route::post('pages/{page}/clone', [\App\Http\Controllers\Admin\SeoPageController::class, 'clone'])->name('pages.clone');
+            Route::resource('pages', \App\Http\Controllers\Admin\SeoPageController::class);
+
+            // Redirects
+            Route::get('redirects/test', [\App\Http\Controllers\Admin\SeoRedirectController::class, 'test'])->name('redirects.test');
+            Route::resource('redirects', \App\Http\Controllers\Admin\SeoRedirectController::class);
+
+            // Structured Data
+            Route::resource('structured-data', \App\Http\Controllers\Admin\SeoStructuredDataController::class);
+
+            // Sitemaps
+            Route::get('sitemaps', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'index'])->name('sitemaps.index');
+            Route::post('sitemaps/generate', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'generate'])->name('sitemaps.generate');
+        });
     });
 });

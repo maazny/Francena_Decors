@@ -6,12 +6,13 @@ use App\Models\SeoSetting;
 use App\Models\SeoPage;
 use App\Models\SeoRedirect;
 use App\Models\SeoStructuredData;
-use App\Models\SeoSitemap;
-use App\Models\SeoLog;
-use App\Models\BlogPost; // Reuse existing model for morph test
+use App\Models\BlogPost;
+use App\Models\User;
 use App\Enums\SeoPageType;
 use App\Enums\RedirectType;
 use App\Enums\StructuredDataType;
+use App\Services\SeoRedirectService;
+use App\Services\SeoSitemapService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Cache;
 use Tests\TestCase;
@@ -19,6 +20,18 @@ use Tests\TestCase;
 class SeoModuleTest extends TestCase
 {
     use RefreshDatabase;
+
+    protected User $admin;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        
+        // Create an admin user for controller endpoint tests
+        $this->admin = User::factory()->create([
+            'email' => 'admin_seo@example.com',
+        ]);
+    }
 
     /**
      * Test global settings cache works.
@@ -47,7 +60,6 @@ class SeoModuleTest extends TestCase
      */
     public function test_seo_page_polymorphic_relation(): void
     {
-        // Create blog post model
         $category = \App\Models\BlogCategory::create([
             'name' => 'Interior Trends',
             'slug' => 'interior-trends',
@@ -62,7 +74,6 @@ class SeoModuleTest extends TestCase
             'status' => 'published',
         ]);
 
-        // Mapped override
         $seoPage = SeoPage::create([
             'page_type' => SeoPageType::MODULE,
             'slug' => '/blog/chic-living-spaces',
@@ -114,7 +125,7 @@ class SeoModuleTest extends TestCase
             'is_active' => true,
         ]);
 
-        $log = SeoLog::create([
+        $log = \App\Models\SeoLog::create([
             'redirect_id' => $redirect->id,
             'url' => '/old-contact',
             'referrer' => 'google.com',
@@ -123,5 +134,96 @@ class SeoModuleTest extends TestCase
 
         $this->assertCount(1, $redirect->logs);
         $this->assertEquals('/old-contact', $redirect->logs->first()->url);
+    }
+
+    /**
+     * Test redirect loop detection.
+     */
+    public function test_redirect_loop_detection_fails(): void
+    {
+        $service = new SeoRedirectService();
+
+        // 1. Direct Loop (A -> A)
+        $this->assertTrue($service->detectRedirectLoop('/about', '/about'));
+
+        // 2. Chain Loop (A -> B, B -> A)
+        SeoRedirect::create([
+            'source_url' => '/about-us',
+            'target_url' => '/about',
+            'type' => RedirectType::PERMANENT,
+            'is_active' => true,
+        ]);
+
+        $this->assertTrue($service->detectRedirectLoop('/about', '/about-us'));
+
+        // Try to insert redirect that loops
+        $this->expectException(\InvalidArgumentException::class);
+        $service->createRedirect([
+            'source_url' => '/about',
+            'target_url' => '/about-us',
+            'type' => RedirectType::PERMANENT,
+            'is_active' => true,
+        ]);
+    }
+
+    /**
+     * Test wildcard matching.
+     */
+    public function test_redirect_wildcard_matching(): void
+    {
+        $service = new SeoRedirectService();
+
+        SeoRedirect::create([
+            'source_url' => '/old-blog/*',
+            'target_url' => '/blog',
+            'type' => RedirectType::PERMANENT,
+            'is_wildcard' => true,
+            'is_active' => true,
+        ]);
+
+        // Clear cache to evaluate
+        $service->clearRedirectCache();
+
+        $match = $service->findRedirectMatch('/old-blog/some-post-slug');
+        $this->assertNotNull($match);
+        $this->assertEquals('/blog', $match->target_url);
+
+        $noMatch = $service->findRedirectMatch('/about-us');
+        $this->assertNull($noMatch);
+    }
+
+    /**
+     * Test dynamic XML sitemap generation.
+     */
+    public function test_sitemap_xml_generation(): void
+    {
+        $service = new SeoSitemapService();
+        $xml = $service->generateXml();
+
+        $this->assertStringContainsString('<?xml', $xml);
+        $this->assertStringContainsString('<urlset', $xml);
+        $this->assertStringContainsString('<loc>', $xml);
+    }
+
+    /**
+     * Test global settings updates via controller.
+     */
+    public function test_admin_can_update_seo_settings(): void
+    {
+        $response = $this->actingAs($this->admin)
+            ->put(route('admin.seo.settings.update'), [
+                'site_name' => 'Fabulous Decorators',
+                'meta_title' => 'Fabulous Construction & Design',
+                'meta_description' => 'A luxury construction design company.',
+                'theme_color' => '#ffffff',
+            ]);
+
+        $response->assertRedirect();
+        
+        $this->assertDatabaseHas('seo_settings', [
+            'site_name' => 'Fabulous Decorators',
+            'meta_title' => 'Fabulous Construction & Design',
+            'theme_color' => '#ffffff',
+        ]);
     }
 }
