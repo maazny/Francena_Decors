@@ -425,5 +425,30 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('{id}/print', [\App\Http\Controllers\Admin\ActivityLogController::class, 'print'])->name('print');
             Route::get('{id}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('show');
         });
+
+        // Backup & Restore CMS - Admin (Module 28)
+        Route::middleware('can:backup.view')->prefix('backups')->name('backups.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\BackupController::class, 'index'])->name('index');
+            Route::get('statistics', [\App\Http\Controllers\Admin\BackupController::class, 'statistics'])->name('statistics');
+            Route::get('history', [\App\Http\Controllers\Admin\BackupController::class, 'history'])->name('history');
+            Route::get('export', [\App\Http\Controllers\Admin\BackupController::class, 'export'])->name('export')->middleware('can:backup.export');
+
+            Route::post('/', [\App\Http\Controllers\Admin\BackupController::class, 'store'])->name('store')->middleware('can:backup.create');
+            Route::get('{backup}', [\App\Http\Controllers\Admin\BackupController::class, 'show'])->name('show');
+            Route::get('{backup}/download', [\App\Http\Controllers\Admin\BackupController::class, 'download'])->name('download')->middleware('can:backup.download');
+            Route::post('{backup}/restore', [\App\Http\Controllers\Admin\BackupController::class, 'restore'])->name('restore')->middleware('can:backup.restore');
+            Route::post('{backup}/verify', [\App\Http\Controllers\Admin\BackupController::class, 'verify'])->name('verify')->middleware('can:backup.verify');
+            Route::post('{backup}/retry', [\App\Http\Controllers\Admin\BackupController::class, 'retry'])->name('retry')->middleware('can:backup.create');
+            Route::delete('{backup}', [\App\Http\Controllers\Admin\BackupController::class, 'destroy'])->name('destroy')->middleware('can:backup.delete');
+        });
+
+        Route::middleware('can:backup.schedule')->prefix('backup-schedules')->name('backup-schedules.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'index'])->name('index');
+            Route::post('/', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'store'])->name('store');
+            Route::put('{schedule}', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'update'])->name('update');
+            Route::delete('{schedule}', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'destroy'])->name('destroy');
+            Route::post('{schedule}/enable', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'enable'])->name('enable');
+            Route::post('{schedule}/disable', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'disable'])->name('disable');
+        });
     });
 });

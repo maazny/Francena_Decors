@@ -34,6 +34,16 @@ class AppServiceProvider extends ServiceProvider
             \App\Contracts\ActivityLogServiceInterface::class,
             \App\Services\ActivityLogService::class
         );
+
+        $this->app->bind(
+            \App\Contracts\BackupServiceInterface::class,
+            \App\Services\BackupService::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\BackupScheduleServiceInterface::class,
+            \App\Services\BackupScheduleService::class
+        );
     }
 
     /**
