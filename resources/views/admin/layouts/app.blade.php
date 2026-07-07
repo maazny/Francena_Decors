@@ -45,114 +45,164 @@
         <div class="mb-4 sidebar-header">Settings</div>
         <div class="nav nav-pills flex-column gap-2">
           @if(Route::has('admin.theme.settings.edit'))
-            <a href="{{ route('admin.theme.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.theme.settings.*') ? 'active' : 'text-white' }}">
-              <i class="fa-solid fa-paintbrush fa-fw me-2"></i>
-              Theme Settings
-            </a>
+            @can('view_theme_settings')
+              <a href="{{ route('admin.theme.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.theme.settings.*') ? 'active' : 'text-white' }}">
+                <i class="fa-solid fa-paintbrush fa-fw me-2"></i>
+                Theme Settings
+              </a>
+            @endcan
           @endif
-          <a href="{{ route('admin.site-settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.site-settings.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-gear me-2"></i>
-            Site Settings
-          </a>
-          <a href="{{ route('admin.media.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.media.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-photo-film fa-fw me-2"></i>
-            Media Library
-          </a>
-          <a href="{{ route('admin.project-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.project-categories.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-folder-tree fa-fw me-2"></i>
-            Project Categories
-          </a>
-          <a href="{{ route('admin.projects.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.projects.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-diagram-project fa-fw me-2"></i>
-            Projects
-          </a>
-          <a href="{{ route('admin.client-brands.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.client-brands.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-handshake fa-fw me-2"></i>
-            Clients & Brands
-          </a>
-          <div class="mt-4 sidebar-header">Appearance</div>
-          <a href="{{ route('admin.header.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.header.settings.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-header fa-fw me-2"></i>
-            Header
-          </a>
-          <a href="{{ route('admin.footer.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.footer.settings.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-window-maximize fa-fw me-2"></i>
-            Footer
-          </a>
-          <a href="{{ route('admin.hero-sliders.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.hero-sliders.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-images fa-fw me-2"></i>
-            Hero Slider
-          </a>
-          <a href="{{ route('admin.service-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.service-categories.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-tags fa-fw me-2"></i>
-            Service Categories
-          </a>
-          <a href="{{ route('admin.services.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.services.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-briefcase fa-fw me-2"></i>
-            Services
-          </a>
-          <div class="mt-4 sidebar-header">Blog CMS</div>
-          <a href="{{ route('admin.blog-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-categories.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-list fa-fw me-2"></i>
-            Blog Categories
-          </a>
-          <a href="{{ route('admin.blog-tags.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-tags.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-tags fa-fw me-2"></i>
-            Blog Tags
-          </a>
-          <a href="{{ route('admin.blog-posts.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-posts.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-file-pen fa-fw me-2"></i>
-            Blog Posts
-          </a>
+          @can('view_site_settings')
+            <a href="{{ route('admin.site-settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.site-settings.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-gear me-2"></i>
+              Site Settings
+            </a>
+          @endcan
+          @can('view_media_library')
+            <a href="{{ route('admin.media.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.media.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-photo-film fa-fw me-2"></i>
+              Media Library
+            </a>
+          @endcan
+          @can('view_projects')
+            <a href="{{ route('admin.project-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.project-categories.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-folder-tree fa-fw me-2"></i>
+              Project Categories
+            </a>
+            <a href="{{ route('admin.projects.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.projects.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-diagram-project fa-fw me-2"></i>
+              Projects
+            </a>
+          @endcan
+          @can('view_clients')
+            <a href="{{ route('admin.client-brands.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.client-brands.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-handshake fa-fw me-2"></i>
+              Clients & Brands
+            </a>
+          @endcan
 
-          <div class="mt-4 sidebar-header">Careers CMS</div>
-          <a href="{{ route('admin.careers.departments.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.departments.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-building fa-fw me-2"></i>
-            Job Departments
-          </a>
-          <a href="{{ route('admin.careers.categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.categories.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-list-check fa-fw me-2"></i>
-            Job Categories
-          </a>
-          <a href="{{ route('admin.careers.locations.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.locations.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-location-dot fa-fw me-2"></i>
-            Job Locations
-          </a>
-          <a href="{{ route('admin.careers.jobs.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.jobs.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-briefcase fa-fw me-2"></i>
-            Job Openings
-          </a>
-          <a href="{{ route('admin.careers.applications.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.applications.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-user-tie fa-fw me-2"></i>
-            Job Applications
-          </a>
+          @if(Gate::check('view_header') || Gate::check('view_footer') || Gate::check('view_hero') || Gate::check('view_services'))
+            <div class="mt-4 sidebar-header">Appearance</div>
+          @endif
 
-          <div class="mt-4 sidebar-header">Newsletter CMS</div>
-          <a href="{{ route('admin.newsletter.campaigns.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.campaigns.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-paper-plane fa-fw me-2"></i>
-            Campaigns
-          </a>
-          <a href="{{ route('admin.newsletter.templates.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.templates.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-envelope-open-text fa-fw me-2"></i>
-            Templates
-          </a>
-          <a href="{{ route('admin.newsletter.groups.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.groups.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-users-rectangle fa-fw me-2"></i>
-            Groups / Segments
-          </a>
-          <a href="{{ route('admin.newsletter.subscribers.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.subscribers.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-users fa-fw me-2"></i>
-            Subscribers
-          </a>
+          @can('view_header')
+            <a href="{{ route('admin.header.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.header.settings.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-header fa-fw me-2"></i>
+              Header
+            </a>
+          @endcan
+          @can('view_footer')
+            <a href="{{ route('admin.footer.settings.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.footer.settings.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-window-maximize fa-fw me-2"></i>
+              Footer
+            </a>
+          @endcan
+          @can('view_hero')
+            <a href="{{ route('admin.hero-sliders.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.hero-sliders.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-images fa-fw me-2"></i>
+              Hero Slider
+            </a>
+          @endcan
+          @can('view_services')
+            <a href="{{ route('admin.service-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.service-categories.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-tags fa-fw me-2"></i>
+              Service Categories
+            </a>
+            <a href="{{ route('admin.services.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.services.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-briefcase fa-fw me-2"></i>
+              Services
+            </a>
+          @endcan
 
-          <a href="{{ route('admin.about-sections.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.about-sections.*') || Route::is('admin.company-values.*') || Route::is('admin.company-timelines.*') || Route::is('admin.why-choose-us.*') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-circle-info fa-fw me-2"></i>
-            About CMS
-          </a>
-          <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.dashboard') ? 'active' : 'text-white' }}">
-            <i class="fa-solid fa-chart-line me-2"></i>
-            Dashboard
-          </a>
+          @can('view_blog')
+            <div class="mt-4 sidebar-header">Blog CMS</div>
+            <a href="{{ route('admin.blog-categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-categories.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-list fa-fw me-2"></i>
+              Blog Categories
+            </a>
+            <a href="{{ route('admin.blog-tags.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-tags.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-tags fa-fw me-2"></i>
+              Blog Tags
+            </a>
+            <a href="{{ route('admin.blog-posts.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.blog-posts.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-file-pen fa-fw me-2"></i>
+              Blog Posts
+            </a>
+          @endcan
+
+          @can('view_careers')
+            <div class="mt-4 sidebar-header">Careers CMS</div>
+            <a href="{{ route('admin.careers.departments.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.departments.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-building fa-fw me-2"></i>
+              Job Departments
+            </a>
+            <a href="{{ route('admin.careers.categories.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.categories.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-list-check fa-fw me-2"></i>
+              Job Categories
+            </a>
+            <a href="{{ route('admin.careers.locations.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.locations.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-location-dot fa-fw me-2"></i>
+              Job Locations
+            </a>
+            <a href="{{ route('admin.careers.jobs.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.jobs.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-briefcase fa-fw me-2"></i>
+              Job Openings
+            </a>
+            <a href="{{ route('admin.careers.applications.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.careers.applications.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-user-tie fa-fw me-2"></i>
+              Job Applications
+            </a>
+          @endcan
+
+          @can('view_newsletter')
+            <div class="mt-4 sidebar-header">Newsletter CMS</div>
+            <a href="{{ route('admin.newsletter.campaigns.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.campaigns.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-paper-plane fa-fw me-2"></i>
+              Campaigns
+            </a>
+            <a href="{{ route('admin.newsletter.templates.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.templates.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-envelope-open-text fa-fw me-2"></i>
+              Templates
+            </a>
+            <a href="{{ route('admin.newsletter.groups.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.groups.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-users-rectangle fa-fw me-2"></i>
+              Groups / Segments
+            </a>
+            <a href="{{ route('admin.newsletter.subscribers.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.newsletter.subscribers.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-users fa-fw me-2"></i>
+              Subscribers
+            </a>
+          @endcan
+
+          @can('view_about')
+            <a href="{{ route('admin.about-sections.edit') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.about-sections.*') || Route::is('admin.company-values.*') || Route::is('admin.company-timelines.*') || Route::is('admin.why-choose-us.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-circle-info fa-fw me-2"></i>
+              About CMS
+            </a>
+          @endcan
+
+          @can('view_roles')
+            <div class="mt-4 sidebar-header">RBAC Security</div>
+            <a href="{{ route('admin.rbac.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.rbac.dashboard') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-shield-halved fa-fw me-2"></i>
+              Control Center
+            </a>
+            <a href="{{ route('admin.roles.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.roles.*') && !Route::is('admin.rbac.dashboard') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-user-lock fa-fw me-2"></i>
+              Role Tiers
+            </a>
+            <a href="{{ route('admin.users-roles.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.users-roles.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-user-shield fa-fw me-2"></i>
+              Staff Assignments
+            </a>
+          @endcan
+
+          @can('view_dashboard')
+            <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.dashboard') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-chart-line me-2"></i>
+              Dashboard
+            </a>
+          @endcan
         </div>
       </aside>
       <main class="col py-4 px-5">

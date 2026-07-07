@@ -103,267 +103,301 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::middleware('auth')->group(function () {
-        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard')->middleware('can:view_dashboard');
 
-        Route::get('media', [MediaController::class, 'index'])->name('media.index');
-        Route::get('media/create', [MediaController::class, 'create'])->name('media.create');
-        Route::post('media', [MediaController::class, 'store'])->name('media.store');
-        Route::get('media/{media}/download', [MediaController::class, 'download'])->name('media.download');
-        Route::get('media/{media}/edit', [MediaController::class, 'edit'])->name('media.edit');
-        Route::put('media/{media}', [MediaController::class, 'update'])->name('media.update');
-        Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
-        Route::post('media/bulk-delete', [MediaController::class, 'bulkDelete'])->name('media.bulk-delete');
-        Route::get('media/{media}', [MediaController::class, 'show'])->name('media.show');
-
-        Route::name('theme.settings.')->group(function () {
-            Route::get('theme-settings', [ThemeSettingController::class, 'edit'])->name('edit');
-            Route::put('theme-settings', [ThemeSettingController::class, 'update'])->name('update');
+        Route::middleware('can:view_media_library')->group(function () {
+            Route::get('media', [MediaController::class, 'index'])->name('media.index');
+            Route::get('media/create', [MediaController::class, 'create'])->name('media.create');
+            Route::post('media', [MediaController::class, 'store'])->name('media.store');
+            Route::get('media/{media}/download', [MediaController::class, 'download'])->name('media.download');
+            Route::get('media/{media}/edit', [MediaController::class, 'edit'])->name('media.edit');
+            Route::put('media/{media}', [MediaController::class, 'update'])->name('media.update');
+            Route::delete('media/{media}', [MediaController::class, 'destroy'])->name('media.destroy');
+            Route::post('media/bulk-delete', [MediaController::class, 'bulkDelete'])->name('media.bulk-delete');
+            Route::get('media/{media}', [MediaController::class, 'show'])->name('media.show');
         });
 
-        Route::name('header.settings.')->group(function () {
-            Route::get('header-settings', [HeaderSettingController::class, 'edit'])->name('edit');
-            Route::put('header-settings', [HeaderSettingController::class, 'update'])->name('update');
+        Route::middleware('can:view_theme_settings')->group(function () {
+            Route::name('theme.settings.')->group(function () {
+                Route::get('theme-settings', [ThemeSettingController::class, 'edit'])->name('edit');
+                Route::put('theme-settings', [ThemeSettingController::class, 'update'])->name('update');
+            });
         });
 
-        Route::name('header.topbars.')->group(function () {
-            Route::get('header-topbars', [HeaderTopbarController::class, 'edit'])->name('edit');
-            Route::put('header-topbars', [HeaderTopbarController::class, 'update'])->name('update');
+        Route::middleware('can:view_header')->group(function () {
+            Route::name('header.settings.')->group(function () {
+                Route::get('header-settings', [HeaderSettingController::class, 'edit'])->name('edit');
+                Route::put('header-settings', [HeaderSettingController::class, 'update'])->name('update');
+            });
+
+            Route::name('header.topbars.')->group(function () {
+                Route::get('header-topbars', [HeaderTopbarController::class, 'edit'])->name('edit');
+                Route::put('header-topbars', [HeaderTopbarController::class, 'update'])->name('update');
+            });
+
+            Route::name('header.logos.')->group(function () {
+                Route::get('header-logos', [HeaderLogoController::class, 'edit'])->name('edit');
+                Route::put('header-logos', [HeaderLogoController::class, 'update'])->name('update');
+            });
         });
 
-        Route::name('header.logos.')->group(function () {
-            Route::get('header-logos', [HeaderLogoController::class, 'edit'])->name('edit');
-            Route::put('header-logos', [HeaderLogoController::class, 'update'])->name('update');
+        Route::middleware('can:view_footer')->group(function () {
+            Route::name('footer.settings.')->group(function () {
+                Route::get('footer-settings', [FooterSettingController::class, 'edit'])->name('edit');
+                Route::put('footer-settings', [FooterSettingController::class, 'update'])->name('update');
+            });
         });
 
-        Route::name('footer.settings.')->group(function () {
-            Route::get('footer-settings', [FooterSettingController::class, 'edit'])->name('edit');
-            Route::put('footer-settings', [FooterSettingController::class, 'update'])->name('update');
+        Route::middleware('can:view_hero')->group(function () {
+            Route::post('hero-sliders/bulk', [HeroSliderController::class, 'bulk'])->name('hero-sliders.bulk');
+            Route::post('hero-sliders/reorder', [HeroSliderController::class, 'reorder'])->name('hero-sliders.reorder');
+            Route::post('hero-sliders/{heroSlider}/toggle-status', [HeroSliderController::class, 'toggleStatus'])->name('hero-sliders.toggle-status');
+            Route::post('hero-sliders/{heroSlider}/duplicate', [HeroSliderController::class, 'duplicate'])->name('hero-sliders.duplicate');
+            Route::post('hero-sliders/{heroSlider}/restore', [HeroSliderController::class, 'restore'])->name('hero-sliders.restore');
+            Route::resource('hero-sliders', HeroSliderController::class);
         });
 
-        Route::post('hero-sliders/bulk', [HeroSliderController::class, 'bulk'])->name('hero-sliders.bulk');
-        Route::post('hero-sliders/reorder', [HeroSliderController::class, 'reorder'])->name('hero-sliders.reorder');
-        Route::post('hero-sliders/{heroSlider}/toggle-status', [HeroSliderController::class, 'toggleStatus'])->name('hero-sliders.toggle-status');
-        Route::post('hero-sliders/{heroSlider}/duplicate', [HeroSliderController::class, 'duplicate'])->name('hero-sliders.duplicate');
-        Route::post('hero-sliders/{heroSlider}/restore', [HeroSliderController::class, 'restore'])->name('hero-sliders.restore');
-        Route::resource('hero-sliders', HeroSliderController::class);
+        Route::middleware('can:view_about')->group(function () {
+            Route::get('about-sections', [AboutSectionController::class, 'edit'])->name('about-sections.edit');
+            Route::put('about-sections', [AboutSectionController::class, 'update'])->name('about-sections.update');
+            Route::resource('company-values', CompanyValueController::class)->except(['index', 'show']);
+            Route::resource('company-timelines', CompanyTimelineController::class)->except(['index', 'show']);
+            Route::resource('why-choose-us', WhyChooseUsController::class)->except(['index', 'show']);
+        });
 
-        Route::get('about-sections', [AboutSectionController::class, 'edit'])->name('about-sections.edit');
-        Route::put('about-sections', [AboutSectionController::class, 'update'])->name('about-sections.update');
-        Route::resource('company-values', CompanyValueController::class)->except(['index', 'show']);
-        Route::resource('company-timelines', CompanyTimelineController::class)->except(['index', 'show']);
-        Route::resource('why-choose-us', WhyChooseUsController::class)->except(['index', 'show']);
+        Route::middleware('can:view_site_settings')->group(function () {
+            Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
+            Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
+        });
 
-        Route::get('site-settings', [SiteSettingController::class, 'edit'])->name('site-settings.edit');
-        Route::put('site-settings', [SiteSettingController::class, 'update'])->name('site-settings.update');
+        Route::middleware('can:view_services')->group(function () {
+            Route::post('service-categories/bulk', [ServiceCategoryController::class, 'bulk'])->name('service-categories.bulk');
+            Route::post('service-categories/{serviceCategory}/toggle-status', [ServiceCategoryController::class, 'toggleStatus'])->name('service-categories.toggle-status');
+            Route::post('service-categories/{serviceCategory}/restore', [ServiceCategoryController::class, 'restore'])->name('service-categories.restore');
+            Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
 
-        Route::post('service-categories/bulk', [ServiceCategoryController::class, 'bulk'])->name('service-categories.bulk');
-        Route::post('service-categories/{serviceCategory}/toggle-status', [ServiceCategoryController::class, 'toggleStatus'])->name('service-categories.toggle-status');
-        Route::post('service-categories/{serviceCategory}/restore', [ServiceCategoryController::class, 'restore'])->name('service-categories.restore');
-        Route::resource('service-categories', ServiceCategoryController::class)->except(['show']);
+            Route::post('services/bulk', [ServiceController::class, 'bulk'])->name('services.bulk');
+            Route::post('services/{service}/toggle-status', [ServiceController::class, 'toggleStatus'])->name('services.toggle-status');
+            Route::post('services/{service}/restore', [ServiceController::class, 'restore'])->name('services.restore');
+            Route::post('services/{service}/duplicate', [ServiceController::class, 'duplicate'])->name('services.duplicate');
+            Route::resource('services', ServiceController::class)->except(['show']);
+
+            Route::post('services/{service}/faqs', [ServiceFaqController::class, 'store'])->name('services.faqs.store');
+            Route::put('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'update'])->name('service-faqs.update');
+            Route::delete('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'destroy'])->name('service-faqs.destroy');
+            Route::post('service-faqs/{serviceFaq}/toggle-status', [ServiceFaqController::class, 'toggleStatus'])->name('service-faqs.toggle-status');
+        });
 
         // Blog CMS - Admin (Module 21)
-        Route::post('blog-categories/bulk', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'bulk'])->name('blog-categories.bulk');
-        Route::post('blog-categories/{blog_category}/toggle-status', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'toggleStatus'])->name('blog-categories.toggle-status');
-        Route::post('blog-categories/{blog_category}/restore', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'restore'])->name('blog-categories.restore');
-        Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->except(['show']);
+        Route::middleware('can:view_blog')->group(function () {
+            Route::post('blog-categories/bulk', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'bulk'])->name('blog-categories.bulk');
+            Route::post('blog-categories/{blog_category}/toggle-status', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'toggleStatus'])->name('blog-categories.toggle-status');
+            Route::post('blog-categories/{blog_category}/restore', [\App\Http\Controllers\Admin\BlogCategoryController::class, 'restore'])->name('blog-categories.restore');
+            Route::resource('blog-categories', \App\Http\Controllers\Admin\BlogCategoryController::class)->except(['show']);
 
-        Route::post('blog-tags/bulk', [\App\Http\Controllers\Admin\BlogTagController::class, 'bulk'])->name('blog-tags.bulk');
-        Route::post('blog-tags/{blog_tag}/toggle-status', [\App\Http\Controllers\Admin\BlogTagController::class, 'toggleStatus'])->name('blog-tags.toggle-status');
-        Route::post('blog-tags/{blog_tag}/restore', [\App\Http\Controllers\Admin\BlogTagController::class, 'restore'])->name('blog-tags.restore');
-        Route::resource('blog-tags', \App\Http\Controllers\Admin\BlogTagController::class)->except(['show']);
+            Route::post('blog-tags/bulk', [\App\Http\Controllers\Admin\BlogTagController::class, 'bulk'])->name('blog-tags.bulk');
+            Route::post('blog-tags/{blog_tag}/toggle-status', [\App\Http\Controllers\Admin\BlogTagController::class, 'toggleStatus'])->name('blog-tags.toggle-status');
+            Route::post('blog-tags/{blog_tag}/restore', [\App\Http\Controllers\Admin\BlogTagController::class, 'restore'])->name('blog-tags.restore');
+            Route::resource('blog-tags', \App\Http\Controllers\Admin\BlogTagController::class)->except(['show']);
 
-        Route::post('blog-posts/bulk', [\App\Http\Controllers\Admin\BlogPostController::class, 'bulk'])->name('blog-posts.bulk');
-        Route::post('blog-posts/{blog_post}/toggle-status', [\App\Http\Controllers\Admin\BlogPostController::class, 'toggleStatus'])->name('blog-posts.toggle-status');
-        Route::post('blog-posts/{blog_post}/restore', [\App\Http\Controllers\Admin\BlogPostController::class, 'restore'])->name('blog-posts.restore');
-        Route::post('blog-posts/{blog_post}/duplicate', [\App\Http\Controllers\Admin\BlogPostController::class, 'duplicate'])->name('blog-posts.duplicate');
-        Route::get('blog-posts/{blog_post}/preview', [\App\Http\Controllers\Admin\BlogPostController::class, 'preview'])->name('blog-posts.preview');
-        Route::resource('blog-posts', \App\Http\Controllers\Admin\BlogPostController::class)->except(['show']);
+            Route::post('blog-posts/bulk', [\App\Http\Controllers\Admin\BlogPostController::class, 'bulk'])->name('blog-posts.bulk');
+            Route::post('blog-posts/{blog_post}/toggle-status', [\App\Http\Controllers\Admin\BlogPostController::class, 'toggleStatus'])->name('blog-posts.toggle-status');
+            Route::post('blog-posts/{blog_post}/restore', [\App\Http\Controllers\Admin\BlogPostController::class, 'restore'])->name('blog-posts.restore');
+            Route::post('blog-posts/{blog_post}/duplicate', [\App\Http\Controllers\Admin\BlogPostController::class, 'duplicate'])->name('blog-posts.duplicate');
+            Route::get('blog-posts/{blog_post}/preview', [\App\Http\Controllers\Admin\BlogPostController::class, 'preview'])->name('blog-posts.preview');
+            Route::resource('blog-posts', \App\Http\Controllers\Admin\BlogPostController::class)->except(['show']);
+        });
 
-        Route::post('services/bulk', [ServiceController::class, 'bulk'])->name('services.bulk');
-        Route::post('services/{service}/toggle-status', [ServiceController::class, 'toggleStatus'])->name('services.toggle-status');
-        Route::post('services/{service}/restore', [ServiceController::class, 'restore'])->name('services.restore');
-        Route::post('services/{service}/duplicate', [ServiceController::class, 'duplicate'])->name('services.duplicate');
-        Route::resource('services', ServiceController::class)->except(['show']);
+        Route::middleware('can:view_projects')->group(function () {
+            Route::post('project-categories/bulk', [ProjectCategoryController::class, 'bulk'])->name('project-categories.bulk');
+            Route::resource('project-categories', ProjectCategoryController::class)->except(['show']);
 
-        Route::post('services/{service}/faqs', [ServiceFaqController::class, 'store'])->name('services.faqs.store');
-        Route::put('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'update'])->name('service-faqs.update');
-        Route::delete('service-faqs/{serviceFaq}', [ServiceFaqController::class, 'destroy'])->name('service-faqs.destroy');
-        Route::post('service-faqs/{serviceFaq}/toggle-status', [ServiceFaqController::class, 'toggleStatus'])->name('service-faqs.toggle-status');
+            Route::post('projects/bulk', [ProjectController::class, 'bulk'])->name('projects.bulk');
+            Route::post('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->name('projects.toggle-status');
+            Route::post('projects/{project}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
+            Route::post('projects/{project}/duplicate', [ProjectController::class, 'duplicate'])->name('projects.duplicate');
+            Route::resource('projects', ProjectController::class)->except(['show']);
+        });
 
-        Route::post('project-categories/bulk', [ProjectCategoryController::class, 'bulk'])->name('project-categories.bulk');
-        Route::resource('project-categories', ProjectCategoryController::class)->except(['show']);
+        Route::middleware('can:view_testimonials')->group(function () {
+            Route::post('testimonial-categories/bulk', [TestimonialCategoryController::class, 'bulk'])->name('testimonial-categories.bulk');
+            Route::post('testimonial-categories/{testimonialCategory}/toggle-status', [TestimonialCategoryController::class, 'toggleStatus'])->name('testimonial-categories.toggle-status');
+            Route::post('testimonial-categories/{testimonialCategory}/restore', [TestimonialCategoryController::class, 'restore'])->name('testimonial-categories.restore');
+            Route::resource('testimonial-categories', TestimonialCategoryController::class)->except(['show']);
 
-        Route::post('projects/bulk', [ProjectController::class, 'bulk'])->name('projects.bulk');
-        Route::post('projects/{project}/toggle-status', [ProjectController::class, 'toggleStatus'])->name('projects.toggle-status');
-        Route::post('projects/{project}/restore', [ProjectController::class, 'restore'])->name('projects.restore');
-        Route::post('projects/{project}/duplicate', [ProjectController::class, 'duplicate'])->name('projects.duplicate');
-        Route::resource('projects', ProjectController::class)->except(['show']);
+            Route::post('testimonials/bulk', [TestimonialController::class, 'bulk'])->name('testimonials.bulk');
+            Route::post('testimonials/{testimonial}/toggle-status', [TestimonialController::class, 'toggleStatus'])->name('testimonials.toggle-status');
+            Route::post('testimonials/{testimonial}/restore', [TestimonialController::class, 'restore'])->name('testimonials.restore');
+            Route::post('testimonials/{testimonial}/duplicate', [TestimonialController::class, 'duplicate'])->name('testimonials.duplicate');
+            Route::resource('testimonials', TestimonialController::class)->except(['show']);
+        });
 
-        Route::post('testimonial-categories/bulk', [TestimonialCategoryController::class, 'bulk'])->name('testimonial-categories.bulk');
-        Route::post('testimonial-categories/{testimonialCategory}/toggle-status', [TestimonialCategoryController::class, 'toggleStatus'])->name('testimonial-categories.toggle-status');
-        Route::post('testimonial-categories/{testimonialCategory}/restore', [TestimonialCategoryController::class, 'restore'])->name('testimonial-categories.restore');
-        Route::resource('testimonial-categories', TestimonialCategoryController::class)->except(['show']);
-
-        Route::post('testimonials/bulk', [TestimonialController::class, 'bulk'])->name('testimonials.bulk');
-        Route::post('testimonials/{testimonial}/toggle-status', [TestimonialController::class, 'toggleStatus'])->name('testimonials.toggle-status');
-        Route::post('testimonials/{testimonial}/restore', [TestimonialController::class, 'restore'])->name('testimonials.restore');
-        Route::post('testimonials/{testimonial}/duplicate', [TestimonialController::class, 'duplicate'])->name('testimonials.duplicate');
-        Route::resource('testimonials', TestimonialController::class)->except(['show']);
-
-        Route::post('client-brands/bulk', [ClientBrandController::class, 'bulk'])->name('client-brands.bulk');
-        Route::post('client-brands/{clientBrand}/toggle-status', [ClientBrandController::class, 'toggleStatus'])->name('client-brands.toggle-status');
-        Route::post('client-brands/{clientBrand}/restore', [ClientBrandController::class, 'restore'])->name('client-brands.restore');
-        Route::post('client-brands/{clientBrand}/duplicate', [ClientBrandController::class, 'duplicate'])->name('client-brands.duplicate');
-        Route::resource('client-brands', ClientBrandController::class)->except(['show']);
+        Route::middleware('can:view_clients')->group(function () {
+            Route::post('client-brands/bulk', [ClientBrandController::class, 'bulk'])->name('client-brands.bulk');
+            Route::post('client-brands/{clientBrand}/toggle-status', [ClientBrandController::class, 'toggleStatus'])->name('client-brands.toggle-status');
+            Route::post('client-brands/{clientBrand}/restore', [ClientBrandController::class, 'restore'])->name('client-brands.restore');
+            Route::post('client-brands/{clientBrand}/duplicate', [ClientBrandController::class, 'duplicate'])->name('client-brands.duplicate');
+            Route::resource('client-brands', ClientBrandController::class)->except(['show']);
+        });
 
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
 
         // Team CMS - Admin
-        Route::post('team-departments/reorder', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'reorder'])->name('team-departments.reorder');
-        Route::post('team-departments/bulk', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'bulk'])->name('team-departments.bulk');
-        Route::post('team-departments/{team_department}/restore', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'restore'])->name('team-departments.restore');
-        Route::post('team-departments/{team_department}/toggle-status', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'toggleStatus'])->name('team-departments.toggle-status');
-        Route::resource('team-departments', \App\Http\Controllers\Admin\TeamDepartmentController::class)->except(['show']);
+        Route::middleware('can:view_team')->group(function () {
+            Route::post('team-departments/reorder', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'reorder'])->name('team-departments.reorder');
+            Route::post('team-departments/bulk', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'bulk'])->name('team-departments.bulk');
+            Route::post('team-departments/{team_department}/restore', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'restore'])->name('team-departments.restore');
+            Route::post('team-departments/{team_department}/toggle-status', [\App\Http\Controllers\Admin\TeamDepartmentController::class, 'toggleStatus'])->name('team-departments.toggle-status');
+            Route::resource('team-departments', \App\Http\Controllers\Admin\TeamDepartmentController::class)->except(['show']);
 
-        Route::post('team-members/reorder', [\App\Http\Controllers\Admin\TeamMemberController::class, 'reorder'])->name('team-members.reorder');
-        Route::post('team-members/bulk', [\App\Http\Controllers\Admin\TeamMemberController::class, 'bulk'])->name('team-members.bulk');
-        Route::post('team-members/{team_member}/restore', [\App\Http\Controllers\Admin\TeamMemberController::class, 'restore'])->name('team-members.restore');
-        Route::post('team-members/{team_member}/toggle-status', [\App\Http\Controllers\Admin\TeamMemberController::class, 'toggleStatus'])->name('team-members.toggle-status');
-        Route::post('team-members/{team_member}/duplicate', [\App\Http\Controllers\Admin\TeamMemberController::class, 'duplicate'])->name('team-members.duplicate');
-        Route::resource('team-members', \App\Http\Controllers\Admin\TeamMemberController::class)->except(['show']);
+            Route::post('team-members/reorder', [\App\Http\Controllers\Admin\TeamMemberController::class, 'reorder'])->name('team-members.reorder');
+            Route::post('team-members/bulk', [\App\Http\Controllers\Admin\TeamMemberController::class, 'bulk'])->name('team-members.bulk');
+            Route::post('team-members/{team_member}/restore', [\App\Http\Controllers\Admin\TeamMemberController::class, 'restore'])->name('team-members.restore');
+            Route::post('team-members/{team_member}/toggle-status', [\App\Http\Controllers\Admin\TeamMemberController::class, 'toggleStatus'])->name('team-members.toggle-status');
+            Route::post('team-members/{team_member}/duplicate', [\App\Http\Controllers\Admin\TeamMemberController::class, 'duplicate'])->name('team-members.duplicate');
+            Route::resource('team-members', \App\Http\Controllers\Admin\TeamMemberController::class)->except(['show']);
 
-        // Nested resource actions for social links, skills and certifications
-        Route::post('team-members/{team_member}/social-links', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'store'])->name('team-members.social-links.store');
-        Route::put('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'update'])->name('team-social-links.update');
-        Route::delete('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'destroy'])->name('team-social-links.destroy');
-        Route::post('team-social-links/reorder', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'reorder'])->name('team-social-links.reorder');
+            // Nested resource actions for social links, skills and certifications
+            Route::post('team-members/{team_member}/social-links', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'store'])->name('team-members.social-links.store');
+            Route::put('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'update'])->name('team-social-links.update');
+            Route::delete('team-social-links/{team_social_link}', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'destroy'])->name('team-social-links.destroy');
+            Route::post('team-social-links/reorder', [\App\Http\Controllers\Admin\TeamSocialLinkController::class, 'reorder'])->name('team-social-links.reorder');
 
-        Route::post('team-members/{team_member}/skills', [\App\Http\Controllers\Admin\TeamSkillController::class, 'store'])->name('team-members.skills.store');
-        Route::put('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'update'])->name('team-skills.update');
-        Route::delete('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'destroy'])->name('team-skills.destroy');
-        Route::post('team-skills/reorder', [\App\Http\Controllers\Admin\TeamSkillController::class, 'reorder'])->name('team-skills.reorder');
+            Route::post('team-members/{team_member}/skills', [\App\Http\Controllers\Admin\TeamSkillController::class, 'store'])->name('team-members.skills.store');
+            Route::put('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'update'])->name('team-skills.update');
+            Route::delete('team-skills/{team_skill}', [\App\Http\Controllers\Admin\TeamSkillController::class, 'destroy'])->name('team-skills.destroy');
+            Route::post('team-skills/reorder', [\App\Http\Controllers\Admin\TeamSkillController::class, 'reorder'])->name('team-skills.reorder');
 
-        Route::post('team-members/{team_member}/certifications', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'store'])->name('team-members.certifications.store');
-        Route::put('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'update'])->name('team-certifications.update');
-        Route::delete('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'destroy'])->name('team-certifications.destroy');
-        Route::post('team-certifications/reorder', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'reorder'])->name('team-certifications.reorder');
+            Route::post('team-members/{team_member}/certifications', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'store'])->name('team-members.certifications.store');
+            Route::put('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'update'])->name('team-certifications.update');
+            Route::delete('team-certifications/{team_certification}', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'destroy'])->name('team-certifications.destroy');
+            Route::post('team-certifications/reorder', [\App\Http\Controllers\Admin\TeamCertificationController::class, 'reorder'])->name('team-certifications.reorder');
+        });
 
         // Careers CMS - Admin
-        Route::prefix('careers')->name('careers.')->group(function () {
-            // Job Departments
-            Route::post('departments/bulk-delete', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'bulkDelete'])->name('departments.bulk-delete');
-            Route::post('departments/bulk-status', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'bulkStatus'])->name('departments.bulk-status');
-            Route::post('departments/{job_department}/restore', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'restore'])->name('departments.restore');
-            Route::post('departments/{job_department}/toggle-status', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'toggleStatus'])->name('departments.toggle-status');
-            Route::resource('departments', \App\Http\Controllers\Admin\JobDepartmentController::class)->except(['show']);
+        Route::middleware('can:view_careers')->group(function () {
+            Route::prefix('careers')->name('careers.')->group(function () {
+                // Job Departments
+                Route::post('departments/bulk-delete', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'bulkDelete'])->name('departments.bulk-delete');
+                Route::post('departments/bulk-status', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'bulkStatus'])->name('departments.bulk-status');
+                Route::post('departments/{job_department}/restore', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'restore'])->name('departments.restore');
+                Route::post('departments/{job_department}/toggle-status', [\App\Http\Controllers\Admin\JobDepartmentController::class, 'toggleStatus'])->name('departments.toggle-status');
+                Route::resource('departments', \App\Http\Controllers\Admin\JobDepartmentController::class)->except(['show']);
 
-            // Job Categories
-            Route::post('categories/bulk-delete', [\App\Http\Controllers\Admin\JobCategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
-            Route::post('categories/bulk-status', [\App\Http\Controllers\Admin\JobCategoryController::class, 'bulkStatus'])->name('categories.bulk-status');
-            Route::post('categories/{job_category}/restore', [\App\Http\Controllers\Admin\JobCategoryController::class, 'restore'])->name('categories.restore');
-            Route::post('categories/{job_category}/toggle-status', [\App\Http\Controllers\Admin\JobCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
-            Route::resource('categories', \App\Http\Controllers\Admin\JobCategoryController::class)->except(['show']);
+                // Job Categories
+                Route::post('categories/bulk-delete', [\App\Http\Controllers\Admin\JobCategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
+                Route::post('categories/bulk-status', [\App\Http\Controllers\Admin\JobCategoryController::class, 'bulkStatus'])->name('categories.bulk-status');
+                Route::post('categories/{job_category}/restore', [\App\Http\Controllers\Admin\JobCategoryController::class, 'restore'])->name('categories.restore');
+                Route::post('categories/{job_category}/toggle-status', [\App\Http\Controllers\Admin\JobCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+                Route::resource('categories', \App\Http\Controllers\Admin\JobCategoryController::class)->except(['show']);
 
-            // Job Locations
-            Route::post('locations/bulk-delete', [\App\Http\Controllers\Admin\JobLocationController::class, 'bulkDelete'])->name('locations.bulk-delete');
-            Route::post('locations/bulk-status', [\App\Http\Controllers\Admin\JobLocationController::class, 'bulkStatus'])->name('locations.bulk-status');
-            Route::post('locations/{job_location}/restore', [\App\Http\Controllers\Admin\JobLocationController::class, 'restore'])->name('locations.restore');
-            Route::post('locations/{job_location}/toggle-status', [\App\Http\Controllers\Admin\JobLocationController::class, 'toggleStatus'])->name('locations.toggle-status');
-            Route::resource('locations', \App\Http\Controllers\Admin\JobLocationController::class)->except(['show']);
+                // Job Locations
+                Route::post('locations/bulk-delete', [\App\Http\Controllers\Admin\JobLocationController::class, 'bulkDelete'])->name('locations.bulk-delete');
+                Route::post('locations/bulk-status', [\App\Http\Controllers\Admin\JobLocationController::class, 'bulkStatus'])->name('locations.bulk-status');
+                Route::post('locations/{job_location}/restore', [\App\Http\Controllers\Admin\JobLocationController::class, 'restore'])->name('locations.restore');
+                Route::post('locations/{job_location}/toggle-status', [\App\Http\Controllers\Admin\JobLocationController::class, 'toggleStatus'])->name('locations.toggle-status');
+                Route::resource('locations', \App\Http\Controllers\Admin\JobLocationController::class)->except(['show']);
 
-            // Job Openings
-            Route::post('jobs/bulk-delete', [\App\Http\Controllers\Admin\JobOpeningController::class, 'bulkDelete'])->name('jobs.bulk-delete');
-            Route::post('jobs/bulk-status', [\App\Http\Controllers\Admin\JobOpeningController::class, 'bulkStatus'])->name('jobs.bulk-status');
-            Route::post('jobs/{job}/restore', [\App\Http\Controllers\Admin\JobOpeningController::class, 'restore'])->name('jobs.restore');
-            Route::post('jobs/{job}/toggle-status', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleStatus'])->name('jobs.toggle-status');
-            Route::post('jobs/{job}/toggle-featured', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleFeatured'])->name('jobs.toggle-featured');
-            Route::post('jobs/{job}/toggle-homepage-featured', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleHomepageFeatured'])->name('jobs.toggle-homepage-featured');
-            Route::post('jobs/{job}/duplicate', [\App\Http\Controllers\Admin\JobOpeningController::class, 'duplicate'])->name('jobs.duplicate');
-            Route::resource('jobs', \App\Http\Controllers\Admin\JobOpeningController::class);
+                // Job Openings
+                Route::post('jobs/bulk-delete', [\App\Http\Controllers\Admin\JobOpeningController::class, 'bulkDelete'])->name('jobs.bulk-delete');
+                Route::post('jobs/bulk-status', [\App\Http\Controllers\Admin\JobOpeningController::class, 'bulkStatus'])->name('jobs.bulk-status');
+                Route::post('jobs/{job}/restore', [\App\Http\Controllers\Admin\JobOpeningController::class, 'restore'])->name('jobs.restore');
+                Route::post('jobs/{job}/toggle-status', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleStatus'])->name('jobs.toggle-status');
+                Route::post('jobs/{job}/toggle-featured', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleFeatured'])->name('jobs.toggle-featured');
+                Route::post('jobs/{job}/toggle-homepage-featured', [\App\Http\Controllers\Admin\JobOpeningController::class, 'toggleHomepageFeatured'])->name('jobs.toggle-homepage-featured');
+                Route::post('jobs/{job}/duplicate', [\App\Http\Controllers\Admin\JobOpeningController::class, 'duplicate'])->name('jobs.duplicate');
+                Route::resource('jobs', \App\Http\Controllers\Admin\JobOpeningController::class);
 
-            // Job Applications
-            Route::post('applications/bulk-delete', [\App\Http\Controllers\Admin\JobApplicationController::class, 'bulkDelete'])->name('applications.bulk-delete');
-            Route::post('applications/bulk-status', [\App\Http\Controllers\Admin\JobApplicationController::class, 'bulkStatus'])->name('applications.bulk-status');
-            Route::post('applications/{job_application}/restore', [\App\Http\Controllers\Admin\JobApplicationController::class, 'restore'])->name('applications.restore');
-            Route::post('applications/{job_application}/toggle-status', [\App\Http\Controllers\Admin\JobApplicationController::class, 'toggleStatus'])->name('applications.toggle-status');
-            Route::resource('applications', \App\Http\Controllers\Admin\JobApplicationController::class)->except(['edit']);
+                // Job Applications
+                Route::post('applications/bulk-delete', [\App\Http\Controllers\Admin\JobApplicationController::class, 'bulkDelete'])->name('applications.bulk-delete');
+                Route::post('applications/bulk-status', [\App\Http\Controllers\Admin\JobApplicationController::class, 'bulkStatus'])->name('applications.bulk-status');
+                Route::post('applications/{job_application}/restore', [\App\Http\Controllers\Admin\JobApplicationController::class, 'restore'])->name('applications.restore');
+                Route::post('applications/{job_application}/toggle-status', [\App\Http\Controllers\Admin\JobApplicationController::class, 'toggleStatus'])->name('applications.toggle-status');
+                Route::resource('applications', \App\Http\Controllers\Admin\JobApplicationController::class)->except(['edit']);
+            });
         });
 
         // Contact CMS - Admin (Module 23)
-        Route::prefix('contacts')->name('contacts.')->group(function () {
-            // Categories
-            Route::post('categories/bulk-delete', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
-            Route::post('categories/bulk-status', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'bulkStatus'])->name('categories.bulk-status');
-            Route::post('categories/{category}/restore', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'restore'])->name('categories.restore');
-            Route::post('categories/{category}/toggle-status', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
-            Route::resource('categories', \App\Http\Controllers\Admin\ContactCategoryController::class)->except(['show']);
+        Route::middleware('can:view_contact')->group(function () {
+            Route::prefix('contacts')->name('contacts.')->group(function () {
+                // Categories
+                Route::post('categories/bulk-delete', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'bulkDelete'])->name('categories.bulk-delete');
+                Route::post('categories/bulk-status', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'bulkStatus'])->name('categories.bulk-status');
+                Route::post('categories/{category}/restore', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'restore'])->name('categories.restore');
+                Route::post('categories/{category}/toggle-status', [\App\Http\Controllers\Admin\ContactCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+                Route::resource('categories', \App\Http\Controllers\Admin\ContactCategoryController::class)->except(['show']);
 
-            // Inquiries (Contacts)
-            Route::post('inquiries/bulk-delete', [\App\Http\Controllers\Admin\ContactController::class, 'bulkDelete'])->name('inquiries.bulk-delete');
-            Route::post('inquiries/bulk-status', [\App\Http\Controllers\Admin\ContactController::class, 'bulkStatus'])->name('inquiries.bulk-status');
-            Route::post('inquiries/bulk-assign', [\App\Http\Controllers\Admin\ContactController::class, 'bulkAssign'])->name('inquiries.bulk-assign');
-            Route::post('inquiries/{contact}/restore', [\App\Http\Controllers\Admin\ContactController::class, 'restore'])->name('inquiries.restore');
-            Route::post('inquiries/{contact}/assign', [\App\Http\Controllers\Admin\ContactController::class, 'assign'])->name('inquiries.assign');
-            Route::post('inquiries/{contact}/status', [\App\Http\Controllers\Admin\ContactController::class, 'updateStatus'])->name('inquiries.status');
-            Route::post('inquiries/{contact}/follow-up', [\App\Http\Controllers\Admin\ContactController::class, 'setFollowUp'])->name('inquiries.follow-up');
-            Route::post('inquiries/{contact}/toggle-read', [\App\Http\Controllers\Admin\ContactController::class, 'toggleRead'])->name('inquiries.toggle-read');
-            
-            // Nested replies & notes
-            Route::post('inquiries/{contact}/reply', [\App\Http\Controllers\Admin\ContactReplyController::class, 'store'])->name('inquiries.reply');
-            Route::post('inquiries/{contact}/note', [\App\Http\Controllers\Admin\ContactNoteController::class, 'store'])->name('inquiries.note');
+                // Inquiries (Contacts)
+                Route::post('inquiries/bulk-delete', [\App\Http\Controllers\Admin\ContactController::class, 'bulkDelete'])->name('inquiries.bulk-delete');
+                Route::post('inquiries/bulk-status', [\App\Http\Controllers\Admin\ContactController::class, 'bulkStatus'])->name('inquiries.bulk-status');
+                Route::post('inquiries/bulk-assign', [\App\Http\Controllers\Admin\ContactController::class, 'bulkAssign'])->name('inquiries.bulk-assign');
+                Route::post('inquiries/{contact}/restore', [\App\Http\Controllers\Admin\ContactController::class, 'restore'])->name('inquiries.restore');
+                Route::post('inquiries/{contact}/assign', [\App\Http\Controllers\Admin\ContactController::class, 'assign'])->name('inquiries.assign');
+                Route::post('inquiries/{contact}/status', [\App\Http\Controllers\Admin\ContactController::class, 'updateStatus'])->name('inquiries.status');
+                Route::post('inquiries/{contact}/follow-up', [\App\Http\Controllers\Admin\ContactController::class, 'setFollowUp'])->name('inquiries.follow-up');
+                Route::post('inquiries/{contact}/toggle-read', [\App\Http\Controllers\Admin\ContactController::class, 'toggleRead'])->name('inquiries.toggle-read');
+                
+                // Nested replies & notes
+                Route::post('inquiries/{contact}/reply', [\App\Http\Controllers\Admin\ContactReplyController::class, 'store'])->name('inquiries.reply');
+                Route::post('inquiries/{contact}/note', [\App\Http\Controllers\Admin\ContactNoteController::class, 'store'])->name('inquiries.note');
 
-            Route::resource('inquiries', \App\Http\Controllers\Admin\ContactController::class);
+                Route::resource('inquiries', \App\Http\Controllers\Admin\ContactController::class);
+            });
         });
 
         // Newsletter CMS - Admin
-        Route::prefix('newsletter')->name('newsletter.')->group(function () {
-            // Subscribers
-            Route::post('subscribers/bulk-delete', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'bulkDelete'])->name('subscribers.bulk-delete');
-            Route::post('subscribers/bulk-status', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'bulkStatus'])->name('subscribers.bulk-status');
-            Route::post('subscribers/{subscriber}/toggle-status', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'toggleStatus'])->name('subscribers.toggle-status');
-            Route::resource('subscribers', \App\Http\Controllers\Admin\NewsletterSubscriberController::class);
+        Route::middleware('can:view_newsletter')->group(function () {
+            Route::prefix('newsletter')->name('newsletter.')->group(function () {
+                // Subscribers
+                Route::post('subscribers/bulk-delete', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'bulkDelete'])->name('subscribers.bulk-delete');
+                Route::post('subscribers/bulk-status', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'bulkStatus'])->name('subscribers.bulk-status');
+                Route::post('subscribers/{subscriber}/toggle-status', [\App\Http\Controllers\Admin\NewsletterSubscriberController::class, 'toggleStatus'])->name('subscribers.toggle-status');
+                Route::resource('subscribers', \App\Http\Controllers\Admin\NewsletterSubscriberController::class);
 
-            // Groups
-            Route::post('groups/bulk-delete', [\App\Http\Controllers\Admin\NewsletterGroupController::class, 'bulkDelete'])->name('groups.bulk-delete');
-            Route::post('groups/{group}/toggle-status', [\App\Http\Controllers\Admin\NewsletterGroupController::class, 'toggleStatus'])->name('groups.toggle-status');
-            Route::resource('groups', \App\Http\Controllers\Admin\NewsletterGroupController::class);
+                // Groups
+                Route::post('groups/bulk-delete', [\App\Http\Controllers\Admin\NewsletterGroupController::class, 'bulkDelete'])->name('groups.bulk-delete');
+                Route::post('groups/{group}/toggle-status', [\App\Http\Controllers\Admin\NewsletterGroupController::class, 'toggleStatus'])->name('groups.toggle-status');
+                Route::resource('groups', \App\Http\Controllers\Admin\NewsletterGroupController::class);
 
-            // Templates
-            Route::post('templates/bulk-delete', [\App\Http\Controllers\Admin\NewsletterCampaignTemplateController::class, 'bulkDelete'])->name('templates.bulk-delete');
-            Route::resource('templates', \App\Http\Controllers\Admin\NewsletterCampaignTemplateController::class);
+                // Templates
+                Route::post('templates/bulk-delete', [\App\Http\Controllers\Admin\NewsletterCampaignTemplateController::class, 'bulkDelete'])->name('templates.bulk-delete');
+                Route::resource('templates', \App\Http\Controllers\Admin\NewsletterCampaignTemplateController::class);
 
-            // Campaigns
-            Route::post('campaigns/bulk-delete', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'bulkDelete'])->name('campaigns.bulk-delete');
-            Route::post('campaigns/{campaign}/send', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'send'])->name('campaigns.send');
-            Route::get('campaigns/{campaign}/preview', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'preview'])->name('campaigns.preview');
-            Route::get('campaigns/{campaign}/logs', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'logs'])->name('campaigns.logs');
-            Route::resource('campaigns', \App\Http\Controllers\Admin\NewsletterCampaignController::class);
+                // Campaigns
+                Route::post('campaigns/bulk-delete', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'bulkDelete'])->name('campaigns.bulk-delete');
+                Route::post('campaigns/{campaign}/send', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'send'])->name('campaigns.send');
+                Route::get('campaigns/{campaign}/preview', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'preview'])->name('campaigns.preview');
+                Route::get('campaigns/{campaign}/logs', [\App\Http\Controllers\Admin\NewsletterCampaignController::class, 'logs'])->name('campaigns.logs');
+                Route::resource('campaigns', \App\Http\Controllers\Admin\NewsletterCampaignController::class);
+            });
         });
 
         // SEO CMS - Admin
-        Route::prefix('seo')->name('seo.')->group(function () {
-            // Settings
-            Route::get('settings', [\App\Http\Controllers\Admin\SeoSettingController::class, 'edit'])->name('settings.edit');
-            Route::put('settings', [\App\Http\Controllers\Admin\SeoSettingController::class, 'update'])->name('settings.update');
+        Route::middleware('can:view_seo')->group(function () {
+            Route::prefix('seo')->name('seo.')->group(function () {
+                // Settings
+                Route::get('settings', [\App\Http\Controllers\Admin\SeoSettingController::class, 'edit'])->name('settings.edit');
+                Route::put('settings', [\App\Http\Controllers\Admin\SeoSettingController::class, 'update'])->name('settings.update');
 
-            // Pages
-            Route::post('pages/{page}/clone', [\App\Http\Controllers\Admin\SeoPageController::class, 'clone'])->name('pages.clone');
-            Route::resource('pages', \App\Http\Controllers\Admin\SeoPageController::class);
+                // Pages
+                Route::post('pages/{page}/clone', [\App\Http\Controllers\Admin\SeoPageController::class, 'clone'])->name('pages.clone');
+                Route::resource('pages', \App\Http\Controllers\Admin\SeoPageController::class);
 
-            // Redirects
-            Route::get('redirects/test', [\App\Http\Controllers\Admin\SeoRedirectController::class, 'test'])->name('redirects.test');
-            Route::resource('redirects', \App\Http\Controllers\Admin\SeoRedirectController::class);
+                // Redirects
+                Route::get('redirects/test', [\App\Http\Controllers\Admin\SeoRedirectController::class, 'test'])->name('redirects.test');
+                Route::resource('redirects', \App\Http\Controllers\Admin\SeoRedirectController::class);
 
-            // Structured Data
-            Route::resource('structured-data', \App\Http\Controllers\Admin\SeoStructuredDataController::class);
+                // Structured Data
+                Route::resource('structured-data', \App\Http\Controllers\Admin\SeoStructuredDataController::class);
 
-            // Sitemaps
-            Route::get('sitemaps', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'index'])->name('sitemaps.index');
-            Route::post('sitemaps/generate', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'generate'])->name('sitemaps.generate');
+                // Sitemaps
+                Route::get('sitemaps', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'index'])->name('sitemaps.index');
+                Route::post('sitemaps/generate', [\App\Http\Controllers\Admin\SeoSitemapController::class, 'generate'])->name('sitemaps.generate');
+            });
         });
 
         // Roles & Permissions CMS - Admin
-        Route::prefix('rbac')->group(function () {
+        Route::middleware('can:view_roles')->prefix('rbac')->group(function () {
             Route::get('dashboard', function () {
                 return view('admin.rbac.dashboard');
             })->name('rbac.dashboard');
