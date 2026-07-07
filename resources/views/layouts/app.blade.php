@@ -3,25 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  @php($aboutSeo = about_cms()['section'] ?? null)
-  <meta name="description" content="@yield('meta_description', $aboutSeo?->meta_description ?: 'Fancy Decorators delivers luxury construction, premium residential and commercial builds, upscale renovations, and bespoke interior design across the metropolitan area.')" />
-  <meta name="keywords" content="@yield('meta_keywords', $aboutSeo?->meta_keywords ?: 'luxury construction, premium builder, residential construction, commercial construction, interior design, home renovation, elite contractors, custom build services')" />
-  <meta name="robots" content="index, follow" />
-  <title>@yield('title', $aboutSeo?->meta_title ?: 'Fancy Decorators | Luxury Construction Company')</title>
-  <meta name="theme-color" content="#d4af5f" />
-  <meta property="og:title" content="@yield('og_title', 'Fancy Decorators | Luxury Construction Company')" />
-  <meta property="og:description" content="@yield('og_description', 'Premium construction and design services for luxury residential, commercial, and interior projects. Turn your vision into award-worthy spaces.')" />
-  <meta property="og:type" content="@yield('og_type', 'website')" />
-  <meta property="og:url" content="@yield('og_url', request()->url())" />
-  <meta property="og:image" content="@yield('og_image', $aboutSeo?->ogImage ? image_url($aboutSeo->ogImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')" />
-  <meta property="og:site_name" content="Fancy Decorators" />
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="@yield('twitter_title', 'Fancy Decorators | Luxury Construction Company')" />
-  <meta name="twitter:description" content="@yield('twitter_description', 'Premium construction and design services for luxury residential, commercial, and interior projects.')" />
-  <meta name="twitter:image" content="@yield('twitter_image', $aboutSeo?->ogImage ? image_url($aboutSeo->ogImage) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')" />
-  <meta name="twitter:site" content="@FancyDecorators" />
-  <link rel="canonical" href="@yield('canonical', request()->url())" />
+  <meta name="description" content="@yield('meta_description', $seo->meta_description ?? '')" />
+  <meta name="keywords" content="@yield('meta_keywords', $seo->meta_keywords ?? '')" />
+  <meta name="robots" content="@yield('robots', $seo->robots ?? 'index, follow')" />
+  <title>@yield('title', $seo->title ?? 'Fancy Decorators | Luxury Construction')</title>
+  <meta name="theme-color" content="{{ $seo->theme_color ?? '#d4af5f' }}" />
+  <meta property="og:title" content="@yield('og_title', $seo->og_title ?? '')" />
+  <meta property="og:description" content="@yield('og_description', $seo->og_description ?? '')" />
+  <meta property="og:type" content="@yield('og_type', $seo->og_type ?? 'website')" />
+  <meta property="og:url" content="@yield('og_url', $seo->canonical_url ?? request()->url())" />
+  <meta property="og:image" content="@yield('og_image', $seo->og_image ?? '')" />
+  <meta property="og:site_name" content="{{ $seo->site_name ?? 'Fancy Decorators' }}" />
+  <meta name="twitter:card" content="{{ $seo->twitter_card ?? 'summary_large_image' }}" />
+  <meta name="twitter:title" content="@yield('twitter_title', $seo->og_title ?? '')" />
+  <meta name="twitter:description" content="@yield('twitter_description', $seo->og_description ?? '')" />
+  <meta name="twitter:image" content="@yield('twitter_image', $seo->og_image ?? '')" />
+  <meta name="twitter:site" content="@{{ $seo->site_name ?? 'FancyDecorators' }}" />
+  <link rel="canonical" href="@yield('canonical', $seo->canonical_url ?? request()->url())" />
   @yield('schema')
+  {!! $seo->structured_data ?? '' !!}
+  {!! $seo->custom_head_scripts ?? '' !!}
   <script type="application/ld+json">
   {
     "@@context": "https://schema.org",
@@ -161,5 +162,6 @@
       {!! theme_setting()->safeCustomJs() !!}
     </script>
   @endif
+  {!! $seo->custom_footer_scripts ?? '' !!}
 </body>
 </html>

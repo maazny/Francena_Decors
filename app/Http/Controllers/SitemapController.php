@@ -2,45 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BlogPost;
-use App\Models\Service;
-use App\Models\Project;
-use App\Models\TeamMember;
+use App\Services\SeoSitemapService;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Cache;
 
 class SitemapController extends Controller
 {
+    protected SeoSitemapService $sitemapService;
+
+    public function __construct(SeoSitemapService $sitemapService)
+    {
+        $this->sitemapService = $sitemapService;
+    }
+
     /**
-     * Generate dynamic XML sitemap.
+     * Display centralized dynamic XML sitemap.
      */
     public function index(): Response
     {
-        $posts = BlogPost::where('status', true)
-            ->where('published_at', '<=', now())
-            ->orderBy('updated_at', 'desc')
-            ->get();
+        $xml = Cache::remember('seo_sitemap_xml', 86400, function () {
+            return $this->sitemapService->generateXml();
+        });
 
-        $services = Service::active()
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-        $projects = Project::published()
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-        $teamMembers = TeamMember::active()
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-        $jobs = \App\Models\JobOpening::active()
-            ->published()
-            ->orderBy('updated_at', 'desc')
-            ->get();
-
-        $content = view('sitemap', compact('posts', 'services', 'projects', 'teamMembers', 'jobs'))->render();
-
-        return response($content, 200, [
-            'Content-Type' => 'application/xml'
+        return response($xml, 200, [
+            'Content-Type' => 'application/xml',
         ]);
     }
 }

@@ -67,5 +67,7 @@ class AppServiceProvider extends ServiceProvider
                 $view->with('headerLogo', new HeaderLogo);
             }
         });
+
+        View::composer('layouts.app', \App\View\Composers\SeoViewComposer::class);
     }
 }
