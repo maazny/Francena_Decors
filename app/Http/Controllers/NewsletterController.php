@@ -140,7 +140,7 @@ class NewsletterController extends Controller
         }
 
         $subscriber = NewsletterSubscriber::where('unsubscribe_token', $token)->firstOrFail();
-        $groups = NewsletterGroup::active()->ordered()->get();
+        $groups = $this->newsletterService->getCachedGroups();
 
         return view('frontend.newsletter.preferences', compact('subscriber', 'groups'));
     }

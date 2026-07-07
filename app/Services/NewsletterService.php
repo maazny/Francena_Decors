@@ -6,15 +6,22 @@ use App\Models\NewsletterSubscriber;
 use App\Models\NewsletterGroup;
 use App\Models\NewsletterCampaign;
 use App\Models\NewsletterCampaignLog;
+use App\Models\NewsletterCampaignTemplate;
 use App\Enums\SubscriptionStatus;
 use App\Enums\SubscriberSource;
 use App\Enums\CampaignStatus;
 use App\Mail\NewsletterCampaignMail;
 use App\Mail\VerifySubscriptionMail;
-use App\Jobs\SendNewsletterCampaignJob;
+use App\Events\SubscriberRegistered;
+use App\Events\SubscriberVerified;
+use App\Events\SubscriberUnsubscribed;
+use App\Events\CampaignCreated;
+use App\Events\CampaignScheduled;
+use App\Events\CampaignStarted;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Carbon\Carbon;
 
 class NewsletterService
@@ -78,14 +85,8 @@ class NewsletterService
             $subscriber->groups()->sync($data['groups']);
         }
 
-        if ($doubleOptIn) {
-            // Send verification email
-            try {
-                Mail::to($subscriber->email)->send(new VerifySubscriptionMail($subscriber));
-            } catch (\Exception $e) {
-                Log::error("Failed to send newsletter verification email to {$subscriber->email}: " . $e->getMessage());
-            }
-        }
+        // Fire event
+        event(new SubscriberRegistered($subscriber));
 
         return $subscriber;
     }
@@ -110,6 +111,8 @@ class NewsletterService
             'verified_at' => Carbon::now(),
             'subscribed_at' => Carbon::now(),
         ]);
+
+        event(new SubscriberVerified($subscriber));
 
         return $subscriber;
     }
@@ -143,6 +146,8 @@ class NewsletterService
             'unsubscribed_at' => Carbon::now(),
             'tags' => $currentTags,
         ]);
+
+        event(new SubscriberUnsubscribed($subscriber, $reason));
 
         return true;
     }
@@ -187,6 +192,8 @@ class NewsletterService
             $subscriber->groups()->detach();
         }
 
+        event(new SubscriberVerified($subscriber)); // Fire stats update
+
         return true;
     }
 
@@ -199,82 +206,26 @@ class NewsletterService
             'status' => CampaignStatus::SENDING,
         ]);
 
-        // Dispatch background job
-        SendNewsletterCampaignJob::dispatch($campaign, $groupId);
+        event(new CampaignStarted($campaign, $groupId));
     }
 
     /**
-     * Actually send the campaign emails (typically run from the job).
+     * Return the cached active subscriber cohorts.
      */
-    public function sendCampaignNow(NewsletterCampaign $campaign, ?int $groupId = null): void
+    public function getCachedGroups()
     {
-        try {
-            // Get target subscribers
-            $query = NewsletterSubscriber::active();
+        return Cache::rememberForever('newsletter_active_groups', function () {
+            return NewsletterGroup::active()->ordered()->get();
+        });
+    }
 
-            if ($groupId) {
-                $query->whereHas('groups', function ($q) use ($groupId) {
-                    $q->where('newsletter_groups.id', $groupId);
-                });
-            }
-
-            $subscribers = $query->get();
-
-            if ($subscribers->isEmpty()) {
-                $campaign->update([
-                    'status' => CampaignStatus::SENT,
-                    'sent_at' => Carbon::now(),
-                ]);
-                return;
-            }
-
-            foreach ($subscribers as $subscriber) {
-                // Check if already sent to avoid duplicates
-                $log = NewsletterCampaignLog::where('campaign_id', $campaign->id)
-                    ->where('subscriber_id', $subscriber->id)
-                    ->first();
-
-                if ($log && $log->delivery_status === 'sent') {
-                    continue;
-                }
-
-                if (!$log) {
-                    $log = NewsletterCampaignLog::create([
-                        'campaign_id' => $campaign->id,
-                        'subscriber_id' => $subscriber->id,
-                        'delivery_status' => 'pending',
-                    ]);
-                }
-
-                try {
-                    // Send Email
-                    Mail::to($subscriber->email)->send(new NewsletterCampaignMail($campaign, $subscriber));
-
-                    $log->update([
-                        'delivery_status' => 'sent',
-                        'sent_at' => Carbon::now(),
-                    ]);
-                } catch (\Exception $e) {
-                    Log::error("Failed to send campaign {$campaign->id} to {$subscriber->email}: " . $e->getMessage());
-
-                    $log->update([
-                        'delivery_status' => 'failed',
-                        'failed' => true,
-                        'error_message' => $e->getMessage(),
-                    ]);
-                }
-            }
-
-            $campaign->update([
-                'status' => CampaignStatus::SENT,
-                'sent_at' => Carbon::now(),
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error("Error processing campaign {$campaign->id}: " . $e->getMessage());
-            $campaign->update([
-                'status' => CampaignStatus::CANCELLED,
-            ]);
-        }
+    /**
+     * Return the cached email templates.
+     */
+    public function getCachedTemplates()
+    {
+        return Cache::rememberForever('newsletter_templates', function () {
+            return NewsletterCampaignTemplate::orderBy('name', 'asc')->get();
+        });
     }
 }

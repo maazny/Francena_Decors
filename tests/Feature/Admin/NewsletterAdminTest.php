@@ -214,7 +214,7 @@ class NewsletterAdminTest extends TestCase
         $this->assertEquals(CampaignStatus::SENDING, $campaign->fresh()->status);
 
         // Assert job was dispatched
-        Queue::assertPushed(\App\Jobs\SendNewsletterCampaignJob::class, function ($job) use ($campaign) {
+        Queue::assertPushed(\App\Jobs\SendCampaignJob::class, function ($job) use ($campaign) {
             return $job->campaign->id === $campaign->id;
         });
     }
