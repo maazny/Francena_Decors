@@ -364,6 +364,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Roles & Permissions CMS - Admin
         Route::prefix('rbac')->group(function () {
+            Route::get('dashboard', function () {
+                return view('admin.rbac.dashboard');
+            })->name('rbac.dashboard');
+
             Route::get('roles/{role}/permissions', [\App\Http\Controllers\Admin\RoleController::class, 'editPermissions'])->name('roles.permissions.edit');
             Route::put('roles/{role}/permissions', [\App\Http\Controllers\Admin\RoleController::class, 'updatePermissions'])->name('roles.permissions.update');
             

@@ -155,4 +155,28 @@ class RbacModuleTest extends TestCase
         $this->assertArrayHasKey('roles', $matrix);
         $this->assertArrayHasKey('matrix', $matrix);
     }
+
+    /**
+     * Test admin can access RBAC dashboard.
+     */
+    public function test_admin_can_access_rbac_dashboard(): void
+    {
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)
+            ->get(route('admin.rbac.dashboard'));
+        $response->assertStatus(200);
+    }
+
+    /**
+     * Test admin can access roles index.
+     */
+    public function test_admin_can_access_roles_index(): void
+    {
+        $admin = User::factory()->create();
+
+        $response = $this->actingAs($admin)
+            ->get(route('admin.roles.index'));
+        $response->assertStatus(200);
+    }
 }
