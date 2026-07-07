@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 
 class User extends Authenticatable
 {
@@ -88,10 +89,15 @@ class User extends Authenticatable
      */
     public function hasRole(string|array $role): bool
     {
+        $cacheKey = "user_roles:{$this->id}";
+        $assignedRoles = Cache::remember($cacheKey, 3600, function () {
+            return $this->roles()->pluck('name')->toArray();
+        });
+
         if (is_array($role)) {
-            return $this->roles()->whereIn('name', $role)->exists();
+            return count(array_intersect($role, $assignedRoles)) > 0;
         }
-        return $this->roles()->where('name', $role)->exists();
+        return in_array($role, $assignedRoles);
     }
 
     /**
@@ -112,14 +118,19 @@ class User extends Authenticatable
             return true;
         }
 
-        // 2. Check direct permission overrides
-        if ($this->directPermissions()->where('name', $permission)->exists()) {
-            return true;
-        }
+        $cacheKey = "user_permissions:{$this->id}";
+        $assignedPermissions = Cache::remember($cacheKey, 3600, function () {
+            // Direct permissions
+            $direct = $this->directPermissions()->pluck('name')->toArray();
+            
+            // Role-based permissions
+            $roleBased = Permission::whereHas('roles', function ($query) {
+                $query->whereIn('roles.id', $this->roles()->pluck('roles.id'));
+            })->pluck('name')->toArray();
 
-        // 3. Check roles permissions linkage
-        return $this->roles()->whereHas('permissions', function ($query) use ($permission) {
-            $query->where('name', $permission);
-        })->exists();
+            return array_unique(array_merge($direct, $roleBased));
+        });
+
+        return in_array($permission, $assignedPermissions);
     }
 }

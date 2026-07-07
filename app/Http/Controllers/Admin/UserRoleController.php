@@ -31,22 +31,42 @@ class UserRoleController extends Controller
     /**
      * Show editor to assign role tiers to user.
      */
-    public function edit(User $user): View
+    public function edit(User $users_role): View
     {
         $roles = Role::all();
-        $userRoles = $user->roles()->pluck('role_id')->toArray();
+        $userRoles = $users_role->roles()->pluck('role_id')->toArray();
 
-        return view('admin.rbac.users.edit', compact('user', 'roles', 'userRoles'));
+        return view('admin.rbac.users.edit', [
+            'user' => $users_role,
+            'roles' => $roles,
+            'userRoles' => $userRoles,
+        ]);
     }
 
-    /**
-     * Synchronize assigned user role tiers.
-     */
-    public function update(AssignRoleRequest $request, User $user): RedirectResponse
+    public function update(AssignRoleRequest $request, User $users_role): RedirectResponse
     {
         $roleIds = $request->input('role_ids', []);
         
-        $this->userRoleService->syncRoles($user, $roleIds);
+        // Self-lockout safeguard prevention
+        if ($users_role->id === auth()->id()) {
+            $currentRoles = $users_role->roles()->pluck('roles.id', 'name')->toArray();
+            
+            if (isset($currentRoles['super_admin'])) {
+                $superAdminId = $currentRoles['super_admin'];
+                if (!in_array($superAdminId, $roleIds)) {
+                    return redirect()->back()->with('error', 'Self-lockout safeguard: You cannot remove the Super Admin role from your own profile.');
+                }
+            }
+
+            if (isset($currentRoles['administrator'])) {
+                $adminId = $currentRoles['administrator'];
+                if (!in_array($adminId, $roleIds)) {
+                    return redirect()->back()->with('error', 'Self-lockout safeguard: You cannot remove the Administrator role from your own profile.');
+                }
+            }
+        }
+        
+        $this->userRoleService->syncRoles($users_role, $roleIds);
 
         return redirect()->route('admin.users-roles.index')
             ->with('success', 'User authorization role assignments synchronized successfully.');

@@ -72,5 +72,34 @@ class AppServiceProvider extends ServiceProvider
 
         // Bootstrap Dynamic RBAC Gates
         (new \App\Services\AuthorizationService())->bootstrapGates();
+
+        // Register RBAC Event Listeners
+        \Illuminate\Support\Facades\Event::listen([
+            \App\Events\RoleCreated::class,
+            \App\Events\RoleUpdated::class,
+            \App\Events\RoleDeleted::class,
+            \App\Events\PermissionCreated::class,
+            \App\Events\PermissionUpdated::class,
+            \App\Events\PermissionAssigned::class,
+            \App\Events\UserRoleAssigned::class,
+            \App\Events\UserRoleRemoved::class,
+        ], \App\Listeners\ClearRbacCache::class);
+
+        \Illuminate\Support\Facades\Event::listen([
+            \App\Events\RoleCreated::class,
+            \App\Events\RoleUpdated::class,
+            \App\Events\RoleDeleted::class,
+            \App\Events\PermissionCreated::class,
+            \App\Events\PermissionUpdated::class,
+            \App\Events\PermissionAssigned::class,
+            \App\Events\UserRoleAssigned::class,
+            \App\Events\UserRoleRemoved::class,
+        ], \App\Listeners\RecordRbacActivity::class);
+
+        \Illuminate\Support\Facades\Event::listen([
+            \App\Events\RoleDeleted::class,
+            \App\Events\UserRoleAssigned::class,
+            \App\Events\UserRoleRemoved::class,
+        ], \App\Listeners\SendRbacSecurityNotification::class);
     }
 }

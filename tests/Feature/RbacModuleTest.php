@@ -179,4 +179,58 @@ class RbacModuleTest extends TestCase
             ->get(route('admin.roles.index'));
         $response->assertStatus(200);
     }
+
+    /**
+     * Test self-lockout prevention on staff role sync.
+     */
+    public function test_self_lockout_prevention(): void
+    {
+        $superAdmin = User::factory()->create();
+        $superAdminRole = Role::create([
+            'name' => 'super_admin',
+            'label' => 'Super Administrator',
+            'is_system' => true,
+        ]);
+        $superAdmin->roles()->attach($superAdminRole->id);
+
+        $editorRole = Role::create([
+            'name' => 'editor',
+            'label' => 'Editor User',
+            'is_system' => false,
+        ]);
+
+        // Try to update own roles removing the super_admin role, sending editor role instead
+        $response = $this->actingAs($superAdmin)
+            ->put(route('admin.users-roles.update', $superAdmin->id), [
+                'role_ids' => [$editorRole->id]
+            ]);
+
+        $response->assertSessionHas('error', 'Self-lockout safeguard: You cannot remove the Super Admin role from your own profile.');
+    }
+
+    /**
+     * Test authorization caching and invalidation works.
+     */
+    public function test_authorization_caching_and_invalidation(): void
+    {
+        $user = User::factory()->create();
+        $role = Role::create([
+            'name' => 'editor',
+            'label' => 'Editor',
+            'is_system' => false,
+        ]);
+
+        $user->roles()->attach($role->id);
+
+        // Call hasRole once to cache the result
+        $this->assertTrue($user->hasRole('editor'));
+        $this->assertTrue(\Illuminate\Support\Facades\Cache::has("user_roles:{$user->id}"));
+
+        // Now detach the role using UserRoleService, which dispatches events and clears cache
+        $service = app(\App\Services\UserRoleService::class);
+        $service->removeRole($user, $role->id);
+
+        // Assert cache key is cleared
+        $this->assertFalse(\Illuminate\Support\Facades\Cache::has("user_roles:{$user->id}"));
+    }
 }
