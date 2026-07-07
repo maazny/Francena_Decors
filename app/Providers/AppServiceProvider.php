@@ -29,6 +29,11 @@ class AppServiceProvider extends ServiceProvider
             \App\Services\Newsletter\EmailProviderInterface::class,
             \App\Services\Newsletter\Providers\LaravelMailProvider::class
         );
+
+        $this->app->bind(
+            \App\Contracts\ActivityLogServiceInterface::class,
+            \App\Services\ActivityLogService::class
+        );
     }
 
     /**

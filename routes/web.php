@@ -411,5 +411,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('permission-groups', \App\Http\Controllers\Admin\PermissionGroupController::class);
             Route::resource('users-roles', \App\Http\Controllers\Admin\UserRoleController::class)->only(['index', 'edit', 'update']);
         });
+
+        // Activity Log CMS - Admin (Module 27)
+        Route::middleware('can:view_activity_logs')->prefix('activity-logs')->name('activity-logs.')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\ActivityLogController::class, 'index'])->name('index');
+            Route::get('search', [\App\Http\Controllers\Admin\ActivityLogController::class, 'search'])->name('search');
+            Route::get('filter', [\App\Http\Controllers\Admin\ActivityLogController::class, 'filter'])->name('filter');
+            Route::get('statistics', [\App\Http\Controllers\Admin\ActivityLogController::class, 'statistics'])->name('statistics');
+            Route::get('recent', [\App\Http\Controllers\Admin\ActivityLogController::class, 'recent'])->name('recent');
+            Route::get('user/{user}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'userActivities'])->name('user');
+            Route::get('module/{module}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'moduleActivities'])->name('module');
+            Route::get('export', [\App\Http\Controllers\Admin\ActivityLogController::class, 'export'])->name('export')->middleware('can:export_activity_logs');
+            Route::get('{id}', [\App\Http\Controllers\Admin\ActivityLogController::class, 'show'])->name('show');
+        });
     });
 });
