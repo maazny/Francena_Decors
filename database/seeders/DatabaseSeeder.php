@@ -274,5 +274,17 @@ class DatabaseSeeder extends Seeder
             'status' => true,
             'display_order' => 6,
         ]);
+
+        // Seed RBAC permissions and default roles
+        $this->call(RbacSeeder::class);
+
+        // Assign super_admin role to default admin user
+        $adminUser = User::where('email', 'admin@fancydecorators.test')->first();
+        if ($adminUser) {
+            $superAdminRole = \App\Models\Role::where('name', 'super_admin')->first();
+            if ($superAdminRole) {
+                $adminUser->roles()->syncWithoutDetaching([$superAdminRole->id]);
+            }
+        }
     }
 }

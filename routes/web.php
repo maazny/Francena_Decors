@@ -241,6 +241,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         });
 
         Route::post('logout', [LoginController::class, 'logout'])->name('logout');
+        Route::get('logout', [LoginController::class, 'logout'])->name('logout.get');
 
         // Team CMS - Admin
         Route::middleware('can:view_team')->group(function () {
