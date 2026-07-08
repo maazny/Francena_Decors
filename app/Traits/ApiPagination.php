@@ -78,4 +78,32 @@ trait ApiPagination
             $this->getPaginationMeta($paginator)
         );
     }
+
+    /**
+     * Paginate the query builder dynamically based on requested query parameters.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \Illuminate\Http\Request|null  $request
+     * @return mixed
+     */
+    protected function paginateQuery(\Illuminate\Database\Eloquent\Builder $query, ?\Illuminate\Http\Request $request = null)
+    {
+        $request = $request ?: request();
+        $perPage = (int) $request->input('per_page', config('api.pagination.default_per_page', 15));
+        $maxPerPage = config('api.pagination.max_per_page', 100);
+        $perPage = min($perPage, $maxPerPage);
+
+        // Check if cursor pagination is requested
+        if ($request->has('cursor') || $request->input('pagination_type') === 'cursor') {
+            return $query->cursorPaginate($perPage);
+        }
+
+        // Check if simple pagination is requested
+        if ($request->input('pagination_type') === 'simple') {
+            return $query->simplePaginate($perPage);
+        }
+
+        // Default to LengthAwarePagination
+        return $query->paginate($perPage);
+    }
 }

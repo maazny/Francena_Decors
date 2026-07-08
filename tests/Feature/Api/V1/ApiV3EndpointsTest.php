@@ -108,4 +108,17 @@ class ApiV3EndpointsTest extends TestCase
         $response = $this->getJson('/api/v1/roles/export');
         $response->assertStatus(200);
     }
+
+    /**
+     * Test sparse fieldsets filtering.
+     */
+    public function test_sparse_fieldsets_filtering(): void
+    {
+        Sanctum::actingAs($this->adminUser);
+
+        $response = $this->getJson('/api/v1/users?fields=name');
+        $response->assertStatus(200);
+        $this->assertArrayHasKey('name', $response->json('data.0'));
+        $this->assertArrayNotHasKey('email', $response->json('data.0'));
+    }
 }

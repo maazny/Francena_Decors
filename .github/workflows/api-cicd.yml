@@ -1,0 +1,48 @@
+name: API Integration CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "master", "develop" ]
+  pull_request:
+    branches: [ "main", "master", "develop" ]
+
+jobs:
+  test-suite:
+    runs-on: ubuntu-latest
+
+    services:
+      sqlite:
+        image: alpine
+        ports:
+          - 3306:3306 # Dummy port for reference
+
+    steps:
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: Setup PHP Environment
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Copy Env Configuration
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Composer Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Generate App Secret Key
+        run: php artisan key:generate
+
+      - name: Setup Database and Run Migrations
+        run: |
+          touch database/database.sqlite
+          php artisan migrate --force
+
+      - name: Execute Feature & Unit Tests
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: php artisan test --parallel

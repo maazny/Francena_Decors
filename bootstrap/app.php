@@ -17,7 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->api(append: [
+            \App\Http\Middleware\ApiSecureHeadersMiddleware::class,
+            \App\Http\Middleware\ValidateApiHeadersMiddleware::class,
             \App\Http\Middleware\ApiRequestIdMiddleware::class,
+            \App\Http\Middleware\ApiLoggingMiddleware::class,
             \App\Http\Middleware\ApiExceptionMiddleware::class,
         ]);
     })

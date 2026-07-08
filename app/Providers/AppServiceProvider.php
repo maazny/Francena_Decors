@@ -120,5 +120,14 @@ class AppServiceProvider extends ServiceProvider
         // Register Activity Log Event Subscribers (Module 27)
         \Illuminate\Support\Facades\Event::subscribe(\App\Listeners\AuditModelSubscriber::class);
         \Illuminate\Support\Facades\Event::subscribe(\App\Listeners\AuditAuthSubscriber::class);
+
+        // Register API Rate Limiters
+        \Illuminate\Support\Facades\RateLimiter::for('api', function (\Illuminate\Http\Request $request) {
+            return \Illuminate\Cache\RateLimiting\Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
+        });
+
+        \Illuminate\Support\Facades\RateLimiter::for('api.auth', function (\Illuminate\Http\Request $request) {
+            return \Illuminate\Cache\RateLimiting\Limit::perMinute(10)->by($request->ip());
+        });
     }
 }
