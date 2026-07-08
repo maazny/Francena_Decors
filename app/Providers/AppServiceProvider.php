@@ -44,6 +44,21 @@ class AppServiceProvider extends ServiceProvider
             \App\Contracts\BackupScheduleServiceInterface::class,
             \App\Services\BackupScheduleService::class
         );
+
+        $this->app->bind(
+            \App\Contracts\AnalyticsServiceInterface::class,
+            \App\Services\AnalyticsService::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\ReportServiceInterface::class,
+            \App\Services\ReportService::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\SnapshotServiceInterface::class,
+            \App\Services\SnapshotService::class
+        );
     }
 
     /**

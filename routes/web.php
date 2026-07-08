@@ -450,5 +450,32 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::post('{schedule}/enable', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'enable'])->name('enable');
             Route::post('{schedule}/disable', [\App\Http\Controllers\Admin\BackupScheduleController::class, 'disable'])->name('disable');
         });
+
+        // Analytics CMS - Admin (Module 30)
+        Route::prefix('analytics')->name('analytics.')->group(function () {
+            Route::get('dashboard', [\App\Http\Controllers\Admin\AnalyticsController::class, 'dashboard'])->name('dashboard')->middleware('can:analytics.dashboard');
+            Route::get('statistics', [\App\Http\Controllers\Admin\AnalyticsController::class, 'statistics'])->name('statistics')->middleware('can:analytics.view');
+            Route::get('overview', [\App\Http\Controllers\Admin\AnalyticsController::class, 'overview'])->name('overview')->middleware('can:analytics.view');
+            Route::get('performance', [\App\Http\Controllers\Admin\AnalyticsController::class, 'performance'])->name('performance')->middleware('can:analytics.health');
+            Route::get('activity', [\App\Http\Controllers\Admin\AnalyticsController::class, 'activity'])->name('activity')->middleware('can:analytics.view');
+            Route::get('content', [\App\Http\Controllers\Admin\AnalyticsController::class, 'content'])->name('content')->middleware('can:analytics.view');
+            Route::get('seo', [\App\Http\Controllers\Admin\AnalyticsController::class, 'seo'])->name('seo')->middleware('can:analytics.view');
+            Route::get('media', [\App\Http\Controllers\Admin\AnalyticsController::class, 'media'])->name('media')->middleware('can:analytics.view');
+            Route::get('api', [\App\Http\Controllers\Admin\AnalyticsController::class, 'api'])->name('api')->middleware('can:analytics.view');
+            Route::get('backup', [\App\Http\Controllers\Admin\AnalyticsController::class, 'backup'])->name('backup')->middleware('can:analytics.view');
+            Route::get('health', [\App\Http\Controllers\Admin\AnalyticsController::class, 'health'])->name('health')->middleware('can:analytics.health');
+            Route::get('snapshots', [\App\Http\Controllers\Admin\AnalyticsController::class, 'snapshots'])->name('snapshots')->middleware('can:analytics.snapshots');
+        });
+
+        Route::prefix('reports')->name('reports.')->middleware('can:analytics.reports')->group(function () {
+            Route::get('/', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('index');
+            Route::post('generate', [\App\Http\Controllers\Admin\ReportController::class, 'generate'])->name('generate');
+            Route::get('history', [\App\Http\Controllers\Admin\ReportController::class, 'history'])->name('history');
+            Route::get('compare', [\App\Http\Controllers\Admin\ReportController::class, 'compare'])->name('compare')->middleware('can:analytics.compare');
+            Route::get('{report}', [\App\Http\Controllers\Admin\ReportController::class, 'show'])->name('show');
+            Route::get('{report}/download', [\App\Http\Controllers\Admin\ReportController::class, 'download'])->name('download');
+            Route::post('{report}/export', [\App\Http\Controllers\Admin\ReportController::class, 'export'])->name('export')->middleware('can:analytics.export');
+            Route::delete('{report}', [\App\Http\Controllers\Admin\ReportController::class, 'destroy'])->name('destroy');
+        });
     });
 });
