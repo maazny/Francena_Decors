@@ -78,4 +78,70 @@ class ProfileController extends ApiController
 
         return $this->success(null, 'Password changed successfully');
     }
+
+    /**
+     * Get paginated notifications for the user.
+     */
+    public function notifications(Request $request): JsonResponse
+    {
+        $perPage = (int) $request->input('per_page', 15);
+        $paginator = $request->user()->notifications()->paginate($perPage);
+
+        return $this->paginatedResponse($paginator, null, 'Notifications retrieved successfully');
+    }
+
+    /**
+     * Mark unread notifications as read.
+     */
+    public function readNotifications(Request $request): JsonResponse
+    {
+        $request->validate([
+            'ids' => ['nullable', 'array'],
+            'ids.*' => ['string'],
+        ]);
+
+        $user = $request->user();
+        $query = $user->unreadNotifications();
+
+        if ($request->filled('ids')) {
+            $query->whereIn('id', $request->ids);
+        }
+
+        $query->update(['read_at' => now()]);
+
+        return $this->success(null, 'Notifications marked as read successfully');
+    }
+
+    /**
+     * Get active Sanctum API tokens.
+     */
+    public function tokens(Request $request): JsonResponse
+    {
+        $tokens = $request->user()->tokens->map(function ($token) {
+            return [
+                'id' => $token->id,
+                'name' => $token->name,
+                'abilities' => $token->abilities,
+                'last_used_at' => $token->last_used_at?->toIso8601String(),
+                'created_at' => $token->created_at?->toIso8601String(),
+            ];
+        });
+
+        return $this->success($tokens, 'Active API tokens retrieved successfully');
+    }
+
+    /**
+     * Revoke specific API token by id.
+     */
+    public function deleteToken(Request $request, int $id): JsonResponse
+    {
+        $token = $request->user()->tokens()->find($id);
+
+        if (!$token) {
+            return $this->notFound('Token not found');
+        }
+
+        $token->delete();
+        return $this->success(null, 'Token deleted successfully');
+    }
 }

@@ -60,4 +60,24 @@ class ActivityLogController extends ApiController
         $log = $this->activityLogService->getLogById($id);
         return $this->success(new ActivityLogResource($log), 'Activity log details retrieved successfully');
     }
+
+    /**
+     * Export activity logs using filtered settings.
+     */
+    public function export(Request $request): JsonResponse
+    {
+        $filters = [
+            'user_id' => $request->user_id,
+            'role_id' => $request->role_id,
+            'module' => $request->module,
+            'action' => $request->action,
+            'status' => $request->status,
+            'date_from' => $request->date_from,
+            'date_to' => $request->date_to,
+        ];
+
+        $logs = $this->activityLogService->getExportData($filters);
+
+        return $this->success($logs, 'Activity logs exported successfully');
+    }
 }

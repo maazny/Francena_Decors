@@ -112,4 +112,37 @@ class BackupController extends ApiController
 
         return $this->success(null, 'Backup deleted successfully');
     }
+
+    /**
+     * Bulk delete backup records.
+     */
+    public function bulkDelete(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:backup_histories,id'],
+        ]);
+
+        $deletedCount = 0;
+        foreach ($validated['ids'] as $id) {
+            try {
+                $backup = $this->backupService->getBackupById($id);
+                $this->backupService->deleteBackup($backup);
+                $deletedCount++;
+            } catch (\Exception $e) {
+                // Keep moving
+            }
+        }
+
+        return $this->success(['deleted_count' => $deletedCount], "{$deletedCount} backups deleted successfully");
+    }
+
+    /**
+     * Export backup records.
+     */
+    public function export(Request $request): JsonResponse
+    {
+        $backups = BackupHistory::with(['creator', 'restorer'])->get();
+        return $this->success(BackupResource::collection($backups), 'Backup history exported successfully');
+    }
 }

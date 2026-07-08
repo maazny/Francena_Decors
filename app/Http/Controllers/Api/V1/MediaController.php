@@ -114,4 +114,33 @@ class MediaController extends ApiController
 
         return $this->success(null, 'Media item deleted successfully');
     }
+
+    /**
+     * Bulk delete media items.
+     */
+    public function bulkDelete(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:media,id'],
+        ]);
+
+        $items = Media::whereIn('id', $validated['ids'])->get();
+
+        $deletedCount = 0;
+        foreach ($items as $media) {
+            $this->mediaService->delete($media);
+            $deletedCount++;
+        }
+
+        $this->activityLogger->log([
+            'user_id' => auth()->id() ?: 1,
+            'module' => 'media',
+            'action' => ActivityAction::MEDIA_DELETE,
+            'description' => "Bulk deleted {$deletedCount} media files via API",
+            'status' => ActivityStatus::SUCCESS,
+        ]);
+
+        return $this->success(['deleted_count' => $deletedCount], "{$deletedCount} media files deleted successfully");
+    }
 }

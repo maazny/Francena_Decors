@@ -29,7 +29,7 @@ class SendRbacSecurityNotification
         } elseif ($eventName === 'RoleDeleted') {
             $isCritical = true;
             $title = "Critical Security: Role Deleted";
-            $message = "The role '{$event->role->name}' has been deleted from the database.";
+            $message = "The role '{$event->roleName}' has been deleted from the database.";
         }
 
         if ($isCritical) {

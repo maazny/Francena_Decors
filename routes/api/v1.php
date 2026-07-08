@@ -71,53 +71,80 @@ Route::middleware(['throttle:api'])->group(function () {
         Route::post('/logout', [AuthController::class, 'logout']);
         Route::post('/logout-all-devices', [AuthController::class, 'logoutAllDevices']);
         
+        // Profile & User endpoints
         Route::get('/profile', [ProfileController::class, 'show']);
         Route::put('/profile', [ProfileController::class, 'update']);
         Route::post('/change-password', [ProfileController::class, 'changePassword']);
-        Route::post('/tokens/revoke', [AuthController::class, 'revokeToken']);
+        
+        // Notifications
+        Route::get('/notifications', [ProfileController::class, 'notifications']);
+        Route::put('/notifications/read', [ProfileController::class, 'readNotifications']);
+        
+        // API Tokens Management
+        Route::get('/tokens', [ProfileController::class, 'tokens']);
+        Route::delete('/tokens/{id}', [ProfileController::class, 'deleteToken']);
 
         // --- ADMIN API ENDPOINTS (RBAC PROTECTED) ---
         Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('can:view_dashboard');
 
         // Users Management
         Route::prefix('users')->group(function () {
+            // Bulk Operations & Import/Export first
+            Route::post('/bulk-delete', [UserController::class, 'bulkDelete'])->middleware('can:delete_users');
+            Route::post('/bulk-status', [UserController::class, 'bulkStatus'])->middleware('can:edit_users');
+            Route::post('/import', [UserController::class, 'import'])->middleware('can:create_users');
+            Route::get('/export', [UserController::class, 'export'])->middleware('can:view_users');
+            
+            // Standard routes last
             Route::get('/', [UserController::class, 'index'])->middleware('can:view_users');
-            Route::get('/{id}', [UserController::class, 'show'])->middleware('can:view_users');
             Route::post('/', [UserController::class, 'store'])->middleware('can:create_users');
+            Route::get('/{id}', [UserController::class, 'show'])->middleware('can:view_users');
             Route::put('/{id}', [UserController::class, 'update'])->middleware('can:edit_users');
             Route::delete('/{id}', [UserController::class, 'destroy'])->middleware('can:delete_users');
         });
 
         // Roles Management
         Route::prefix('roles')->group(function () {
+            // Bulk Operations & Import/Export first
+            Route::post('/bulk-delete', [RoleController::class, 'bulkDelete'])->middleware('can:delete_roles');
+            Route::post('/import', [RoleController::class, 'import'])->middleware('can:create_roles');
+            Route::get('/export', [RoleController::class, 'export'])->middleware('can:view_roles');
+            
+            // Standard routes last
             Route::get('/', [RoleController::class, 'index'])->middleware('can:view_roles');
-            Route::get('/{id}', [RoleController::class, 'show'])->middleware('can:view_roles');
             Route::post('/', [RoleController::class, 'store'])->middleware('can:create_roles');
+            Route::get('/{id}', [RoleController::class, 'show'])->middleware('can:view_roles');
             Route::put('/{id}', [RoleController::class, 'update'])->middleware('can:edit_roles');
             Route::delete('/{id}', [RoleController::class, 'destroy'])->middleware('can:delete_roles');
         });
 
         // Permissions Management
         Route::prefix('permissions')->group(function () {
-            Route::get('/', [PermissionController::class, 'index'])->middleware('can:view_roles');
-            Route::get('/{id}', [PermissionController::class, 'show'])->middleware('can:view_roles');
-            Route::post('/', [PermissionController::class, 'store'])->middleware('can:create_roles');
-            Route::put('/{id}', [PermissionController::class, 'update'])->middleware('can:edit_roles');
             Route::post('/assign', [PermissionController::class, 'assignToRole'])->middleware('can:configure_roles');
+            
+            Route::get('/', [PermissionController::class, 'index'])->middleware('can:view_roles');
+            Route::post('/', [PermissionController::class, 'store'])->middleware('can:create_roles');
+            Route::get('/{id}', [PermissionController::class, 'show'])->middleware('can:view_roles');
+            Route::put('/{id}', [PermissionController::class, 'update'])->middleware('can:edit_roles');
         });
 
         // Media Management
         Route::prefix('media')->group(function () {
-            Route::get('/', [MediaController::class, 'index'])->middleware('can:view_media_library');
+            Route::post('/bulk-delete', [MediaController::class, 'bulkDelete'])->middleware('can:delete_media_library');
             Route::post('/upload', [MediaController::class, 'upload'])->middleware('can:create_media_library');
+            
+            Route::get('/', [MediaController::class, 'index'])->middleware('can:view_media_library');
             Route::delete('/{id}', [MediaController::class, 'destroy'])->middleware('can:delete_media_library');
         });
 
         // Backup & Restore Management
         Route::prefix('backups')->group(function () {
+            Route::post('/bulk-delete', [BackupController::class, 'bulkDelete'])->middleware('can:backup.delete');
+            Route::get('/export', [BackupController::class, 'export'])->middleware('can:backup.view');
+            Route::post('/', [BackupController::class, 'store'])->middleware('can:backup.create');
+            
             Route::get('/', [BackupController::class, 'index'])->middleware('can:backup.view');
             Route::get('/{id}', [BackupController::class, 'show'])->middleware('can:backup.view');
-            Route::post('/', [BackupController::class, 'store'])->middleware('can:backup.create');
             Route::post('/{id}/restore', [BackupController::class, 'restore'])->middleware('can:backup.restore');
             Route::post('/{id}/verify', [BackupController::class, 'verify'])->middleware('can:backup.verify');
             Route::delete('/{id}', [BackupController::class, 'destroy'])->middleware('can:backup.delete');
@@ -125,6 +152,8 @@ Route::middleware(['throttle:api'])->group(function () {
 
         // Activity Logging Logs
         Route::prefix('activity-logs')->group(function () {
+            Route::get('/export', [ActivityLogController::class, 'export'])->middleware('can:view_activity_logs');
+            
             Route::get('/', [ActivityLogController::class, 'index'])->middleware('can:view_activity_logs');
             Route::get('/{id}', [ActivityLogController::class, 'show'])->middleware('can:view_activity_logs');
         });

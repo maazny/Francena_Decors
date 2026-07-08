@@ -126,4 +126,52 @@ class RoleController extends ApiController
             return $this->error($e->getMessage(), 400);
         }
     }
+
+    /**
+     * Bulk delete role records.
+     */
+    public function bulkDelete(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:roles,id'],
+        ]);
+
+        $roles = Role::whereIn('id', $validated['ids'])->get();
+
+        $deletedCount = 0;
+        foreach ($roles as $role) {
+            if (!$role->is_system) {
+                try {
+                    $this->roleService->deleteRole($role);
+                    $deletedCount++;
+                } catch (\InvalidArgumentException $e) {
+                    // Ignore system locks safety boundaries
+                }
+            }
+        }
+
+        return $this->success(['deleted_count' => $deletedCount], "{$deletedCount} roles deleted successfully");
+    }
+
+    /**
+     * Import role records foundation.
+     */
+    public function import(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:json,csv', 'max:5120'],
+        ]);
+
+        return $this->success(null, 'Import completed successfully (simulation)');
+    }
+
+    /**
+     * Export role records as JSON collection.
+     */
+    public function export(): JsonResponse
+    {
+        $roles = Role::with('permissions')->get();
+        return $this->success(RoleResource::collection($roles), 'Roles exported successfully');
+    }
 }

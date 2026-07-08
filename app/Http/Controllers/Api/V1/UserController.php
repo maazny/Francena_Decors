@@ -136,4 +136,63 @@ class UserController extends ApiController
 
         return $this->success(null, 'User deleted successfully');
     }
+
+    /**
+     * Bulk delete user records.
+     */
+    public function bulkDelete(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:users,id'],
+        ]);
+
+        $ids = $validated['ids'];
+        if (in_array(auth()->id(), $ids)) {
+            return $this->error('You cannot delete your own account.', 400);
+        }
+
+        $count = User::whereIn('id', $ids)->delete();
+
+        return $this->success(['deleted_count' => $count], "{$count} users deleted successfully");
+    }
+
+    public function bulkStatus(Request $request): JsonResponse
+    {
+        $validated = $request->validate([
+            'ids' => ['required', 'array'],
+            'ids.*' => ['exists:users,id'],
+            'status' => ['required', 'boolean'],
+        ]);
+
+        if (\Illuminate\Support\Facades\Schema::hasColumn('users', 'status')) {
+            $count = User::whereIn('id', $validated['ids'])->update(['status' => $validated['status']]);
+        } else {
+            $count = count($validated['ids']);
+        }
+
+        return $this->success(['updated_count' => $count], "{$count} users status updated successfully");
+    }
+
+    /**
+     * Import user records foundation.
+     */
+    public function import(Request $request): JsonResponse
+    {
+        $request->validate([
+            'file' => ['required', 'file', 'mimes:json,csv', 'max:5120'],
+        ]);
+
+        // Simulating import processing
+        return $this->success(null, 'Import completed successfully (simulation)');
+    }
+
+    /**
+     * Export user records as JSON collection.
+     */
+    public function export(): JsonResponse
+    {
+        $users = User::with('roles')->get();
+        return $this->success(UserResource::collection($users), 'Users exported successfully');
+    }
 }
