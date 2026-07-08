@@ -13,15 +13,30 @@ return new class extends Migration
     {
         Schema::create('analytics_snapshots', function (Blueprint $table) {
             $table->id();
-            $table->date('snapshot_date')->index();
-            $table->string('metric_group')->index();
-            $table->string('metric_name')->index();
-            $table->decimal('metric_value', 15, 2)->default(0.00);
-            $table->json('metadata')->nullable();
+            $table->uuid('uuid')->unique();
+            $table->string('snapshot_name', 255);
+            $table->string('metric_type', 100);
+            $table->string('module', 100);
+            $table->string('metric_key', 150);
+            $table->decimal('metric_value', 20, 4)->default(0.0000);
+            $table->json('metric_data')->nullable();
+            $table->timestamp('captured_at');
+            $table->foreignId('created_by')
+                ->nullable()
+                ->constrained('users')
+                ->cascadeOnUpdate()
+                ->nullOnDelete();
+            $table->text('notes')->nullable();
             $table->timestamps();
 
-            // Compound index for fast lookup of metrics on a specific date range
-            $table->index(['snapshot_date', 'metric_group', 'metric_name'], 'idx_date_group_name');
+            // Single indexes
+            $table->index('metric_type');
+            $table->index('metric_key');
+            $table->index('captured_at');
+
+            // Composite indexes
+            $table->index(['metric_type', 'module'], 'idx_snapshots_type_module');
+            $table->index(['module', 'captured_at'], 'idx_snapshots_module_captured');
         });
     }
 
