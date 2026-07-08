@@ -464,7 +464,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('api', [\App\Http\Controllers\Admin\AnalyticsController::class, 'api'])->name('api')->middleware('can:analytics.view');
             Route::get('backup', [\App\Http\Controllers\Admin\AnalyticsController::class, 'backup'])->name('backup')->middleware('can:analytics.view');
             Route::get('health', [\App\Http\Controllers\Admin\AnalyticsController::class, 'health'])->name('health')->middleware('can:analytics.health');
-            Route::get('snapshots', [\App\Http\Controllers\Admin\AnalyticsController::class, 'snapshots'])->name('snapshots')->middleware('can:analytics.snapshots');
+            Route::get('snapshots', [\App\Http\Controllers\Admin\ReportController::class, 'snapshots'])->name('snapshots')->middleware('can:analytics.snapshots');
         });
 
         Route::prefix('reports')->name('reports.')->middleware('can:analytics.reports')->group(function () {

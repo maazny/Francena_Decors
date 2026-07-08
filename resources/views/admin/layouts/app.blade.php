@@ -212,6 +212,30 @@
             </a>
           @endcan
 
+          @can('analytics.view')
+            <div class="mt-4 sidebar-header">Analytics & Reports</div>
+            <a href="{{ route('admin.analytics.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.analytics.dashboard') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-gauge fa-fw me-2"></i>
+              Dashboard
+            </a>
+            <a href="{{ route('admin.reports.index') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.reports.*') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-file-invoice fa-fw me-2"></i>
+              Reports
+            </a>
+            <a href="{{ route('admin.analytics.snapshots') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.analytics.snapshots') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-camera fa-fw me-2"></i>
+              Snapshots
+            </a>
+            <a href="{{ route('admin.analytics.performance') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.analytics.performance') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-gauge-high fa-fw me-2"></i>
+              Performance
+            </a>
+            <a href="{{ route('admin.analytics.health') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.analytics.health') ? 'active' : 'text-white' }}">
+              <i class="fa-solid fa-heart-pulse fa-fw me-2"></i>
+              System Health
+            </a>
+          @endcan
+
           @can('view_dashboard')
             <a href="{{ route('admin.dashboard') }}" class="nav-link d-flex align-items-center {{ Route::is('admin.dashboard') ? 'active' : 'text-white' }}">
               <i class="fa-solid fa-chart-line me-2"></i>
