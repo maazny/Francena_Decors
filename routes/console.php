@@ -137,4 +137,47 @@ Artisan::command('backup:health', function () {
 \Illuminate\Support\Facades\Schedule::command('backup:run full')->dailyAt('02:00');
 \Illuminate\Support\Facades\Schedule::command('backup:cleanup')->dailyAt('03:00');
 
+// Analytics CMS - Artisan Commands (Module 30)
+Artisan::command('analytics:snapshot', function (\App\Contracts\SnapshotServiceInterface $service) {
+    $this->info('Starting metrics snapshots compilation...');
+    $service->captureSystemSnapshots();
+    $this->info('Snapshots compiled successfully.');
+})->purpose('Capture a snapshot of active system statistics');
+
+Artisan::command('analytics:cleanup', function (\App\Contracts\ReportServiceInterface $reportService, \App\Contracts\SnapshotServiceInterface $snapshotService) {
+    $retentionDays = config('analytics.retention_days', 365);
+    $this->info("Pruning reports and snapshots older than {$retentionDays} days...");
+    
+    $reports = $reportService->cleanupOldReports($retentionDays);
+    $snapshots = $snapshotService->pruneSnapshots($retentionDays);
+    
+    $this->info("Cleaned {$reports} reports and {$snapshots} snapshots successfully.");
+})->purpose('Clean up expired analytics and snapshots historical records');
+
+Artisan::command('analytics:refresh', function (\App\Contracts\AnalyticsServiceInterface $service) {
+    $this->info('Invalidating and regenerating dashboard KPI cache...');
+    \Illuminate\Support\Facades\Cache::forget(config('analytics.cache.key') . '_dashboard_kpis');
+    $service->getDashboardMetrics();
+    $this->info('Dashboard KPI Cache refreshed successfully.');
+})->purpose('Refresh dashboard analytics metrics caches');
+
+Artisan::command('analytics:health', function (\App\Contracts\AnalyticsServiceInterface $service) {
+    $this->info('Compiling system health diagnostics...');
+    $stats = $service->getSystemHealth();
+    
+    $this->table(
+        ['Component', 'Value'],
+        [
+            ['Database Size', $stats['database_size_formatted']],
+            ['Cache Driver', $stats['cache_driver']],
+            ['Queue Connection', $stats['queue_connection']],
+        ]
+    );
+})->purpose('Run system space usage diagnostics');
+
+// Schedule analytics tasks
+\Illuminate\Support\Facades\Schedule::command('analytics:snapshot')->hourly();
+\Illuminate\Support\Facades\Schedule::command('analytics:cleanup')->dailyAt('04:00');
+\Illuminate\Support\Facades\Schedule::command('analytics:refresh')->dailyAt('04:30');
+
 
