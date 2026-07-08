@@ -19,90 +19,25 @@
           <input id="serviceSearch" type="text" class="form-control search-input" placeholder="Search services..." aria-label="Search services" />
         </div>
         <div class="row g-4">
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="residential construction home luxury">
-              <div class="service-icon"><i class="fa-solid fa-house-chimney-user"></i></div>
-              <h4>Residential Construction</h4>
-              <p>Build elegant homes with premium finishes and lasting quality.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="commercial construction office premium">
-              <div class="service-icon"><i class="fa-solid fa-building"></i></div>
-              <h4>Commercial Construction</h4>
-              <p>Deliver sophisticated commercial properties with strategic planning.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="interior design decor style">
-              <div class="service-icon"><i class="fa-solid fa-pencil-ruler"></i></div>
-              <h4>Interior Design</h4>
-              <p>Create immersive luxury interiors with strong personality.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="exterior design landscape facade">
-              <div class="service-icon"><i class="fa-solid fa-tree-city"></i></div>
-              <h4>Exterior Design</h4>
-              <p>Design elegant exterior landscapes and facades for grand appeal.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="painting finishes color textures">
-              <div class="service-icon"><i class="fa-solid fa-palette"></i></div>
-              <h4>Painting</h4>
-              <p>Finish projects with flawless color applications and texture work.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="false ceiling ceiling design lighting ambiance">
-              <div class="service-icon"><i class="fa-solid fa-border-style"></i></div>
-              <h4>False Ceiling</h4>
-              <p>Clever ceiling designs that enhance light and spatial harmony.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="modular kitchen kitchen design cabinetry appliances">
-              <div class="service-icon"><i class="fa-solid fa-utensils"></i></div>
-              <h4>Modular Kitchen</h4>
-              <p>Custom kitchens built for luxury cooking and refined living.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="renovation remodel upgrade modernize">
-              <div class="service-icon"><i class="fa-solid fa-sync-alt"></i></div>
-              <h4>Renovation</h4>
-              <p>Revitalize existing spaces with modern elegance and functionality.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="waterproofing protection damp proof moisture barrier">
-              <div class="service-icon"><i class="fa-solid fa-droplet"></i></div>
-              <h4>Waterproofing</h4>
-              <p>Protect structures with reliable waterproof systems and detailing.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="electrical wiring lighting outlets safety">
-              <div class="service-icon"><i class="fa-solid fa-bolt"></i></div>
-              <h4>Electrical Work</h4>
-              <p>Expert electrical installations with safety and premium finishes.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="plumbing pipes fixtures bathrooms kitchens">
-              <div class="service-icon"><i class="fa-solid fa-faucet"></i></div>
-              <h4>Plumbing</h4>
-              <p>High-quality plumbing solutions for comfort and durability.</p>
-            </article>
-          </div>
-          <div class="col-md-6 col-xl-4">
-            <article class="service-card glass-card p-4 h-100" data-service="tiles flooring hardwood marble porcelain">
-              <div class="service-icon"><i class="fa-solid fa-square-full"></i></div>
-              <h4>Tiles & Flooring</h4>
-              <p>Luxury flooring installations with elegant materials and finish.</p>
-            </article>
-          </div>
+          @forelse($services as $service)
+            <div class="col-md-6 col-xl-4">
+              <article class="service-card glass-card p-4 h-100" data-service="{{ strtolower($service->title) }} {{ strtolower($service->short_description) }}">
+                <div class="service-icon">
+                  @if($service->icon)
+                    <i class="{{ $service->icon }}"></i>
+                  @else
+                    <i class="fa-solid fa-briefcase"></i>
+                  @endif
+                </div>
+                <h4><a href="{{ route('services.show', $service->slug) }}" class="text-white text-decoration-none">{{ $service->title }}</a></h4>
+                <p>{{ $service->short_description }}</p>
+              </article>
+            </div>
+          @empty
+            <div class="col-12 text-center py-4">
+              <p class="text-muted">No services available at the moment.</p>
+            </div>
+          @endforelse
         </div>
       </div>
     </section>
@@ -118,101 +53,67 @@
         <div class="text-center mb-4">
           <div class="btn-group" role="group" aria-label="Project filter">
             <button type="button" class="btn btn-outline-light active filter-btn" aria-pressed="true" data-filter="all">All</button>
-            <button type="button" class="btn btn-outline-light filter-btn" aria-pressed="false" data-filter="residential">Residential</button>
-            <button type="button" class="btn btn-outline-light filter-btn" aria-pressed="false" data-filter="commercial">Commercial</button>
-            <button type="button" class="btn btn-outline-light filter-btn" aria-pressed="false" data-filter="interior">Interior</button>
-            <button type="button" class="btn btn-outline-light filter-btn" aria-pressed="false" data-filter="exterior">Exterior</button>
+            @foreach(\App\Models\ProjectCategory::active()->ordered()->get() as $cat)
+              <button type="button" class="btn btn-outline-light filter-btn" aria-pressed="false" data-filter="{{ $cat->slug }}">{{ $cat->name }}</button>
+            @endforeach
           </div>
         </div>
         <div class="row g-4 project-grid">
-          <div class="col-sm-6 col-lg-4 project-item residential">
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=900&q=80" alt="Luxury residential construction project with premium finishes" loading="lazy" decoding="async" />
-              <div class="project-info">
-                <h5>Luxury Villa</h5>
-                <p>Residential</p>
-              </div>
-            </article>
-          </div>
-          <div class="col-sm-6 col-lg-4 project-item commercial">
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=900&q=80" alt="High-end commercial building construction project" loading="lazy" decoding="async" />
-              <div class="project-info">
-                <h5>Office Complex</h5>
-                <p>Commercial</p>
-              </div>
-            </article>
-          </div>
-          <div class="col-sm-6 col-lg-4 project-item interior">
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80" alt="Premium interior design and construction project" loading="lazy" decoding="async" />
-              <div class="project-info">
-                <h5>Modern Lounge</h5>
-                <p>Interior</p>
-              </div>
-            </article>
-          </div>
-          <div class="col-sm-6 col-lg-4 project-item exterior">
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=900&q=80" alt="Exterior architecture and facade renovation project" loading="lazy" decoding="async" />
-              <div class="project-info">
-                <h5>Facade Renewal</h5>
-                <p>Exterior</p>
-              </div>
-            </article>
-          </div>
-          <div class="col-sm-6 col-lg-4 project-item residential interior">
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=900&q=80" alt="Elegant residential interior construction and renovation" loading="lazy" decoding="async" />
-              <div class="project-info">
-                <h5>Elegant Residence</h5>
-                <p>Residential / Interior</p>
-              </div>
-            </article>
-          </div>
-          <div class="col-sm-6 col-lg-4 project-item commercial exterior">
-            <article class="project-card">
-              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=900&q=80" alt="Luxury commercial exterior construction and landscaping" loading="lazy" decoding="async" />
-              <div class="project-info">
-                <h5>Signature Plaza</h5>
-                <p>Commercial / Exterior</p>
-              </div>
-            </article>
-          </div>
+          @forelse($featuredProjects as $project)
+            <div class="col-sm-6 col-lg-4 project-item {{ $project->category?->slug }}">
+              <a href="{{ route('projects.show', $project->slug) }}" class="text-decoration-none">
+                <article class="project-card">
+                  @if($project->coverImage)
+                    <img src="{{ image_url($project->coverImage) }}" alt="{{ $project->title }}" loading="lazy" decoding="async" />
+                  @else
+                    <div class="bg-dark p-5 text-center text-muted" style="min-height: 250px;">
+                      <i class="fa-solid fa-image fa-3x"></i>
+                    </div>
+                  @endif
+                  <div class="project-info">
+                    <h5>{{ $project->title }}</h5>
+                    <p>{{ $project->category?->name }}</p>
+                  </div>
+                </article>
+              </a>
+            </div>
+          @empty
+            <div class="col-12 text-center py-4">
+              <p class="text-muted">No projects available at the moment.</p>
+            </div>
+          @endforelse
         </div>
       </div>
     </section>
 
     @include('partials.homepage-client-brands')
 
-    <section id="testimonials" class="py-5 section-bg">
-      <div class="container">
-        <div class="section-header text-center mb-5">
-          <span class="section-label">Testimonials</span>
-          <h2>What Our Clients Say</h2>
-          <p>Trusted by clients who appreciate luxury, transparency, and exceptional delivery.</p>
-        </div>
-        <div class="testimonial-slider position-relative">
-          <div class="testimonial-item active">
-            <p>"Fancy Decorators delivered our dream villa with spectacular detail, professionalism, and care."</p>
-            <h5>Amelia Rodgers</h5>
-            <span>Residential Client</span>
+    @if($testimonials->isNotEmpty())
+      <section id="testimonials" class="py-5 section-bg">
+        <div class="container">
+          <div class="section-header text-center mb-5">
+            <span class="section-label">Testimonials</span>
+            <h2>What Our Clients Say</h2>
+            <p>Trusted by clients who appreciate luxury, transparency, and exceptional delivery.</p>
           </div>
-          <div class="testimonial-item">
-            <p>"The team turned our commercial space into a premium environment that impresses every visitor."</p>
-            <h5>Marcus Lee</h5>
-            <span>Business Owner</span>
-          </div>
-          <div class="testimonial-item">
-            <p>"From planning to handover, every step felt refined and effortless. Highly recommended."</p>
-            <h5>Sophia Turner</h5>
-            <span>Design Partner</span>
-          </div>
-          <div class="testimonial-controls d-flex justify-content-center gap-3 mt-4" aria-label="Testimonial navigation">
-            <button id="testPrev" type="button" class="btn btn-gold btn-sm prev-slide" aria-label="Previous testimonial"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
-            <button id="testNext" type="button" class="btn btn-outline-light btn-sm next-slide" aria-label="Next testimonial"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+          <div class="testimonial-slider position-relative">
+            @foreach($testimonials as $index => $testimonial)
+              <div class="testimonial-item {{ $index === 0 ? 'active' : '' }}">
+                <p>"{{ $testimonial->testimonial }}"</p>
+                <h5>{{ $testimonial->client_name }}</h5>
+                <span>{{ $testimonial->client_designation }} {{ $testimonial->client_company ? '@ ' . $testimonial->client_company : '' }}</span>
+              </div>
+            @endforeach
+            @if($testimonials->count() > 1)
+              <div class="testimonial-controls d-flex justify-content-center gap-3 mt-4" aria-label="Testimonial navigation">
+                <button id="testPrev" type="button" class="btn btn-gold btn-sm prev-slide" aria-label="Previous testimonial"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></button>
+                <button id="testNext" type="button" class="btn btn-outline-light btn-sm next-slide" aria-label="Next testimonial"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></button>
+              </div>
+            @endif
           </div>
         </div>
+      </section>
+    @endif
     <section id="careers" class="py-5 section-bg text-white">
       <div class="container">
         <div class="row align-items-center g-5">

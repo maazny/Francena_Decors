@@ -91,10 +91,17 @@ class AppServiceProvider extends ServiceProvider
                 } else {
                     $view->with('headerLogo', new HeaderLogo);
                 }
+
+                if (Schema::hasTable('site_settings')) {
+                    $view->with('siteSetting', \Illuminate\Support\Facades\Cache::rememberForever('site_setting', fn() => \App\Models\SiteSetting::firstOrCreate([])));
+                } else {
+                    $view->with('siteSetting', new \App\Models\SiteSetting);
+                }
             } catch (\Throwable $e) {
                 $view->with('headerSettings', new HeaderSetting);
                 $view->with('headerTopbar', new HeaderTopbar);
                 $view->with('headerLogo', new HeaderLogo);
+                $view->with('siteSetting', new \App\Models\SiteSetting);
             }
         });
 
