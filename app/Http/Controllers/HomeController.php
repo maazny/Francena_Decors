@@ -19,7 +19,8 @@ class HomeController extends Controller
         return view('home', [
             'serviceFaqs' => ServiceFaq::active()->ordered()->take(6)->get(),
             'latestPosts' => Cache::remember('blog.homepage_posts', 3600, function() {
-                return BlogPost::where('status', true)
+                return BlogPost::with(['featuredImage', 'category', 'author'])
+                    ->where('status', true)
                     ->where('published_at', '<=', now())
                     ->latest('published_at')
                     ->take(3)

@@ -100,7 +100,8 @@ class BlogController extends Controller
 
         // Featured posts for sidebar/highlights
         $featuredPosts = \Illuminate\Support\Facades\Cache::remember('blog.featured_posts', 3600, function () {
-            return BlogPost::where('status', true)
+            return BlogPost::with('featuredImage')
+                ->where('status', true)
                 ->where('published_at', '<=', now())
                 ->where('is_featured', true)
                 ->latest('published_at')
@@ -126,7 +127,8 @@ class BlogController extends Controller
         $post = $blog_post->load(['category', 'tags', 'galleries.media', 'featuredImage', 'bannerImage', 'author']);
 
         // Related posts in same category, excluding current post
-        $relatedPosts = BlogPost::where('status', true)
+        $relatedPosts = BlogPost::with(['featuredImage', 'category', 'author'])
+            ->where('status', true)
             ->where('published_at', '<=', now())
             ->where('category_id', $post->category_id)
             ->where('id', '!=', $post->id)
@@ -146,7 +148,8 @@ class BlogController extends Controller
 
         // Latest posts
         $latestPosts = \Illuminate\Support\Facades\Cache::remember('blog.latest_posts', 3600, function () {
-            return BlogPost::where('status', true)
+            return BlogPost::with('featuredImage')
+                ->where('status', true)
                 ->where('published_at', '<=', now())
                 ->latest('published_at')
                 ->take(5)

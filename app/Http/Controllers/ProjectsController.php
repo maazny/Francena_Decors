@@ -28,7 +28,7 @@ class ProjectsController extends Controller
 
         $categories = Cache::rememberForever('project_categories', fn () => ProjectCategory::active()->ordered()->get());
         $years = Project::query()->published()->selectRaw('EXTRACT(YEAR FROM start_date) as year')->groupBy('year')->orderBy('year', 'desc')->pluck('year');
-        $featuredProject = Project::query()->published()->featured()->ordered()->first();
+        $featuredProject = Project::query()->with(['category', 'coverImage'])->published()->featured()->ordered()->first();
 
         return view('projects.index', compact('projects', 'categories', 'years', 'filters', 'featuredProject'));
     }
@@ -39,7 +39,7 @@ class ProjectsController extends Controller
 
         $project->load(['category', 'coverImage', 'bannerImage', 'clientLogo', 'galleries.media', 'beforeAfters.beforeMedia', 'beforeAfters.afterMedia', 'timelines.media', 'materials', 'technologies', 'teamMembers.teamMember']);
 
-        $relatedProjects = $project->relatedProjects()->published()->ordered()->take(3)->get();
+        $relatedProjects = $project->relatedProjects()->with(['category', 'coverImage'])->published()->ordered()->take(3)->get();
 
         return view('projects.show', compact('project', 'relatedProjects'));
     }
