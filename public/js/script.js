@@ -22,6 +22,7 @@ const modalCaption = document.querySelector('.gallery-modal .modal-caption');
 const modalClose = document.querySelector('.gallery-modal .close-modal');
 const projectImages = document.querySelectorAll('.project-card img');
 let testimonialIndex = 0;
+let testimonialSliderInterval = null;
 let heroIndex = 0;
 let heroSliderInterval = null;
 let typedIndex = 0;
@@ -53,6 +54,9 @@ window.addEventListener('load', () => {
   initProjectGallery();
   initServiceSearch();
   handleHeaderScroll();
+  initBeforeAfterSlider();
+  initLightbox();
+  initTestimonialSlider();
 });
 
 let scrollPending = false;
@@ -85,8 +89,8 @@ function handleHeaderScroll() {
 
 function handleCounterScroll() {
   counters.forEach(counter => {
-    const parent = counter.closest('.counter-card');
-    if (!parent.classList.contains('counted') && isElementInViewport(parent)) {
+    const parent = counter.closest('.counter-card') || counter.closest('.counter-card-simple') || counter.closest('.stat-card') || counter;
+    if (parent && !parent.classList.contains('counted') && isElementInViewport(parent)) {
       animateCounter(counter);
       parent.classList.add('counted');
     }
@@ -95,14 +99,15 @@ function handleCounterScroll() {
 
 function animateCounter(counter) {
   const target = +counter.dataset.target;
+  const suffix = counter.dataset.suffix || '';
   const duration = 1800;
   const stepTime = Math.max(Math.floor(duration / target), 10);
   let current = 0;
   const timer = setInterval(() => {
     current += Math.ceil(target / (duration / stepTime));
-    counter.textContent = current;
+    counter.textContent = current + suffix;
     if (current >= target) {
-      counter.textContent = target;
+      counter.textContent = target + suffix;
       clearInterval(timer);
     }
   }, stepTime);
@@ -160,8 +165,28 @@ function prevTestimonial() {
   showTestimonial(testimonialIndex);
 }
 
-testimonialNext?.addEventListener('click', nextTestimonial);
-testimonialPrev?.addEventListener('click', prevTestimonial);
+function initTestimonialSlider() {
+  if (!testimonials.length) return;
+  showTestimonial(testimonialIndex);
+  resetTestimonialSlider();
+}
+
+function resetTestimonialSlider() {
+  if (testimonialSliderInterval) {
+    clearInterval(testimonialSliderInterval);
+  }
+  testimonialSliderInterval = setInterval(nextTestimonial, 8000);
+}
+
+testimonialNext?.addEventListener('click', () => {
+  nextTestimonial();
+  resetTestimonialSlider();
+});
+testimonialPrev?.addEventListener('click', () => {
+  prevTestimonial();
+  resetTestimonialSlider();
+});
+
 heroNext?.addEventListener('click', () => {
   nextHeroSlide();
   resetHeroSlider();
@@ -472,5 +497,131 @@ function animateHeroParallax() {
   heroShapes.forEach((shape, index) => {
     const amplitude = 16 + index * 2;
     shape.style.transform = `translateY(${Math.sin((offset + index * 120) / 60) * amplitude}px) translateX(${Math.cos((offset + index * 160) / 80) * amplitude / 2}px)`;
+  });
+}
+
+// Before-After Slider Drag functionality
+function initBeforeAfterSlider() {
+  const container = document.querySelector('.before-after-slider');
+  if (!container) return;
+
+  const beforeImgContainer = container.querySelector('.before-image-container');
+  const beforeImg = beforeImgContainer.querySelector('img');
+  const handle = container.querySelector('.slider-handle');
+  
+  function resizeBeforeImage() {
+    beforeImg.style.width = `${container.offsetWidth}px`;
+  }
+  
+  resizeBeforeImage();
+  window.addEventListener('resize', resizeBeforeImage);
+
+  let isDragging = false;
+
+  function updateSlider(clientX) {
+    const rect = container.getBoundingClientRect();
+    let x = clientX - rect.left;
+    
+    if (x < 0) x = 0;
+    if (x > rect.width) x = rect.width;
+    
+    const percentage = (x / rect.width) * 100;
+    beforeImgContainer.style.width = `${percentage}%`;
+    handle.style.left = `${percentage}%`;
+  }
+
+  container.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    updateSlider(e.clientX);
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    updateSlider(e.clientX);
+  });
+
+  window.addEventListener('mouseup', () => {
+    isDragging = false;
+  });
+
+  container.addEventListener('touchstart', (e) => {
+    isDragging = true;
+    updateSlider(e.touches[0].clientX);
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isDragging) return;
+    updateSlider(e.touches[0].clientX);
+  });
+
+  container.addEventListener('touchend', () => {
+    isDragging = false;
+  });
+}
+
+// Lightbox Modal for Gallery Portfolio
+function initLightbox() {
+  const modal = document.getElementById('lightboxModal');
+  if (!modal) return;
+
+  const modalImg = document.getElementById('lightboxImg');
+  const modalCaption = document.getElementById('lightboxCaption');
+  const closeBtn = modal.querySelector('.lightbox-close');
+  const prevBtn = modal.querySelector('.lightbox-prev');
+  const nextBtn = modal.querySelector('.lightbox-next');
+  
+  const galleryImages = Array.from(document.querySelectorAll('.gallery-item img'));
+  let currentIndex = 0;
+
+  function showImage(index) {
+    if (index < 0 || index >= galleryImages.length) return;
+    currentIndex = index;
+    const img = galleryImages[currentIndex];
+    const card = img.closest('.gallery-item');
+    const title = card.querySelector('.gallery-info h5')?.textContent || img.alt || 'Gallery View';
+    
+    modalImg.src = img.src;
+    modalCaption.textContent = title;
+  }
+
+  galleryImages.forEach((img, index) => {
+    img.addEventListener('click', () => {
+      showImage(index);
+      modal.classList.remove('d-none');
+      setTimeout(() => modal.classList.add('show'), 10);
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  function closeModal() {
+    modal.classList.remove('show');
+    setTimeout(() => modal.classList.add('d-none'), 350);
+    document.body.style.overflow = '';
+  }
+
+  closeBtn?.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  prevBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    let prevIndex = currentIndex - 1;
+    if (prevIndex < 0) prevIndex = galleryImages.length - 1;
+    showImage(prevIndex);
+  });
+
+  nextBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    let nextIndex = currentIndex + 1;
+    if (nextIndex >= galleryImages.length) nextIndex = 0;
+    showImage(nextIndex);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('show')) return;
+    if (e.key === 'Escape') closeModal();
+    if (e.key === 'ArrowLeft') prevBtn?.click();
+    if (e.key === 'ArrowRight') nextBtn?.click();
   });
 }

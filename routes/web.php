@@ -51,6 +51,11 @@ Route::get('/testimonials', [TestimonialsController::class, 'index'])->name('tes
 Route::get('/testimonials/{testimonial}', [TestimonialsController::class, 'show'])->name('testimonials.show');
 Route::get('/testimonials/category/{testimonialCategory:slug}', [TestimonialsController::class, 'byCategory'])->name('testimonials.category');
 
+Route::get('/gallery', function () {
+    $projects = \App\Models\Project::with(['category', 'coverImage'])->published()->ordered()->get();
+    return view('gallery.index', compact('projects'));
+})->name('gallery');
+
 Route::get('/clients-brands', [ClientsBrandsController::class, 'index'])->name('clients-brands.index');
 Route::get('/clients-brands/{clientBrand:slug}', [ClientsBrandsController::class, 'show'])->name('clients-brands.show');
 

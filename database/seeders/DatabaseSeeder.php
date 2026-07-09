@@ -32,6 +32,76 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
         ]);
 
+        \App\Models\SiteSetting::firstOrCreate([])->update([
+            'site_name' => 'Fancy Decorators',
+            'company_name' => 'Fancy Decorators',
+            'tagline' => 'Premium Construction & Interior Solutions Since 2012',
+        ]);
+
+        \App\Models\AboutSection::firstOrCreate([])->update([
+            'experience_years' => 15,
+            'completed_projects' => 500,
+            'happy_clients' => 98,
+            'team_members' => 120,
+            'status' => true,
+        ]);
+
+        \App\Models\ThemeSetting::firstOrCreate([])->update([
+            'primary_color' => '#D4AF37', // Accent
+            'secondary_color' => '#E6C25E',
+            'accent_color' => '#D4AF37',
+            'background_color' => '#F5F5F5', // Gray
+            'surface_color' => '#FFFFFF', // White
+            'text_color' => '#555555', // Text
+            'heading_color' => '#111111', // Primary
+            'link_color' => '#D4AF37',
+            'link_hover_color' => '#B89020',
+            'button_background' => '#D4AF37',
+            'button_text_color' => '#FFFFFF',
+            'button_hover_background' => '#B89020',
+            'button_hover_text' => '#FFFFFF',
+            'navbar_background' => '#111111',
+            'navbar_text_color' => '#FFFFFF',
+            'footer_background' => '#111111',
+            'footer_text_color' => '#FFFFFF',
+            'card_background' => '#FFFFFF',
+            'card_border_color' => '#E5E5E5',
+            'input_background' => '#FFFFFF',
+            'input_border_color' => '#D3D3D3',
+        ]);
+
+        \App\Models\CompanyTimeline::create([
+            'year' => '2012',
+            'title' => 'Company Founded',
+            'description' => 'Established Francena Decors with a vision for premium custom builds.',
+            'display_order' => 1,
+            'status' => true,
+        ]);
+
+        \App\Models\CompanyTimeline::create([
+            'year' => '2016',
+            'title' => 'Design Studio Launch',
+            'description' => 'Opened our signature high-end design showroom in metropolitan area.',
+            'display_order' => 2,
+            'status' => true,
+        ]);
+
+        \App\Models\CompanyTimeline::create([
+            'year' => '2020',
+            'title' => 'Commercial Division',
+            'description' => 'Expanded into master-planned commercial fit-outs and structures.',
+            'display_order' => 3,
+            'status' => true,
+        ]);
+
+        \App\Models\CompanyTimeline::create([
+            'year' => '2024',
+            'title' => 'Industry Leadership',
+            'description' => 'Awarded the custom luxury builder of the year award.',
+            'display_order' => 4,
+            'status' => true,
+        ]);
+
         // Seed Testimonial Categories
         $corporateCategory = TestimonialCategory::create([
             'name' => 'Corporate Clients',
@@ -58,8 +128,33 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Seed Sample Testimonials
+        $downloadPhoto = function ($url, $name) use ($adminUser) {
+            $fileName = 'client_' . uniqid() . '.jpg';
+            $filePath = 'media/' . $fileName;
+            $imageContent = @file_get_contents($url);
+            if ($imageContent !== false) {
+                \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $imageContent);
+                return \App\Models\Media::create([
+                    'title' => $name . ' Profile',
+                    'alt_text' => $name,
+                    'file_name' => $fileName,
+                    'original_name' => $fileName,
+                    'file_path' => $filePath,
+                    'disk' => 'public',
+                    'mime_type' => 'image/jpeg',
+                    'extension' => 'jpg',
+                    'file_size' => strlen($imageContent),
+                    'is_image' => true,
+                    'uploaded_by' => $adminUser->id,
+                ])->id;
+            }
+            return null;
+        };
+
+        $photo1 = $downloadPhoto('https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=300&q=80', 'Sarah Johnson');
         Testimonial::create([
             'testimonial_category_id' => $corporateCategory->id,
+            'client_photo_id' => $photo1,
             'client_name' => 'Sarah Johnson',
             'client_company' => 'ABC Corporation',
             'client_designation' => 'Project Manager',
@@ -77,8 +172,10 @@ class DatabaseSeeder extends Seeder
             'seo_keywords' => 'testimonial, decoration, corporate event, quality service',
         ]);
 
+        $photo2 = $downloadPhoto('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80', 'Michael Chen');
         Testimonial::create([
             'testimonial_category_id' => $retailCategory->id,
+            'client_photo_id' => $photo2,
             'client_name' => 'Michael Chen',
             'client_company' => 'XYZ Retail Solutions',
             'client_designation' => 'Store Manager',
@@ -96,8 +193,10 @@ class DatabaseSeeder extends Seeder
             'seo_keywords' => 'retail decoration, store design, business improvement',
         ]);
 
+        $photo3 = $downloadPhoto('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=300&q=80', 'Emily Williams');
         Testimonial::create([
             'testimonial_category_id' => $eventCategory->id,
+            'client_photo_id' => $photo3,
             'client_name' => 'Emily Williams',
             'client_company' => 'Elite Event Planning',
             'client_designation' => 'Event Director',
@@ -115,8 +214,10 @@ class DatabaseSeeder extends Seeder
             'seo_keywords' => 'wedding decoration, event planning, professional service',
         ]);
 
+        $photo4 = $downloadPhoto('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80', 'David Martinez');
         Testimonial::create([
             'testimonial_category_id' => $corporateCategory->id,
+            'client_photo_id' => $photo4,
             'client_name' => 'David Martinez',
             'client_company' => 'Tech Innovations Inc',
             'client_designation' => 'Director of Operations',
@@ -134,8 +235,10 @@ class DatabaseSeeder extends Seeder
             'seo_keywords' => 'corporate decoration, brand design, professional execution',
         ]);
 
+        $photo5 = $downloadPhoto('https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80', 'Jennifer Lee');
         Testimonial::create([
             'testimonial_category_id' => $retailCategory->id,
+            'client_photo_id' => $photo5,
             'client_name' => 'Jennifer Lee',
             'client_company' => 'Fashion Boutique Ltd',
             'client_designation' => 'Owner',
@@ -284,6 +387,273 @@ class DatabaseSeeder extends Seeder
             $superAdminRole = \App\Models\Role::where('name', 'super_admin')->first();
             if ($superAdminRole) {
                 $adminUser->roles()->syncWithoutDetaching([$superAdminRole->id]);
+            }
+
+            // Seed Hero Sliders
+            $slidesData = [
+                [
+                    'title' => 'Building Your Dream Into Reality',
+                    'subtitle' => 'Luxury Construction & Design',
+                    'description' => 'Premium craftsmanship for elite residential, commercial and interior architecture.',
+                    'image_url' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80',
+                    'badge_text' => 'Luxury Construction & Design',
+                    'display_order' => 1,
+                ],
+                [
+                    'title' => 'Transforming Existing Spaces',
+                    'subtitle' => 'Elite Renovations',
+                    'description' => 'High-end architectural remodeling and space optimization tailored to your lifestyle.',
+                    'image_url' => 'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1800&q=80',
+                    'badge_text' => 'Elite Renovations',
+                    'display_order' => 2,
+                ],
+                [
+                    'title' => 'Sophisticated Commercial Builds',
+                    'subtitle' => 'Commercial Fit-outs',
+                    'description' => 'Translating corporate vision into functional, stunning, and on-time physical realities.',
+                    'image_url' => 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=1800&q=80',
+                    'badge_text' => 'Commercial Fit-outs',
+                    'display_order' => 3,
+                ],
+            ];
+
+            \App\Models\HeroSlider::truncate();
+
+            foreach ($slidesData as $index => $slide) {
+                $num = $index + 1;
+                $fileName = 'hero_slide_' . $num . '.jpg';
+                $filePath = 'media/' . $fileName;
+
+                $imageContent = @file_get_contents($slide['image_url']);
+                if ($imageContent !== false) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $imageContent);
+
+                    $media = \App\Models\Media::create([
+                        'title' => $slide['title'],
+                        'alt_text' => $slide['title'],
+                        'file_name' => $fileName,
+                        'original_name' => $fileName,
+                        'file_path' => $filePath,
+                        'disk' => 'public',
+                        'mime_type' => 'image/jpeg',
+                        'extension' => 'jpg',
+                        'file_size' => \Illuminate\Support\Facades\Storage::disk('public')->size($filePath),
+                        'is_image' => true,
+                        'uploaded_by' => $adminUser->id,
+                    ]);
+
+                    \App\Models\HeroSlider::create([
+                        'title' => $slide['title'],
+                        'subtitle' => $slide['subtitle'],
+                        'description' => $slide['description'],
+                        'desktop_image_id' => $media->id,
+                        'mobile_image_id' => $media->id,
+                        'badge_text' => $slide['badge_text'],
+                        'badge_color' => '#d4af5f',
+                        'button_one_text' => 'Get Quote',
+                        'button_one_url' => '#contact',
+                        'button_two_text' => 'Our Projects',
+                        'button_two_url' => '#projects',
+                        'text_alignment' => 'center',
+                        'content_position' => 'center',
+                        'enable_animation' => true,
+                        'animation_type' => 'zoom-in',
+                        'animation_duration' => 1000,
+                        'display_order' => $slide['display_order'],
+                        'status' => true,
+                    ]);
+                }
+            }
+
+            \App\Models\HeroSlider::clearCache();
+
+            // Seed project categories
+            $resCat = \App\Models\ProjectCategory::create([
+                'name' => 'Residential',
+                'slug' => 'residential',
+                'description' => 'Luxury homes and modern estates.',
+                'status' => true,
+                'display_order' => 1,
+            ]);
+            $commCat = \App\Models\ProjectCategory::create([
+                'name' => 'Commercial',
+                'slug' => 'commercial',
+                'description' => 'High-end corporate offices and showrooms.',
+                'status' => true,
+                'display_order' => 2,
+            ]);
+            $intCat = \App\Models\ProjectCategory::create([
+                'name' => 'Interior',
+                'slug' => 'interior',
+                'description' => 'Bespoke high-end interior spaces.',
+                'status' => true,
+                'display_order' => 3,
+            ]);
+            $renCat = \App\Models\ProjectCategory::create([
+                'name' => 'Renovation',
+                'slug' => 'renovation',
+                'description' => 'Sophisticated restoration and remodeling.',
+                'status' => true,
+                'display_order' => 4,
+            ]);
+
+            // Seed projects data
+            $projectsData = [
+                [
+                    'category_id' => $resCat->id,
+                    'title' => 'Modernist Concrete Villa',
+                    'location' => 'Beverly Hills, CA',
+                    'url' => 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
+                ],
+                [
+                    'category_id' => $resCat->id,
+                    'title' => 'Bel Air Glass Manor',
+                    'location' => 'Bel Air, CA',
+                    'url' => 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+                ],
+                [
+                    'category_id' => $commCat->id,
+                    'title' => 'Nexus Corporate HQ',
+                    'location' => 'Seattle, WA',
+                    'url' => 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80',
+                ],
+                [
+                    'category_id' => $commCat->id,
+                    'title' => 'Aura Retail Gallery',
+                    'location' => 'SoHo, NY',
+                    'url' => 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1200&q=80',
+                ],
+                [
+                    'category_id' => $intCat->id,
+                    'title' => 'Minimalist Penthouse',
+                    'location' => 'Manhattan, NY',
+                    'url' => 'https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80',
+                ],
+                [
+                    'category_id' => $renCat->id,
+                    'title' => 'Victorian Villa Restoration',
+                    'location' => 'San Francisco, CA',
+                    'url' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80',
+                ],
+            ];
+
+            foreach ($projectsData as $idx => $p) {
+                $fileName = 'proj_' . uniqid() . '.jpg';
+                $filePath = 'media/' . $fileName;
+                $imageContent = @file_get_contents($p['url']);
+                if ($imageContent !== false) {
+                    \Illuminate\Support\Facades\Storage::disk('public')->put($filePath, $imageContent);
+                    $media = \App\Models\Media::create([
+                        'title' => $p['title'],
+                        'alt_text' => $p['title'],
+                        'file_name' => $fileName,
+                        'original_name' => $fileName,
+                        'file_path' => $filePath,
+                        'disk' => 'public',
+                        'mime_type' => 'image/jpeg',
+                        'extension' => 'jpg',
+                        'file_size' => strlen($imageContent),
+                        'is_image' => true,
+                        'uploaded_by' => $adminUser->id,
+                    ]);
+
+                    \App\Models\Project::create([
+                        'project_category_id' => $p['category_id'],
+                        'title' => $p['title'],
+                        'slug' => strtolower(str_replace(' ', '-', $p['title'])),
+                        'short_description' => 'An award-worthy premium project delivered with top-tier materials.',
+                        'description' => 'Detailed case study of the premium construction and craftsmanship involved.',
+                        'location' => $p['location'],
+                        'status' => 'published',
+                        'featured' => true,
+                        'homepage_featured' => true,
+                        'cover_image_id' => $media->id,
+                        'display_order' => $idx + 1,
+                    ]);
+                }
+            }
+            // Seed Footer Settings dynamically if not exists
+            if (\App\Models\FooterSetting::count() === 0) {
+                $f = \App\Models\FooterSetting::create([
+                    'layout' => 'four_columns',
+                    'company_description' => 'Fancy Decorators: Crafting landmarks of luxury and distinction since 2012.',
+                    'show_logo' => false,
+                    'show_description' => true,
+                    'show_columns' => true,
+                    'show_contact' => true,
+                    'show_business_hours' => true,
+                    'show_social_links' => true,
+                    'show_widgets' => false,
+                    'newsletter_enabled' => true,
+                    'newsletter_title' => 'Newsletter',
+                    'newsletter_description' => 'Subscribe to receive updates on premium luxury projects and design trends.',
+                    'newsletter_placeholder' => 'Enter your email address',
+                    'newsletter_button_text' => 'Subscribe',
+                    'contact_heading' => 'Contact Us',
+                    'contact_address' => '25 Royal Avenue, Downtown City',
+                    'contact_phone' => '+1 234 567 890',
+                    'contact_email' => 'hello@fancydecorators.com',
+                    'business_hours_heading' => 'Working Hours',
+                    'copyright_text' => '© 2026 Fancy Decorators. All Rights Reserved.',
+                    'bottom_bar_text' => 'Designed with Excellence.',
+                    'bottom_bar_enabled' => true,
+                    'status' => true,
+                ]);
+
+                $col = $f->columns()->create([
+                    'title' => 'Quick Links',
+                    'type' => 'links',
+                    'sort_order' => 1,
+                    'status' => true,
+                ]);
+
+                $links = [
+                    ['label' => 'Home', 'url' => '/'],
+                    ['label' => 'About Us', 'url' => '/#about'],
+                    ['label' => 'Services', 'url' => '/services'],
+                    ['label' => 'Gallery Portfolio', 'url' => '/gallery'],
+                    ['label' => 'Blog Journal', 'url' => '/blog'],
+                    ['label' => 'Contact Us', 'url' => '/contact'],
+                ];
+
+                foreach ($links as $idx => $link) {
+                    $col->links()->create([
+                        'label' => $link['label'],
+                        'url' => $link['url'],
+                        'sort_order' => $idx + 1,
+                        'status' => true,
+                    ]);
+                }
+
+                $socials = [
+                    ['platform' => 'Facebook', 'url' => 'https://facebook.com', 'icon' => 'fa-brands fa-facebook-f'],
+                    ['platform' => 'Instagram', 'url' => 'https://instagram.com', 'icon' => 'fa-brands fa-instagram'],
+                    ['platform' => 'LinkedIn', 'url' => 'https://linkedin.com', 'icon' => 'fa-brands fa-linkedin-in'],
+                ];
+
+                foreach ($socials as $idx => $s) {
+                    $f->socialLinks()->create([
+                        'platform' => $s['platform'],
+                        'url' => $s['url'],
+                        'icon' => $s['icon'],
+                        'sort_order' => $idx + 1,
+                        'status' => true,
+                    ]);
+                }
+
+                $hours = [
+                    ['day_label' => 'Mon - Fri', 'time_label' => '9:00 AM - 6:00 PM'],
+                    ['day_label' => 'Sat - Sun', 'time_label' => 'Closed'],
+                ];
+
+                foreach ($hours as $idx => $h) {
+                    $f->businessHours()->create([
+                        'day_label' => $h['day_label'],
+                        'time_label' => $h['time_label'],
+                        'sort_order' => $idx + 1,
+                        'status' => true,
+                    ]);
+                }
             }
         }
     }
