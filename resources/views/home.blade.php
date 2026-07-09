@@ -9,7 +9,7 @@
     <x-about-section />
 
     <!-- Achievements Statistics Section -->
-    <section class="py-5" style="background: #111111; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);">
+    <section class="py-5" style="background: #111111; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);" data-aos="fade-up">
       <div class="container">
         <div class="row g-4 text-center justify-content-center">
           
@@ -49,7 +49,7 @@
       </div>
     </section>
 
-    <section id="services" class="py-5 text-white">
+    <section id="services" class="py-5 text-white" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Our Services</span>
@@ -89,7 +89,7 @@
     </section>
 
 
-    <section id="projects" class="py-5 text-white">
+    <section id="projects" class="py-5 text-white" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Featured Projects</span>
@@ -138,7 +138,7 @@
     </section>
 
     <!-- Before & After Interactive Showcase -->
-    <section id="transformation" class="py-5 section-bg">
+    <section id="transformation" class="py-5 section-bg" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Transformations</span>
@@ -174,7 +174,7 @@
     @include('partials.homepage-client-brands')
 
     @if($testimonials->isNotEmpty())
-      <section id="testimonials" class="py-5 section-bg">
+      <section id="testimonials" class="py-5 section-bg" data-aos="fade-up">
         <div class="container">
           <div class="section-header text-center mb-5">
             <span class="section-label">Testimonials</span>
@@ -309,7 +309,7 @@
       </div>
     </section>
 
-    <section id="process" class="py-5 text-white">
+    <section id="process" class="py-5 text-white" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Our Process</span>
@@ -356,7 +356,7 @@
       </div>
     </section>
 
-    <section id="faq" class="py-5 section-bg">
+    <section id="faq" class="py-5 section-bg" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">FAQ</span>
@@ -380,7 +380,7 @@
       </div>
     </section>
 
-    <section id="contact" class="py-5 text-white">
+    <section id="contact" class="py-5 text-white" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Contact</span>

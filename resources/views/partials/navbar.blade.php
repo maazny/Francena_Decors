@@ -12,7 +12,7 @@
       </div>
     @endif
   </a>
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+  <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="navMenu">
@@ -79,4 +79,27 @@
     </ul>
   </div>
 </nav>
+
+<!-- Full Screen Mobile Menu Overlay -->
+<div id="fullscreenMenu" class="fullscreen-menu-overlay d-none" role="dialog" aria-modal="true">
+  <button type="button" class="close-menu-btn" aria-label="Close menu">&times;</button>
+  <div class="fullscreen-menu-content d-flex flex-column align-items-center justify-content-center text-center">
+    <ul class="list-unstyled mb-5">
+      <li class="menu-item"><a href="{{ url('/') }}" class="menu-link {{ request()->is('/') ? 'active' : '' }}">Home</a></li>
+      <li class="menu-item"><a href="{{ request()->is('/') ? '#about' : '/#about' }}" class="menu-link">About</a></li>
+      <li class="menu-item"><a href="{{ route('services.index') }}" class="menu-link {{ request()->routeIs('services.*') ? 'active' : '' }}">Services</a></li>
+      <li class="menu-item"><a href="{{ route('projects.index') }}" class="menu-link {{ request()->routeIs('projects.*') ? 'active' : '' }}">Projects</a></li>
+      <li class="menu-item"><a href="{{ route('gallery') }}" class="menu-link {{ request()->is('gallery') ? 'active' : '' }}">Gallery</a></li>
+      <li class="menu-item"><a href="{{ route('blog.index') }}" class="menu-link {{ request()->routeIs('blog.*') ? 'active' : '' }}">Blog</a></li>
+      <li class="menu-item"><a href="{{ route('careers.index') }}" class="menu-link {{ request()->routeIs('careers.*') ? 'active' : '' }}">Careers</a></li>
+      <li class="menu-item"><a href="{{ route('contact.index') }}" class="menu-link {{ request()->routeIs('contact.*') ? 'active' : '' }}">Contact</a></li>
+    </ul>
+    
+    <div class="menu-socials d-flex gap-4 justify-content-center mt-3">
+      <a href="https://facebook.com" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+      <a href="https://linkedin.com" target="_blank" rel="noopener" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+    </div>
+  </div>
+</div>
 

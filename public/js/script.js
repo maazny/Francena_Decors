@@ -57,6 +57,21 @@ window.addEventListener('load', () => {
   initBeforeAfterSlider();
   initLightbox();
   initTestimonialSlider();
+  initRippleEffect();
+  initFullscreenMenu();
+  initPageTransitions();
+  initImageFadeIn();
+  initCustomCursor();
+
+  // Initialize AOS (Animate on Scroll)
+  if (typeof AOS !== 'undefined') {
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true,
+      mirror: false
+    });
+  }
 });
 
 let scrollPending = false;
@@ -624,4 +639,168 @@ function initLightbox() {
     if (e.key === 'ArrowLeft') prevBtn?.click();
     if (e.key === 'ArrowRight') nextBtn?.click();
   });
+}
+
+// Click Ripple animation for buttons
+function initRippleEffect() {
+  const buttons = document.querySelectorAll('.btn, .btn-gold, .btn-outline-light, .action-btn');
+  buttons.forEach(button => {
+    button.addEventListener('click', function(e) {
+      const rect = button.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      const ripple = document.createElement('span');
+      ripple.classList.add('btn-ripple');
+      ripple.style.left = `${x}px`;
+      ripple.style.top = `${y}px`;
+      
+      button.appendChild(ripple);
+      
+      setTimeout(() => {
+        ripple.remove();
+      }, 600);
+    });
+  });
+}
+
+// Full Screen Mobile Menu Overlay
+function initFullscreenMenu() {
+  const toggler = document.querySelector('.navbar-toggler');
+  const overlay = document.getElementById('fullscreenMenu');
+  const closeBtn = document.querySelector('.close-menu-btn');
+  const menuLinks = document.querySelectorAll('.menu-link');
+
+  if (!toggler || !overlay) return;
+
+  toggler.addEventListener('click', (e) => {
+    e.preventDefault();
+    overlay.classList.remove('d-none');
+    setTimeout(() => overlay.classList.add('show'), 10);
+    document.body.style.overflow = 'hidden';
+  });
+
+  function closeMenu() {
+    overlay.classList.remove('show');
+    setTimeout(() => overlay.classList.add('d-none'), 400);
+    document.body.style.overflow = '';
+  }
+
+  closeBtn?.addEventListener('click', closeMenu);
+  
+  menuLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      closeMenu();
+    });
+  });
+}
+
+// Progress Bar and Smooth Page Transitions
+function initPageTransitions() {
+  const progressBar = document.getElementById('pageProgressBar');
+  const preloader = document.getElementById('preloader');
+
+  // Complete page load progress animation
+  if (progressBar) {
+    progressBar.style.width = '100%';
+    setTimeout(() => {
+      progressBar.style.opacity = '0';
+    }, 400);
+  }
+
+  // Intercept links for smooth fade transitions
+  const links = document.querySelectorAll('a');
+  links.forEach(link => {
+    const href = link.getAttribute('href');
+    const target = link.getAttribute('target');
+    
+    if (href && !href.startsWith('#') && !href.startsWith('mailto:') && !href.startsWith('tel:') && (!target || target === '_self')) {
+      try {
+        const url = new URL(link.href, window.location.href);
+        if (url.origin === window.location.origin) {
+          link.addEventListener('click', (e) => {
+            if (e.ctrlKey || e.metaKey) return;
+            
+            e.preventDefault();
+            
+            if (progressBar) {
+              progressBar.style.opacity = '1';
+              progressBar.style.width = '0';
+              setTimeout(() => {
+                progressBar.style.width = '70%';
+              }, 10);
+            }
+            
+            if (preloader) {
+              preloader.style.visibility = 'visible';
+              preloader.style.pointerEvents = 'all';
+              preloader.style.opacity = '1';
+            }
+            
+            setTimeout(() => {
+              window.location.href = link.href;
+            }, 400);
+          });
+        }
+      } catch (err) {
+        // Invalid URL, skip
+      }
+    }
+  });
+}
+
+// Image graceful fade in on load
+function initImageFadeIn() {
+  const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+  lazyImages.forEach(img => {
+    if (img.complete) {
+      img.classList.add('fade-in-loaded');
+    } else {
+      img.addEventListener('load', () => {
+        img.classList.add('fade-in-loaded');
+      });
+    }
+  });
+}
+
+// Custom Cursor (Desktop ring and pointer dot)
+function initCustomCursor() {
+  const cursor = document.getElementById('customCursor');
+  const dot = document.getElementById('customCursorDot');
+  if (!cursor || !dot) return;
+
+  if (window.matchMedia('(max-width: 991.98px)').matches) {
+    cursor.style.display = 'none';
+    dot.style.display = 'none';
+    return;
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    dot.style.left = e.clientX + 'px';
+    dot.style.top = e.clientY + 'px';
+  });
+
+  const hoverables = document.querySelectorAll('a, button, input, select, textarea, .btn, .btn-gold, .btn-outline-light, .navbar-toggler, [role="button"], .project-card, .gallery-item img');
+  hoverables.forEach(item => {
+    item.addEventListener('mouseenter', () => {
+      cursor.classList.add('hovered');
+      dot.classList.add('hovered');
+    });
+    item.addEventListener('mouseleave', () => {
+      cursor.classList.remove('hovered');
+      dot.classList.remove('hovered');
+    });
+  });
+}
+
+// Scroll progress bar calculation
+function updateScrollProgress() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+  const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  const scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+  bar.style.width = scrolled + '%';
 }

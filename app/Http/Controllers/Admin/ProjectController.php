@@ -43,6 +43,7 @@ class ProjectController extends Controller
             'search' => $search,
             'status' => $status,
             'categoryId' => $categoryId,
+            'category_id' => $categoryId,
             'categories' => ProjectCategory::active()->ordered()->get(),
         ]);
     }
