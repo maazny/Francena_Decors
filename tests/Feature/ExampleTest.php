@@ -17,4 +17,13 @@ class ExampleTest extends TestCase
 
         $response->assertStatus(200);
     }
+
+    public function test_non_existent_page_returns_custom_404_view(): void
+    {
+        $response = $this->get('/this-path-does-not-exist-at-all');
+
+        $response->assertStatus(404)
+            ->assertSee('Page Not Found')
+            ->assertSee('Error 404');
+    }
 }
