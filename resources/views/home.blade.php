@@ -8,46 +8,6 @@
 
     <x-about-section />
 
-    <!-- Achievements Statistics Section -->
-    <section class="py-5" style="background: #111111; border-top: 1px solid rgba(255,255,255,0.06); border-bottom: 1px solid rgba(255,255,255,0.06);" data-aos="fade-up">
-      <div class="container">
-        <div class="row g-4 text-center justify-content-center">
-          
-          <!-- Stat 1: 550+ Projects -->
-          <div class="col-6 col-lg-3">
-            <div class="stat-card p-4">
-              <div class="display-4 fw-black m-0 mb-2 counter" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 900;" data-target="550" data-suffix="+">0</div>
-              <p class="text-uppercase tracking-wider text-muted mb-0" style="font-size: 0.8rem; letter-spacing: 1.5px;">Projects Delivered</p>
-            </div>
-          </div>
-          
-          <!-- Stat 2: 15+ Years -->
-          <div class="col-6 col-lg-3">
-            <div class="stat-card p-4">
-              <div class="display-4 fw-black m-0 mb-2 counter" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 900;" data-target="15" data-suffix="+">0</div>
-              <p class="text-uppercase tracking-wider text-muted mb-0" style="font-size: 0.8rem; letter-spacing: 1.5px;">Years Experience</p>
-            </div>
-          </div>
-          
-          <!-- Stat 3: 80+ Experts -->
-          <div class="col-6 col-lg-3">
-            <div class="stat-card p-4">
-              <div class="display-4 fw-black m-0 mb-2 counter" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 900;" data-target="80" data-suffix="+">0</div>
-              <p class="text-uppercase tracking-wider text-muted mb-0" style="font-size: 0.8rem; letter-spacing: 1.5px;">Expert Craftsmen</p>
-            </div>
-          </div>
-          
-          <!-- Stat 4: 100% Quality -->
-          <div class="col-6 col-lg-3">
-            <div class="stat-card p-4">
-              <div class="display-4 fw-black m-0 mb-2 counter" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-weight: 900;" data-target="100" data-suffix="%">0</div>
-              <p class="text-uppercase tracking-wider text-muted mb-0" style="font-size: 0.8rem; letter-spacing: 1.5px;">Quality Guarantee</p>
-            </div>
-          </div>
-          
-        </div>
-      </div>
-    </section>
 
     <section id="services" class="py-5 text-white" data-aos="fade-up">
       <div class="container">
@@ -483,6 +443,4 @@
     <p id="galleryCaption" class="modal-caption"></p>
   </div>
 
-  <button id="backToTop" class="back-to-top" type="button" aria-label="Scroll back to top"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
-  <div id="scrollProgress" class="scroll-progress" aria-hidden="true"></div>
 @endsection

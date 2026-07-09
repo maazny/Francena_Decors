@@ -15,6 +15,34 @@
     @if($firstMobileImage)
       <link rel="preload" href="{{ $firstMobileImage }}" as="image" fetchpriority="high" media="(max-width: 767px)">
     @endif
+    <style>
+      .hero-stats-bar {
+        transition: all 0.3s ease;
+      }
+      .stats-glass-container {
+        background: rgba(17, 17, 17, 0.45) !important;
+        backdrop-filter: blur(12px) !important;
+        -webkit-backdrop-filter: blur(12px) !important;
+        border: 1px solid rgba(255, 255, 255, 0.08) !important;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35) !important;
+        max-width: 90%;
+      }
+      @media (max-width: 575.98px) {
+        .stats-glass-container {
+          flex-direction: column !important;
+          border-radius: 20px !important;
+          padding: 1.25rem 2rem !important;
+          gap: 0.75rem !important;
+          width: 100%;
+        }
+        .stats-glass-container .vr {
+          display: none !important;
+        }
+        .hero-stats-bar {
+          padding-bottom: 1.5rem !important;
+        }
+      }
+    </style>
   @endpush
 @endif
 
@@ -99,6 +127,18 @@
                         @endif
                       </div>
                     @endif
+
+                    <!-- Trust Rating Badge -->
+                    <div class="hero-rating-badge mt-4 d-flex align-items-center gap-2 {{ $slide->text_alignment === 'start' ? 'justify-content-start' : ($slide->text_alignment === 'end' ? 'justify-content-end' : 'justify-content-center') }}">
+                      <div class="stars" style="color: var(--gold) !important; font-size: 0.95rem;">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                      </div>
+                      <span class="text-uppercase tracking-wider font-monospace" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.75) !important;">Trusted by Hundreds of Clients</span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -117,6 +157,37 @@
           </button>
         </div>
       @endif
+    </div>
+
+    <!-- Floating Stats Bar at the bottom of Hero -->
+    @php
+      $aboutData = about_cms();
+      $aboutSection = $aboutData['section'] ?? null;
+      $completedProjects = $aboutSection?->completed_projects ?? 500;
+      $experienceYears = $aboutSection?->experience_years ?? 15;
+      $happyClients = $aboutSection?->happy_clients ?? 98;
+    @endphp
+
+    <div class="hero-stats-bar position-absolute bottom-0 start-50 translate-middle-x z-3 w-100 pb-4">
+      <div class="container d-flex justify-content-center">
+        <div class="stats-glass-container d-flex align-items-center justify-content-center gap-4 py-3 px-5 rounded-pill shadow-lg"
+             style="background: rgba(17, 17, 17, 0.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08) !important;">
+          <div class="stat-item text-center d-flex align-items-center">
+            <span class="fw-bold text-uppercase" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">{{ $completedProjects }}+</span>
+            <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Projects</span>
+          </div>
+          <div class="vr bg-secondary opacity-25" style="height: 24px; width: 1px;"></div>
+          <div class="stat-item text-center d-flex align-items-center">
+            <span class="fw-bold text-uppercase" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">{{ $experienceYears }}+</span>
+            <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Years</span>
+          </div>
+          <div class="vr bg-secondary opacity-25" style="height: 24px; width: 1px;"></div>
+          <div class="stat-item text-center d-flex align-items-center">
+            <span class="fw-bold text-uppercase" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">{{ $happyClients }}%</span>
+            <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Happy</span>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 @endif

@@ -161,6 +161,8 @@
   <div id="customCursorDot" class="custom-cursor-dot"></div>
   <a href="{{ route('contact.index') }}" class="sticky-quote-btn" aria-label="Get a Quote"><i class="fa-solid fa-file-signature me-2"></i><span>Get a Quote</span></a>
   <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" class="floating-whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp"></i></a>
+  <button id="backToTop" class="back-to-top" type="button" aria-label="Scroll back to top"><i class="fa-solid fa-chevron-up" aria-hidden="true"></i></button>
+  <div id="scrollProgress" class="scroll-progress" aria-hidden="true"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
