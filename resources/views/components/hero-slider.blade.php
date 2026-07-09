@@ -1,6 +1,22 @@
 @php
   $slides = hero_slides();
+  $firstSlide = $slides->first();
 @endphp
+
+@if($firstSlide)
+  @push('head')
+    @php
+      $firstDesktopImage = image_url($firstSlide->desktopImage);
+      $firstMobileImage = image_url($firstSlide->mobileImage) ?: $firstDesktopImage;
+    @endphp
+    @if($firstDesktopImage)
+      <link rel="preload" href="{{ $firstDesktopImage }}" as="image" fetchpriority="high" media="(min-width: 768px)">
+    @endif
+    @if($firstMobileImage)
+      <link rel="preload" href="{{ $firstMobileImage }}" as="image" fetchpriority="high" media="(max-width: 767px)">
+    @endif
+  @endpush
+@endif
 
 @if($slides->isNotEmpty())
   <section id="home" class="hero-section hero-cms-section text-white">

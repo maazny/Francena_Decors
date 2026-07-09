@@ -52,6 +52,7 @@ window.addEventListener('load', () => {
   initHeroSlider();
   initProjectGallery();
   initServiceSearch();
+  handleHeaderScroll();
 });
 
 let scrollPending = false;
@@ -59,6 +60,7 @@ window.addEventListener('scroll', () => {
   if (!scrollPending) {
     scrollPending = true;
     window.requestAnimationFrame(() => {
+      handleHeaderScroll();
       handleCounterScroll();
       handleBackToTop();
       revealVisible();
@@ -68,6 +70,18 @@ window.addEventListener('scroll', () => {
     });
   }
 });
+
+function handleHeaderScroll() {
+  const header = document.querySelector('.header-nav');
+  if (header) {
+    if (window.scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+  }
+}
+
 
 function handleCounterScroll() {
   counters.forEach(counter => {

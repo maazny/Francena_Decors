@@ -140,6 +140,7 @@
       background-color: var(--surface-color, #0a0a0a) !important;
     }
   </style>
+  @stack('head')
 </head>
 <body>
   <div id="preloader">
@@ -163,5 +164,6 @@
     </script>
   @endif
   {!! $seo->custom_footer_scripts ?? '' !!}
+  @stack('scripts')
 </body>
 </html>

@@ -1,13 +1,19 @@
 :root {
-  --bg: #070407;
-  --surface: rgba(20, 18, 22, 0.88);
-  --surface-strong: rgba(18, 15, 22, 0.98);
-  --gold: #d4af5f;
-  --gold-soft: #f0d488;
-  --white: #f7f3ee;
-  --muted: #b8b2a7;
-  --shadow: 0 28px 90px rgba(0, 0, 0, 0.32);
-  --border: rgba(255, 255, 255, 0.1);
+  --primary-color-val: var(--primary-color, #d4af5f);
+  --secondary-color-val: var(--secondary-color, #f0d488);
+  --accent-color-val: var(--accent-color, #b19356);
+  --background-color-val: var(--background-color, #070407);
+  --surface-color-val: var(--surface-color, rgba(20, 18, 22, 0.88));
+
+  --bg: var(--background-color, #070407);
+  --surface: var(--surface-color, rgba(20, 18, 22, 0.88));
+  --surface-strong: var(--surface-color, rgba(18, 15, 22, 0.98));
+  --gold: var(--primary-color, #d4af5f);
+  --gold-soft: var(--secondary-color, #f0d488);
+  --white: var(--text-color, #f7f3ee);
+  --muted: var(--text-color, #b8b2a7);
+  --shadow: var(--box-shadow, 0 28px 90px rgba(0, 0, 0, 0.32));
+  --border: var(--card-border-color, rgba(255, 255, 255, 0.1));
 }
 
 * {
@@ -48,6 +54,14 @@ button, input, textarea {
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
   animation: fadeInDown 0.9s ease both;
+  transition: padding 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.header-nav.scrolled {
+  padding-top: 0.3rem !important;
+  padding-bottom: 0.3rem !important;
+  background: rgba(6, 5, 8, 0.92) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
 .navbar-brand .brand-mark {
@@ -1145,3 +1159,26 @@ footer {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Responsive Map Iframe */
+.rounded.overflow-hidden.shadow-lg.border.border-secondary iframe {
+  width: 100% !important;
+  height: 350px !important;
+  border: 0;
+}
+
+/* Image Hover & Premium Micro-interactions */
+.project-card, .service-card, .feature-box, .testimonial-item {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.project-card:hover, .service-card:hover, .feature-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Touch-friendly interactive buttons outline focus states */
+a:focus, button:focus, input:focus, select:focus, textarea:focus {
+  outline: 2px solid var(--gold) !important;
+  outline-offset: 2px;
+}
+
