@@ -101,23 +101,7 @@
     </div>
 
     <aside class="col-lg-4">
-      <div class="card shadow-sm border-0 p-4 mb-4">
-        <h2 class="h5">Service Details</h2>
-        <ul class="list-unstyled mb-0">
-          @if($service->category)
-            <li><strong>Category:</strong> {{ $service->category->name }}</li>
-          @endif
-          @if($service->starting_price)
-            <li><strong>Starting Price:</strong> {{ $service->price_label }}</li>
-          @endif
-          @if($service->duration)
-            <li><strong>Duration:</strong> {{ $service->duration }}</li>
-          @endif
-          @if($service->location)
-            <li><strong>Location:</strong> {{ $service->location }}</li>
-          @endif
-        </ul>
-      </div>
+
 
       @if($relatedServices->isNotEmpty())
         <div class="card shadow-sm border-0 p-4">

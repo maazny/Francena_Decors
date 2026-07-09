@@ -75,7 +75,7 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-    // If SweetAlert2 is not loaded yet (since @push might run after body scripts), load it dynamically
+    // If SweetAlert2 is not loaded yet (since the push directive might run after body scripts), load it dynamically
     if (typeof Swal === 'undefined') {
         const script = document.createElement('script');
         script.src = 'https://cdn.jsdelivr.net/npm/sweetalert2@11';

@@ -73,6 +73,7 @@ Route::get('/contact', [\App\Http\Controllers\ContactController::class, 'index']
 Route::post('/contact', [\App\Http\Controllers\ContactController::class, 'submit'])->name('contact.submit');
 
 // Frontend Newsletter CMS
+Route::get('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'showSubscribeForm'])->name('newsletter.subscribe-form');
 Route::post('/newsletter/subscribe', [\App\Http\Controllers\NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 Route::get('/newsletter/verify/{token}', [\App\Http\Controllers\NewsletterController::class, 'verify'])->name('newsletter.verify');
 Route::get('/newsletter/unsubscribe/{token}', [\App\Http\Controllers\NewsletterController::class, 'unsubscribe'])->name('newsletter.unsubscribe');

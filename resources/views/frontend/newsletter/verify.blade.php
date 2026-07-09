@@ -38,7 +38,7 @@
                         </p>
                         <div class="d-flex justify-content-center gap-3">
                             <a href="{{ url('/') }}" class="btn btn-outline-secondary px-3 py-2">Back Home</a>
-                            <a href="{{ route('newsletter.subscribe') }}" class="btn btn-primary px-4 py-2" style="background-color: var(--button-background, #b19356); border-color: var(--button-background, #b19356);">Subscribe Again</a>
+                            <a href="{{ route('newsletter.subscribe-form') }}" class="btn btn-primary px-4 py-2" style="background-color: var(--button-background, #b19356); border-color: var(--button-background, #b19356);">Subscribe Again</a>
                         </div>
                     @endif
                 </div>

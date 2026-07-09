@@ -89,6 +89,14 @@ class NewsletterController extends Controller
     }
 
     /**
+     * Show the newsletter subscription form landing page.
+     */
+    public function showSubscribeForm(): View
+    {
+        return view('frontend.newsletter.subscribe');
+    }
+
+    /**
      * Verify a subscriber subscription.
      */
     public function verify(string $token): View

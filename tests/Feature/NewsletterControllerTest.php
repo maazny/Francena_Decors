@@ -233,4 +233,15 @@ class NewsletterControllerTest extends TestCase
             'preferred_language' => 'es',
         ]);
     }
+
+    /**
+     * Test the newsletter subscribe landing page.
+     */
+    public function test_can_view_newsletter_subscribe_landing_page(): void
+    {
+        $response = $this->get(route('newsletter.subscribe-form'));
+
+        $response->assertOk()
+            ->assertViewIs('frontend.newsletter.subscribe');
+    }
 }
