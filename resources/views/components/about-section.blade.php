@@ -12,7 +12,7 @@
       <div class="section-header text-center mb-5">
         <span class="section-label text-uppercase" style="color: var(--gold) !important; letter-spacing: 2.5px; font-weight: 600;">WELCOME TO FANCY DECORATORS</span>
         @if($about->meta_title)
-          <h2 class="display-5 fw-bold text-white mb-3" style="max-width: 800px; margin: 0 auto; line-height: 1.25; font-family: 'Montserrat', sans-serif;">{{ $about->meta_title }}</h2>
+          <h2 class="display-5 fw-bold mb-3" style="max-width: 800px; margin: 0 auto; line-height: 1.25; font-family: 'Montserrat', sans-serif;">{{ $about->meta_title }}</h2>
         @endif
         @if($about->meta_description)
           <p class="lead text-muted mx-auto" style="max-width: 750px; font-size: 1.1rem; line-height: 1.7;">{{ $about->meta_description }}</p>

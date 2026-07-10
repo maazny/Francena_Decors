@@ -58,7 +58,7 @@
       @if($headerSettings->search_enabled ?? false)
         <li class="nav-item ms-3">
           <form class="d-flex" action="{{ route('blog.index') }}" method="GET" role="search">
-            <input class="form-control form-control-sm me-2 bg-dark text-white border-secondary" type="search" name="search" placeholder="Search blog..." aria-label="Search">
+            <input class="form-control form-control-sm me-2 search-bar-input" type="search" name="search" placeholder="Search blog..." aria-label="Search">
             <button class="btn btn-outline-light btn-sm" type="submit" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
           </form>
         </li>

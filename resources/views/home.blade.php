@@ -9,7 +9,7 @@
     <x-about-section />
 
 
-    <section id="services" class="py-5 text-white" data-aos="fade-up">
+    <section id="services" class="py-5 section-bg" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Our Services</span>
@@ -31,7 +31,7 @@
                       <i class="fa-solid fa-briefcase"></i>
                     @endif
                   </div>
-                  <h4 style="margin-bottom: 0.8rem;"><a href="{{ route('services.show', $service->slug) }}" class="text-decoration-none" style="color: #111111 !important;">{{ $service->title }}</a></h4>
+                  <h4 style="margin-bottom: 0.8rem;"><a href="{{ route('services.show', $service->slug) }}" class="text-decoration-none" style="color: var(--white) !important;">{{ $service->title }}</a></h4>
                   <p class="mb-4" style="color: var(--white);">{{ $service->short_description }}</p>
                 </div>
                 <a href="{{ route('services.show', $service->slug) }}" class="service-action-link mt-auto d-inline-flex align-items-center gap-2 text-decoration-none fw-bold" style="color: var(--gold); font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase;">
@@ -49,7 +49,7 @@
     </section>
 
 
-    <section id="projects" class="py-5 text-white" data-aos="fade-up">
+    <section id="projects" class="py-5 bg-white" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Featured Projects</span>
@@ -196,7 +196,7 @@
         </div>
       </section>
     @endif
-    <section id="careers" class="py-5 section-bg text-white">
+    <section id="careers" class="py-5 bg-white">
       <div class="container">
         <div class="row align-items-center g-5">
           <div class="col-lg-6" data-aos="fade-right">
@@ -221,12 +221,12 @@
           </div>
           <div class="col-lg-6" data-aos="fade-left">
             <div class="card border-0 glass-card p-4">
-              <h4 class="fw-bold mb-4 font-serif text-white">Featured Openings</h4>
+              <h4 class="fw-bold mb-4 font-serif">Featured Openings</h4>
               <div class="d-flex flex-column gap-3">
                 @forelse($homepageJobs as $job)
-                  <div class="p-3 bg-dark rounded d-flex justify-content-between align-items-center">
+                  <div class="p-3 border rounded d-flex justify-content-between align-items-center" style="background: var(--surface); border-color: var(--border) !important;">
                     <div>
-                      <h6 class="fw-bold mb-1 text-white">{{ $job->title }}</h6>
+                      <h6 class="fw-bold mb-1">{{ $job->title }}</h6>
                       <span class="small text-muted"><i class="fa-solid fa-location-dot me-1"></i> {{ $job->location?->city }} • {{ $job->employment_type }}</span>
                     </div>
                     <a href="{{ route('careers.show', $job->slug) }}" class="btn btn-sm btn-outline-primary rounded-pill">Apply</a>
@@ -241,7 +241,7 @@
       </div>
     </section>
 
-    <section id="blog" class="py-5 text-white">
+    <section id="blog" class="py-5 bg-white">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Our Journal</span>
@@ -269,7 +269,7 @@
       </div>
     </section>
 
-    <section id="process" class="py-5 text-white" data-aos="fade-up">
+    <section id="process" class="py-5 section-bg" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Our Process</span>
@@ -340,7 +340,7 @@
       </div>
     </section>
 
-    <section id="contact" class="py-5 text-white" data-aos="fade-up">
+    <section id="contact" class="py-5 bg-white" data-aos="fade-up">
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Contact</span>

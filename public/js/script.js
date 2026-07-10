@@ -297,19 +297,18 @@ function initServiceSearch() {
 
 function setThemeFromStorage() {
   const storedTheme = localStorage.getItem('siteTheme');
-  const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
-  const theme = storedTheme || systemTheme;
+  const theme = storedTheme || 'light';
   applyTheme(theme);
 }
 
 function applyTheme(theme) {
-  if (theme === 'light') {
-    document.documentElement.classList.add('light-theme');
-    themeToggle.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i>';
+  if (theme === 'dark') {
+    document.documentElement.classList.add('dark-theme');
+    themeToggle.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
     themeToggle.setAttribute('aria-pressed', 'true');
   } else {
-    document.documentElement.classList.remove('light-theme');
-    themeToggle.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
+    document.documentElement.classList.remove('dark-theme');
+    themeToggle.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i>';
     themeToggle.setAttribute('aria-pressed', 'false');
   }
   localStorage.setItem('siteTheme', theme);
@@ -318,8 +317,8 @@ function applyTheme(theme) {
 if (themeToggle) {
   themeToggle.setAttribute('aria-pressed', 'false');
   themeToggle.addEventListener('click', () => {
-    const isLight = document.documentElement.classList.contains('light-theme');
-    applyTheme(isLight ? 'dark' : 'light');
+    const isDark = document.documentElement.classList.contains('dark-theme');
+    applyTheme(isDark ? 'light' : 'dark');
   });
 }
 

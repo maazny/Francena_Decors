@@ -1,6 +1,12 @@
 @php
   $slides = hero_slides();
   $firstSlide = $slides->first();
+
+  $aboutData = about_cms();
+  $aboutSection = $aboutData['section'] ?? null;
+  $completedProjects = $aboutSection?->completed_projects ?? 500;
+  $experienceYears = $aboutSection?->experience_years ?? 15;
+  $happyClients = $aboutSection?->happy_clients ?? 98;
 @endphp
 
 @if($firstSlide)
@@ -128,16 +134,45 @@
                       </div>
                     @endif
 
-                    <!-- Trust Rating Badge -->
-                    <div class="hero-rating-badge mt-4 d-flex align-items-center gap-2 {{ $slide->text_alignment === 'start' ? 'justify-content-start' : ($slide->text_alignment === 'end' ? 'justify-content-end' : 'justify-content-center') }}">
-                      <div class="stars" style="color: var(--gold) !important; font-size: 0.95rem;">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
+                    <!-- Trust Rating & Stats Badges -->
+                    <div class="hero-trust-bar mt-4 d-flex flex-wrap align-items-center gap-3 gap-md-4 {{ $slide->text_alignment === 'start' ? 'justify-content-start' : ($slide->text_alignment === 'end' ? 'justify-content-end' : 'justify-content-center') }}" style="font-size: 0.85rem; letter-spacing: 1px; color: rgba(255, 255, 255, 0.85);">
+                      
+                      <!-- Rating -->
+                      <div class="d-flex align-items-center gap-2">
+                        <span class="stars text-warning d-inline-flex gap-0.5" style="color: var(--gold) !important; font-size: 0.9rem;">
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                          <i class="fa-solid fa-star"></i>
+                        </span>
+                        <span class="fw-semibold">4.9 Customer Rating</span>
                       </div>
-                      <span class="text-uppercase tracking-wider font-monospace" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.75) !important;">Trusted by Hundreds of Clients</span>
+
+                      <div class="d-none d-sm-block text-white-50 opacity-25">|</div>
+
+                      <!-- Projects Count -->
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-circle-check" style="color: var(--gold) !important;"></i>
+                        <span class="fw-semibold">{{ $completedProjects }}+ Completed Projects</span>
+                      </div>
+
+                      <div class="d-none d-sm-block text-white-50 opacity-25">|</div>
+
+                      <!-- Experience -->
+                      <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-award" style="color: var(--gold) !important;"></i>
+                        <span class="fw-semibold">{{ $experienceYears }}+ Years Experience</span>
+                      </div>
+
+                    </div>
+
+                    <!-- Small Badges -->
+                    <div class="hero-badges-row mt-4 d-flex flex-wrap gap-2 {{ $slide->text_alignment === 'start' ? 'justify-content-start' : ($slide->text_alignment === 'end' ? 'justify-content-end' : 'justify-content-center') }}">
+                      <span class="badge rounded-pill px-3 py-2 border text-uppercase tracking-wider font-monospace" style="font-size: 0.65rem; background: rgba(212, 175, 95, 0.08); border-color: rgba(212, 175, 95, 0.25); color: var(--gold) !important;">Expert Craftsmanship</span>
+                      <span class="badge rounded-pill px-3 py-2 border text-uppercase tracking-wider font-monospace" style="font-size: 0.65rem; background: rgba(212, 175, 95, 0.08); border-color: rgba(212, 175, 95, 0.25); color: var(--gold) !important;">Licensed & Insured</span>
+                      <span class="badge rounded-pill px-3 py-2 border text-uppercase tracking-wider font-monospace" style="font-size: 0.65rem; background: rgba(212, 175, 95, 0.08); border-color: rgba(212, 175, 95, 0.25); color: var(--gold) !important;">On-Time Delivery</span>
+                      <span class="badge rounded-pill px-3 py-2 border text-uppercase tracking-wider font-monospace" style="font-size: 0.65rem; background: rgba(212, 175, 95, 0.08); border-color: rgba(212, 175, 95, 0.25); color: var(--gold) !important;">Premium Quality</span>
                     </div>
                   </div>
                 </div>
