@@ -5,7 +5,7 @@
 @section('meta_keywords', 'jobs, job vacancies, builder hiring, interior designer, construction engineering vacancies')
 
 @section('content')
-<main style="background-color: var(--background-color, #121212); color: var(--text-color, #ffffff); min-height: 100vh; py-5;">
+<main style="min-height: 100vh; py-5;">
   
   <div class="container py-5">
     
@@ -14,18 +14,18 @@
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-light"><i class="fa-solid fa-house me-1"></i> Home</a></li>
         <li class="breadcrumb-item"><a href="{{ route('careers.index') }}" class="text-decoration-none text-light">Careers</a></li>
-        <li class="breadcrumb-item active text-white-50" aria-current="page">Jobs</li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">Jobs</li>
       </ol>
     </nav>
 
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
-        <h1 class="display-5 fw-bold font-serif" style="font-family: 'Playfair Display', serif; color: var(--button-background, #d4af5f);">Open Positions</h1>
+        <h1 class="display-5 fw-bold font-serif" style="font-family: 'Playfair Display', serif; color: var(--gold);">Open Positions</h1>
         <p class="text-muted mb-0">Discover your next professional milestone at Fancy Decorators.</p>
       </div>
       <div class="col-md-6 text-md-end mt-3 mt-md-0">
         <div class="d-inline-flex gap-2">
-          <button id="layoutGrid" class="btn btn-primary btn-sm px-3 rounded-pill active" title="Grid View"><i class="fa-solid fa-grid-2"></i> Grid</button>
+          <button id="layoutGrid" class="btn btn-gold btn-sm px-3 rounded-pill active" title="Grid View"><i class="fa-solid fa-grid-2"></i> Grid</button>
           <button id="layoutList" class="btn btn-outline-light btn-sm px-3 rounded-pill" title="List View"><i class="fa-solid fa-list"></i> List</button>
         </div>
       </div>
@@ -37,7 +37,7 @@
       <div class="col-lg-4">
         <div class="card border-0 glass-card p-4 sticky-top" style="top: 90px; z-index: 10;">
           <div class="d-flex justify-content-between align-items-center mb-4">
-            <h5 class="fw-bold mb-0"><i class="fa-solid fa-filter me-2 text-primary" style="color: var(--button-background, #d4af5f) !important;"></i> Filter Jobs</h5>
+            <h5 class="fw-bold mb-0"><i class="fa-solid fa-filter me-2 text-warning"></i> Filter Jobs</h5>
             <a href="{{ route('careers.jobs') }}" class="text-decoration-none text-muted small">Clear All</a>
           </div>
 
@@ -125,7 +125,7 @@
             <div class="mb-4">
               <label for="salaryRange" class="form-label small text-uppercase fw-semibold opacity-75 d-flex justify-content-between">
                 <span>Minimum Salary</span>
-                <span id="salaryVal" style="color: var(--button-background, #d4af5f);">{{ request('salary_min') ? '$' . number_format(request('salary_min')) : 'Any' }}</span>
+                <span id="salaryVal" style="color: var(--gold);">{{ request('salary_min') ? '$' . number_format(request('salary_min')) : 'Any' }}</span>
               </label>
               <input type="range" class="form-range" id="salaryRange" name="salary_min" min="0" max="250000" step="10000" value="{{ request('salary_min', 0) }}">
             </div>
@@ -136,7 +136,7 @@
               <label class="form-check-label small text-uppercase fw-semibold opacity-75" for="featuredCheck">Featured Jobs Only</label>
             </div>
 
-            <button type="submit" class="btn btn-primary w-100 rounded-pill py-2.5 shadow-sm">
+            <button type="submit" class="btn btn-gold w-100 rounded-pill py-2.5 shadow-sm">
               <i class="fa-solid fa-filter me-2"></i> Apply Filters
             </button>
           </form>
@@ -168,10 +168,10 @@
               <div class="col-md-6 job-item-wrapper" data-layout-item>
                 <div class="card h-100 border-0 glass-card p-4 position-relative d-flex flex-column">
                   @if($job->featured)
-                    <span class="position-absolute top-0 end-0 bg-primary px-3 py-1 rounded-bottom text-uppercase text-white small" style="background-color: var(--button-background, #d4af5f) !important;">Featured</span>
+                    <span class="position-absolute top-0 end-0 bg-gold px-3 py-1 rounded-bottom text-uppercase text-white small fw-bold">Featured</span>
                   @endif
                   
-                  <span class="small opacity-75 text-uppercase fw-semibold" style="color: var(--button-background, #d4af5f);">{{ $job->department?->name }}</span>
+                  <span class="small opacity-75 text-uppercase fw-semibold" style="color: var(--gold);">{{ $job->department?->name }}</span>
                   <h4 class="h5 fw-bold my-2">
                     <a href="{{ route('careers.show', $job->slug) }}" class="text-white text-decoration-none hover-link">{{ $job->title }}</a>
                   </h4>
@@ -189,7 +189,7 @@
                   <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
                     <div>
                       @if($job->salary_to)
-                        <span class="fw-bold d-block text-white" style="color: var(--button-background, #d4af5f) !important;">
+                        <span class="fw-bold d-block text-white" style="color: var(--gold) !important;">
                           {{ $job->salary_from ? '$'.number_format($job->salary_from) . ' - ' : '' }}${{ number_format($job->salary_to) }}
                         </span>
                         <span class="text-muted small text-uppercase" style="font-size: 0.65rem;">{{ $job->salary_type ?: 'yearly' }}</span>
@@ -197,7 +197,7 @@
                         <span class="text-muted small">Competitive Salary</span>
                       @endif
                     </div>
-                    <a href="{{ route('careers.show', $job->slug) }}" class="btn btn-sm btn-primary px-4 rounded-pill">Apply</a>
+                    <a href="{{ route('careers.show', $job->slug) }}" class="btn btn-sm btn-outline-light rounded-pill px-4">Apply</a>
                   </div>
                 </div>
               </div>
@@ -206,14 +206,14 @@
 
           <!-- Pagination -->
           <div class="d-flex justify-content-center mt-5">
-            {{ $jobs->links() }}
+            {{ $jobs->links('pagination::bootstrap-5') }}
           </div>
         @else
           <div class="text-center py-5 glass-card rounded p-5">
             <i class="fa-solid fa-folder-open fa-3x mb-3 text-muted"></i>
             <h4 class="fw-bold">No Openings Match Your Criteria</h4>
             <p class="text-muted max-w-sm mx-auto">Try resetting some filters or search query to explore other available job positions.</p>
-            <a href="{{ route('careers.jobs') }}" class="btn btn-outline-primary px-4 py-2 mt-2 rounded-pill">Reset All Filters</a>
+            <a href="{{ route('careers.jobs') }}" class="btn btn-outline-light px-4 py-2 mt-2 rounded-pill">Reset All Filters</a>
           </div>
         @endif
 
@@ -256,10 +256,10 @@
 
     if (layoutGridBtn && layoutListBtn && container) {
       layoutGridBtn.addEventListener('click', () => {
-        layoutGridBtn.classList.add('btn-primary', 'active');
+        layoutGridBtn.classList.add('btn-gold', 'active');
         layoutGridBtn.classList.remove('btn-outline-light');
         layoutListBtn.classList.add('btn-outline-light');
-        layoutListBtn.classList.remove('btn-primary', 'active');
+        layoutListBtn.classList.remove('btn-gold', 'active');
 
         container.className = "row g-4";
         document.querySelectorAll('[data-layout-item]').forEach(item => {
@@ -268,10 +268,10 @@
       });
 
       layoutListBtn.addEventListener('click', () => {
-        layoutListBtn.classList.add('btn-primary', 'active');
+        layoutListBtn.classList.add('btn-gold', 'active');
         layoutListBtn.classList.remove('btn-outline-light');
         layoutGridBtn.classList.add('btn-outline-light');
-        layoutGridBtn.classList.remove('btn-primary', 'active');
+        layoutGridBtn.classList.remove('btn-gold', 'active');
 
         container.className = "row g-3 flex-column";
         document.querySelectorAll('[data-layout-item]').forEach(item => {
@@ -287,7 +287,7 @@
     transition: color 0.2s ease;
   }
   .hover-link:hover {
-    color: var(--button-background, #d4af5f) !important;
+    color: var(--gold) !important;
   }
   .line-clamp-3 {
     display: -webkit-box;

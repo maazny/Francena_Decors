@@ -8,8 +8,8 @@
 @section('schema')
 <script type="application/ld+json">
 {
-  "@@context": "https://schema.org",
-  "@@type": "JobPosting",
+  "@context": "https://schema.org",
+  "@type": "JobPosting",
   "title": "{{ $job->title }}",
   "description": "{!! clean(Str::limit(strip_tags($job->description), 250)) !!}",
   "datePosted": "{{ $job->published_at?->toIso8601String() ?? $job->created_at->toIso8601String() }}",
@@ -18,14 +18,14 @@
   @endif
   "employmentType": "{{ $job->employment_type }}",
   "hiringOrganization": {
-    "@@type": "Organization",
+    "@type": "Organization",
     "name": "Fancy Decorators",
     "sameAs": "{{ url('/') }}"
   },
   "jobLocation": {
-    "@@type": "Place",
+    "@type": "Place",
     "address": {
-      "@@type": "PostalAddress",
+      "@type": "PostalAddress",
       "addressLocality": "{{ $job->location?->city }}",
       "addressRegion": "{{ $job->location?->state }}",
       "addressCountry": "{{ $job->location?->country ?: 'USA' }}"
@@ -33,10 +33,10 @@
   },
   @if($job->salary_to)
   "baseSalary": {
-    "@@type": "MonetaryAmount",
+    "@type": "MonetaryAmount",
     "currency": "USD",
     "value": {
-      "@@type": "QuantitativeValue",
+      "@type": "QuantitativeValue",
       "minValue": {{ $job->salary_from ?: 0 }},
       "maxValue": {{ $job->salary_to }},
       "unitText": "{{ strtoupper($job->salary_type ?: 'YEAR') }}"
@@ -48,29 +48,29 @@
 </script>
 <script type="application/ld+json">
 {
-  "@@context": "https://schema.org",
-  "@@type": "BreadcrumbList",
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
   "itemListElement": [
     {
-      "@@type": "ListItem",
+      "@type": "ListItem",
       "position": 1,
       "name": "Home",
       "item": "{{ url('/') }}"
     },
     {
-      "@@type": "ListItem",
+      "@type": "ListItem",
       "position": 2,
       "name": "Careers",
       "item": "{{ route('careers.index') }}"
     },
     {
-      "@@type": "ListItem",
+      "@type": "ListItem",
       "position": 3,
       "name": "Jobs",
       "item": "{{ route('careers.jobs') }}"
     },
     {
-      "@@type": "ListItem",
+      "@type": "ListItem",
       "position": 4,
       "name": "{{ $job->title }}",
       "item": "{{ route('careers.show', $job->slug) }}"
@@ -81,7 +81,7 @@
 @endsection
 
 @section('content')
-<main style="background-color: var(--background-color, #121212); color: var(--text-color, #ffffff); py-5;">
+<main style="py-5;">
   <div class="container py-5">
     
     <!-- Breadcrumbs -->
@@ -90,7 +90,7 @@
         <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-light"><i class="fa-solid fa-house me-1"></i> Home</a></li>
         <li class="breadcrumb-item"><a href="{{ route('careers.index') }}" class="text-decoration-none text-light">Careers</a></li>
         <li class="breadcrumb-item"><a href="{{ route('careers.jobs') }}" class="text-decoration-none text-light">Jobs</a></li>
-        <li class="breadcrumb-item active text-white-50 text-truncate" aria-current="page" style="max-width: 250px;">{{ $job->title }}</li>
+        <li class="breadcrumb-item active text-warning text-truncate" aria-current="page" style="max-width: 250px;">{{ $job->title }}</li>
       </ol>
     </nav>
 
@@ -117,10 +117,10 @@
             <span class="badge bg-secondary text-uppercase">{{ $job->employment_type }}</span>
             <span class="badge bg-dark text-uppercase border border-secondary">{{ $job->experience_level }}</span>
             @if($job->featured)
-              <span class="badge bg-primary text-uppercase" style="background-color: var(--button-background, #d4af5f) !important;">Featured</span>
+              <span class="badge bg-gold text-uppercase text-white fw-bold">Featured</span>
             @endif
           </div>
-          <h1 class="display-5 fw-bold font-serif mb-2" style="font-family: 'Playfair Display', serif; color: var(--button-background, #d4af5f);">{{ $job->title }}</h1>
+          <h1 class="display-5 fw-bold font-serif mb-2" style="font-family: 'Playfair Display', serif; color: var(--gold);">{{ $job->title }}</h1>
           <p class="text-muted"><i class="fa-solid fa-building me-1"></i> {{ $job->department?->name }} • <i class="fa-solid fa-list me-1"></i> {{ $job->category?->name }}</p>
         </div>
 
@@ -128,8 +128,8 @@
 
         <!-- Short Description -->
         @if($job->short_description)
-          <div class="p-4 mb-4 rounded glass-card border-l-primary" style="border-left: 4px solid var(--button-background, #d4af5f);">
-            <h5 class="fw-semibold text-uppercase tracking-wider mb-2" style="font-size: 0.85rem; color: var(--button-background, #d4af5f);">Position Overview</h5>
+          <div class="p-4 mb-4 rounded glass-card border-l-primary" style="border-left: 4px solid var(--gold);">
+            <h5 class="fw-semibold text-uppercase tracking-wider mb-2" style="font-size: 0.85rem; color: var(--gold);">Position Overview</h5>
             <p class="opacity-90 mb-0 font-italic">{{ $job->short_description }}</p>
           </div>
         @endif
@@ -149,7 +149,7 @@
             <div class="d-flex flex-wrap gap-2">
               @foreach($job->skills as $skill)
                 <span class="badge bg-dark text-white px-3 py-2 border border-secondary rounded-pill small">
-                  <i class="fa-solid fa-circle-check text-primary me-1" style="color: var(--button-background, #d4af5f) !important;"></i> {{ $skill->skill_name }}
+                  <i class="fa-solid fa-circle-check text-warning me-1"></i> {{ $skill->skill_name }}
                 </span>
               @endforeach
             </div>
@@ -162,7 +162,7 @@
             <ul class="list-unstyled">
               @foreach($job->qualifications as $qual)
                 <li class="d-flex align-items-start mb-2.5 opacity-90">
-                  <i class="fa-solid fa-square-check text-primary mt-1 me-2.5" style="color: var(--button-background, #d4af5f) !important;"></i>
+                  <i class="fa-solid fa-square-check text-warning mt-1 me-2.5"></i>
                   <span>{{ $qual->qualification_name }}</span>
                 </li>
               @endforeach
@@ -177,7 +177,7 @@
               @foreach($job->benefits as $benefit)
                 <div class="col-md-6">
                   <div class="d-flex align-items-center p-3 rounded glass-card">
-                    <i class="fa-solid fa-gift text-primary fa-lg me-3" style="color: var(--button-background, #d4af5f);"></i>
+                    <i class="fa-solid fa-gift text-warning fa-lg me-3"></i>
                     <span class="fw-semibold small">{{ $benefit->benefit_name }}</span>
                   </div>
                 </div>
@@ -281,7 +281,7 @@
               </div>
 
               <div class="col-12 text-end">
-                <button type="submit" class="btn btn-primary btn-lg rounded-pill px-5 shadow hover-scale" id="submitBtn">
+                <button type="submit" class="btn btn-gold btn-lg rounded-pill px-5 shadow hover-scale" id="submitBtn">
                   <span class="normal-state"><i class="fa-solid fa-paper-plane me-2"></i> Submit Application</span>
                   <span class="loading-state d-none"><i class="fa-solid fa-spinner fa-spin me-2"></i> Processing...</span>
                 </button>
@@ -298,33 +298,33 @@
         
         <!-- Metadata Specs Card -->
         <div class="card border-0 glass-card p-4 mb-4">
-          <h4 class="h5 fw-bold font-serif mb-4 pb-2 border-bottom border-secondary text-primary" style="color: var(--button-background, #d4af5f);">Position Overview</h4>
+          <h4 class="h5 fw-bold font-serif mb-4 pb-2 border-bottom border-secondary text-primary" style="color: var(--gold);">Position Overview</h4>
           
           <div class="mb-3">
             <span class="d-block small text-uppercase text-muted">Office Location</span>
-            <span class="fw-semibold"><i class="fa-solid fa-location-dot me-1.5"></i> {{ $job->location?->name }} ({{ $job->location?->city }})</span>
+            <span class="fw-semibold"><i class="fa-solid fa-location-dot me-1.5 text-warning"></i> {{ $job->location?->name }} ({{ $job->location?->city }})</span>
           </div>
 
           <div class="mb-3">
             <span class="d-block small text-uppercase text-muted">Employment Type</span>
-            <span class="fw-semibold"><i class="fa-solid fa-briefcase me-1.5"></i> {{ $job->employment_type }}</span>
+            <span class="fw-semibold"><i class="fa-solid fa-briefcase me-1.5 text-warning"></i> {{ $job->employment_type }}</span>
           </div>
 
           <div class="mb-3">
             <span class="d-block small text-uppercase text-muted">Required Experience</span>
-            <span class="fw-semibold"><i class="fa-solid fa-award me-1.5"></i> {{ $job->experience_level }}</span>
+            <span class="fw-semibold"><i class="fa-solid fa-award me-1.5 text-warning"></i> {{ $job->experience_level }}</span>
           </div>
 
           <div class="mb-3">
             <span class="d-block small text-uppercase text-muted">Available Vacancies</span>
-            <span class="fw-semibold"><i class="fa-solid fa-user-group me-1.5"></i> {{ $job->vacancies }} position{{ $job->vacancies > 1 ? 's' : '' }}</span>
+            <span class="fw-semibold"><i class="fa-solid fa-user-group me-1.5 text-warning"></i> {{ $job->vacancies }} position{{ $job->vacancies > 1 ? 's' : '' }}</span>
           </div>
 
           @if($job->salary_to)
             <div class="mb-3">
               <span class="d-block small text-uppercase text-muted">Salary Package</span>
-              <span class="fw-bold" style="color: var(--button-background, #d4af5f);">
-                <i class="fa-solid fa-money-bill-wave me-1.5"></i>
+              <span class="fw-bold" style="color: var(--gold);">
+                <i class="fa-solid fa-money-bill-wave me-1.5 text-warning"></i>
                 {{ $job->salary_from ? '$'.number_format($job->salary_from) . ' - ' : '' }}${{ number_format($job->salary_to) }}
               </span>
               <span class="small text-muted text-uppercase">/ {{ $job->salary_type ?: 'yearly' }}</span>
@@ -338,7 +338,7 @@
             </div>
           @endif
 
-          <a href="#applySection" class="btn btn-primary w-100 rounded-pill py-2.5 shadow-sm sticky-apply-btn" style="background-color: var(--button-background, #d4af5f) !important;">Apply for Job</a>
+          <a href="#applySection" class="btn btn-gold w-100 rounded-pill py-2.5 shadow-sm sticky-apply-btn">Apply for Job</a>
         </div>
 
         <!-- Google Maps Iframe Embed if applicable -->
@@ -357,7 +357,7 @@
                 <div class="p-2.5 rounded hover-bg-dark">
                   <span class="small text-muted text-uppercase" style="font-size: 0.65rem;">{{ $rel->department?->name }}</span>
                   <h6 class="fw-bold mb-1"><a href="{{ route('careers.show', $rel->slug) }}" class="text-white text-decoration-none hover-link">{{ $rel->title }}</a></h6>
-                  <span class="small text-muted"><i class="fa-solid fa-location-dot"></i> {{ $rel->location?->city }}</span>
+                  <span class="small text-muted"><i class="fa-solid fa-location-dot text-warning"></i> {{ $rel->location??->city }}</span>
                 </div>
               @endforeach
             </div>
@@ -484,7 +484,7 @@
     transition: color 0.2s ease;
   }
   .hover-link:hover {
-    color: var(--button-background, #d4af5f) !important;
+    color: var(--gold) !important;
   }
   .hover-bg-dark {
     transition: background-color 0.2s ease;
@@ -493,7 +493,7 @@
     background-color: rgba(255, 255, 255, 0.05);
   }
   .border-l-primary {
-    border-left: 4px solid var(--button-background, #d4af5f);
+    border-left: 4px solid var(--gold);
   }
   .sticky-apply-btn {
     transition: transform 0.2s ease;

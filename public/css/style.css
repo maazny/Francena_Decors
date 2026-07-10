@@ -2,18 +2,18 @@
   --primary-color-val: var(--primary-color, #D4AF37);
   --secondary-color-val: var(--secondary-color, #E6C25E);
   --accent-color-val: var(--accent-color, #D4AF37);
-  --background-color-val: var(--background-color, #F5F5F5);
-  --surface-color-val: var(--surface-color, #FFFFFF);
+  --background-color-val: var(--background-color, #0C0A0F);
+  --surface-color-val: var(--surface-color, #141218);
 
-  --bg: var(--background-color, #F5F5F5);
-  --surface: var(--surface-color, #FFFFFF);
-  --surface-strong: var(--surface-color, #FFFFFF);
+  --bg: var(--background-color, #0C0A0F);
+  --surface: var(--surface-color, #141218);
+  --surface-strong: var(--surface-color, #141218);
   --gold: var(--primary-color, #D4AF37);
   --gold-soft: var(--secondary-color, #E6C25E);
-  --white: var(--text-color, #555555);
-  --muted: var(--text-color, #777777);
-  --shadow: var(--box-shadow, 0 10px 30px rgba(17, 17, 17, 0.05));
-  --border: var(--card-border-color, #E5E5E5);
+  --white: var(--text-color, #EEEEEE);
+  --muted: var(--text-color, #A0A0A0);
+  --shadow: var(--box-shadow, 0 10px 30px rgba(0, 0, 0, 0.3));
+  --border: var(--card-border-color, rgba(255, 255, 255, 0.08));
 }
 
 * {
@@ -478,6 +478,20 @@ button, input, textarea {
 }
 
 .light-theme .text-white {
+  color: #111 !important;
+}
+
+.light-theme .text-white-50,
+.light-theme .text-muted {
+  color: #555 !important;
+}
+
+.light-theme h1,
+.light-theme h2,
+.light-theme h3,
+.light-theme h4,
+.light-theme h5,
+.light-theme h6 {
   color: #111 !important;
 }
 

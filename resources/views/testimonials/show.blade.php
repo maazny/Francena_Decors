@@ -13,167 +13,208 @@
 @section('twitter_image', $testimonial->clientPhoto ? image_url($testimonial->clientPhoto) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
 @section('canonical', route('testimonials.show', $testimonial))
 
+@extends('layouts.app')
+
+@section('title', ($testimonial->seo_title ?? $testimonial->client_name . ' Testimonial') . ' | Fancy Decorators')
+@section('meta_description', $testimonial->seo_description ?: $testimonial->testimonial)
+@section('meta_keywords', $testimonial->seo_keywords)
+@section('og_title', $testimonial->seo_title ?: $testimonial->client_name . ' Testimonial')
+@section('og_description', $testimonial->seo_description ?: $testimonial->testimonial)
+@section('og_type', 'website')
+@section('og_url', route('testimonials.show', $testimonial))
+@section('og_image', $testimonial->clientPhoto ? image_url($testimonial->clientPhoto) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('twitter_title', $testimonial->seo_title ?: $testimonial->client_name . ' Testimonial')
+@section('twitter_description', $testimonial->seo_description ?: $testimonial->testimonial)
+@section('twitter_image', $testimonial->clientPhoto ? image_url($testimonial->clientPhoto) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80')
+@section('canonical', route('testimonials.show', $testimonial))
+
 @section('content')
-<div class="page-header py-5 bg-light">
-    <div class="container">
-        <h1 class="mb-2">{{ $testimonial->client_name }}'s Testimonial</h1>
-        <p class="text-muted">{{ $testimonial->client_company ?? 'Client' }}</p>
-    </div>
-</div>
+<!-- Page Banner -->
+<section class="py-5 text-white position-relative" style="background: linear-gradient(180deg, rgba(8, 7, 10, 0.5), rgba(5, 4, 7, 0.95)), url('https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1950&q=80') no-repeat center center/cover; min-height: 45vh; display: flex; align-items: center;">
+  <div class="container text-center py-4">
+    <span class="text-uppercase tracking-wider small text-warning mb-2 d-block">Client Voice Detail</span>
+    <h1 class="display-4 fw-bold mb-3 font-serif" style="font-family: 'Playfair Display', serif; color: var(--gold);">{{ $testimonial->client_name }}</h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="{{ url('/') }}" class="text-white-50 text-decoration-none">Home</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('testimonials.index') }}" class="text-white-50 text-decoration-none">Testimonials</a></li>
+        <li class="breadcrumb-item active text-warning" aria-current="page">{{ $testimonial->client_name }}</li>
+      </ol>
+    </nav>
+  </div>
+</section>
 
-<div class="container py-5">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="card shadow-sm mb-4">
-                <div class="card-body p-4">
-                    <div class="d-flex align-items-center mb-4 pb-4 border-bottom">
-                        @if ($testimonial->clientPhoto)
-                            <img src="{{ $testimonial->clientPhoto->url }}"
-                                alt="{{ $testimonial->client_name }}" class="rounded-circle me-4"
-                                style="width: 80px; height: 80px; object-fit: cover;">
-                        @else
-                            <div class="rounded-circle bg-secondary me-4"
-                                style="width: 80px; height: 80px;"></div>
-                        @endif
-                        <div>
-                            <h4 class="mb-0">{{ $testimonial->client_name }}</h4>
-                            @if ($testimonial->client_designation)
-                                <p class="mb-1 text-muted">{{ $testimonial->client_designation }}</p>
-                            @endif
-                            @if ($testimonial->client_company)
-                                <p class="mb-2">
-                                    @if ($testimonial->clientLogo)
-                                        <img src="{{ $testimonial->clientLogo->thumbnail_url }}"
-                                            alt="{{ $testimonial->client_company }}"
-                                            style="height: 30px; object-fit: contain; margin-right: 5px;">
-                                    @endif
-                                    <strong>{{ $testimonial->client_company }}</strong>
-                                </p>
-                            @endif
-                            @if ($testimonial->location)
-                                <p class="mb-0 text-muted">
-                                    <i class="fas fa-map-marker-alt"></i> {{ $testimonial->location }}
-                                </p>
-                            @endif
-                        </div>
-                    </div>
-
-                    <div class="mb-4">
-                        <div class="text-warning mb-3">
-                            @for ($i = 0; $i < $testimonial->rating; $i++)
-                                <i class="fas fa-star fa-lg"></i>
-                            @endfor
-                            @for ($i = $testimonial->rating; $i < 5; $i++)
-                                <i class="far fa-star fa-lg"></i>
-                            @endfor
-                        </div>
-                    </div>
-
-                    @if ($testimonial->title)
-                        <h3 class="mb-3">{{ $testimonial->title }}</h3>
-                    @endif
-
-                    <div class="testimonial-content mb-4">
-                        <p class="lead">{{ $testimonial->testimonial }}</p>
-                    </div>
-
-                    @if ($testimonial->hasVideo())
-                        <div class="mb-4 pb-4 border-bottom">
-                            <h5 class="mb-3">Video Testimonial</h5>
-                            @if ($testimonial->youtube_url)
-                                <div class="ratio ratio-16x9">
-                                    @php
-                                        $youtubeId = '';
-                                        if (preg_match('/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $testimonial->youtube_url, $matches)) {
-                                            $youtubeId = $matches[1];
-                                        } elseif (preg_match('/youtu\.be\/([a-zA-Z0-9_-]+)/', $testimonial->youtube_url, $matches)) {
-                                            $youtubeId = $matches[1];
-                                        }
-                                    @endphp
-                                    @if ($youtubeId)
-                                        <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}"
-                                            title="Video Testimonial" allowfullscreen></iframe>
-                                    @else
-                                        <a href="{{ $testimonial->youtube_url }}" target="_blank"
-                                            class="btn btn-lg btn-danger">
-                                            <i class="fab fa-youtube"></i> Watch Video on YouTube
-                                        </a>
-                                    @endif
-                                </div>
-                            @elseif($testimonial->video_url)
-                                <video width="100%" height="auto" controls class="rounded">
-                                    <source src="{{ $testimonial->video_url }}" type="video/mp4">
-                                    Your browser does not support the video tag.
-                                </video>
-                            @endif
-                        </div>
-                    @endif
-
-                    @if ($testimonial->project)
-                        <div class="mb-4 pb-4 border-bottom">
-                            <h5 class="mb-3">Related Project</h5>
-                            <a href="{{ route('projects.show', $testimonial->project) }}"
-                                class="btn btn-outline-primary">
-                                <i class="fas fa-folder"></i> {{ $testimonial->project->title }}
-                            </a>
-                        </div>
-                    @endif
-
-                    @if ($testimonial->category)
-                        <div class="mb-4 pb-4 border-bottom">
-                            <h5 class="mb-3">Category</h5>
-                            <a href="{{ route('testimonials.category', $testimonial->category) }}"
-                                class="badge bg-info" style="font-size: 1rem; padding: 0.5rem 1rem;">
-                                {{ $testimonial->category->name }}
-                            </a>
-                        </div>
-                    @endif
+<section class="py-5">
+  <div class="container">
+    <div class="row g-5">
+      <!-- Main Content -->
+      <div class="col-lg-8">
+        
+        <div class="card border-0 glass-card p-4 p-md-5 mb-4">
+          
+          <!-- Client Header Profile -->
+          <div class="d-flex align-items-center mb-4 pb-4 border-bottom border-secondary flex-wrap gap-3">
+            <div class="client-avatar-wrapper rounded-circle overflow-hidden shadow-lg me-3" style="width: 80px; height: 80px; border: 2px solid var(--gold);">
+              @if ($testimonial->clientPhoto)
+                <img src="{{ image_url($testimonial->clientPhoto) }}" alt="{{ $testimonial->client_name }}" class="w-100 h-100 object-fit-cover">
+              @else
+                <div class="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center text-white">
+                  <i class="fa-solid fa-user fa-2xl"></i>
                 </div>
+              @endif
             </div>
+            <div>
+              <h3 class="h4 fw-bold text-white mb-1 font-serif" style="font-family: 'Playfair Display', serif;">{{ $testimonial->client_name }}</h3>
+              <p class="mb-0 text-muted small">
+                @if ($testimonial->client_designation)
+                  {{ $testimonial->client_designation }}
+                  @if ($testimonial->client_company)
+                    • {{ $testimonial->client_company }}
+                  @endif
+                @elseif($testimonial->client_company)
+                  {{ $testimonial->client_company }}
+                @else
+                  Client
+                @endif
+              </p>
+              @if ($testimonial->location)
+                <p class="mb-0 text-muted small mt-1">
+                  <i class="fas fa-map-marker-alt me-1.5 text-gold"></i>{{ $testimonial->location }}
+                </p>
+              @endif
+            </div>
+            
+            @if ($testimonial->clientLogo)
+              <div class="ms-md-auto bg-dark p-2 rounded border border-secondary" style="height: 48px;">
+                <img src="{{ image_url($testimonial->clientLogo) }}" alt="{{ $testimonial->client_company }}" class="h-100" style="object-fit: contain;">
+              </div>
+            @endif
+          </div>
+
+          <!-- Star Rating -->
+          <div class="mb-4">
+            <div class="text-warning mb-2" style="font-size: 1.15rem;">
+              @for ($i = 0; $i < ($testimonial->rating ?: 5); $i++)
+                <i class="fas fa-star"></i>
+              @endfor
+              @for ($i = ($testimonial->rating ?: 5); $i < 5; $i++)
+                <i class="far fa-star"></i>
+              @endfor
+            </div>
+          </div>
+
+          <!-- Testimonial Content -->
+          @if ($testimonial->title)
+            <h4 class="mb-3 text-white font-serif" style="font-family: 'Playfair Display', serif; font-size: 1.25rem;">"{{ $testimonial->title }}"</h4>
+          @endif
+          <div class="testimonial-content mb-4" style="line-height: 1.8; font-size: 1.1rem; font-style: italic; color: rgba(255,255,255,0.85);">
+            <p>"{{ $testimonial->testimonial }}"</p>
+          </div>
+
+          <!-- Video Testimonial Player -->
+          @if ($testimonial->hasVideo())
+            <div class="mb-4 pb-4 border-bottom border-secondary">
+              <h5 class="mb-3 text-white font-serif" style="font-family: 'Playfair Display', serif;">Video Testimonial</h5>
+              
+              @if ($testimonial->youtube_url)
+                @php
+                  $youtubeId = '';
+                  if (preg_match('/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/', $testimonial->youtube_url, $matches)) {
+                    $youtubeId = $matches[1];
+                  } elseif (preg_match('/youtu\.be\/([a-zA-Z0-9_-]+)/', $testimonial->youtube_url, $matches)) {
+                    $youtubeId = $matches[1];
+                  }
+                @endphp
+                @if ($youtubeId)
+                  <div class="ratio ratio-16x9 rounded overflow-hidden shadow-lg border border-secondary">
+                    <iframe src="https://www.youtube.com/embed/{{ $youtubeId }}" title="Video Testimonial" allowfullscreen></iframe>
+                  </div>
+                @else
+                  <a href="{{ $testimonial->youtube_url }}" target="_blank" class="btn btn-gold px-4 py-2.5">
+                    <i class="fab fa-youtube me-2"></i> Watch Video on YouTube
+                  </a>
+                @endif
+              @elseif($testimonial->video_url)
+                <div class="ratio ratio-16x9 rounded overflow-hidden shadow-lg border border-secondary">
+                  <video controls class="w-100 h-100">
+                    <source src="{{ $testimonial->video_url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                  </video>
+                </div>
+              @endif
+            </div>
+          @endif
+
+          <!-- Related Project -->
+          @if ($testimonial->project)
+            <div class="d-flex align-items-center gap-3 pt-3">
+              <span class="small text-muted text-uppercase tracking-wider">Transformation:</span>
+              <a href="{{ route('projects.show', $testimonial->project) }}" class="btn btn-gold btn-sm rounded-pill px-4">
+                <i class="fas fa-folder me-1.5"></i> {{ $testimonial->project->title }}
+              </a>
+            </div>
+          @endif
+
         </div>
 
-        <div class="col-lg-4">
-            @if ($relatedTestimonials->count())
-                <div class="card shadow-sm">
-                    <div class="card-header bg-light">
-                        <h5 class="mb-0">Related Testimonials</h5>
+      </div>
+
+      <!-- Sidebar -->
+      <aside class="col-lg-4">
+        
+        <!-- Category details box -->
+        @if ($testimonial->category)
+          <div class="card border-0 glass-card p-4 mb-4">
+            <h4 class="h5 fw-bold font-serif mb-3 pb-2 border-bottom border-secondary text-primary" style="color: var(--gold); font-family: 'Playfair Display', serif;">Category</h4>
+            <a href="{{ route('testimonials.category', $testimonial->category->slug) }}" class="btn btn-outline-light rounded-pill px-4 w-100 text-uppercase" style="font-size: 0.75rem; letter-spacing: 1px;">
+              {{ $testimonial->category->name }}
+            </a>
+          </div>
+        @endif
+
+        <!-- Related Testimonials Sidebar -->
+        @if ($relatedTestimonials->count())
+          <div class="card border-0 glass-card p-4">
+            <h4 class="h5 fw-bold font-serif mb-4 pb-2 border-bottom border-secondary" style="font-family: 'Playfair Display', serif;">Related Voices</h4>
+            <div class="d-flex flex-column gap-4">
+              @foreach ($relatedTestimonials as $related)
+                <div class="pb-3 border-bottom border-secondary last-border-none">
+                  <div class="d-flex gap-2 mb-2 align-items-center">
+                    <div class="rounded-circle overflow-hidden shadow" style="width: 40px; height: 40px; border: 1.5px solid var(--gold);">
+                      @if ($related->clientPhoto)
+                        <img src="{{ image_url($related->clientPhoto) }}" alt="{{ $related->client_name }}" class="w-100 h-100 object-fit-cover">
+                      @else
+                        <div class="w-100 h-100 bg-secondary d-flex align-items-center justify-content-center text-white">
+                          <i class="fa-solid fa-user small"></i>
+                        </div>
+                      @endif
                     </div>
-                    <div class="card-body">
-                        @foreach ($relatedTestimonials as $related)
-                            <div class="mb-3 pb-3 border-bottom">
-                                <div class="d-flex gap-2 mb-2">
-                                    @if ($related->clientPhoto)
-                                        <img src="{{ $related->clientPhoto->thumbnail_url }}"
-                                            alt="{{ $related->client_name }}" class="rounded-circle"
-                                            style="width: 40px; height: 40px; object-fit: cover;">
-                                    @else
-                                        <div class="rounded-circle bg-secondary"
-                                            style="width: 40px; height: 40px;"></div>
-                                    @endif
-                                    <div>
-                                        <h6 class="mb-0">
-                                            <a href="{{ route('testimonials.show', $related) }}">
-                                                {{ $related->client_name }}
-                                            </a>
-                                        </h6>
-                                        <small class="text-muted">{{ $related->client_company ?? 'Client' }}</small>
-                                    </div>
-                                </div>
-                                <div class="text-warning small mb-2">
-                                    @for ($i = 0; $i < $related->rating; $i++)
-                                        <i class="fas fa-star"></i>
-                                    @endfor
-                                    @for ($i = $related->rating; $i < 5; $i++)
-                                        <i class="far fa-star"></i>
-                                    @endfor
-                                </div>
-                                <p class="small mb-0 text-muted">{{ Str::limit($related->testimonial, 100) }}</p>
-                            </div>
-                        @endforeach
+                    <div>
+                      <h6 class="mb-0 small fw-bold">
+                        <a href="{{ route('testimonials.show', $related) }}" class="text-white text-decoration-none hover-gold">
+                          {{ $related->client_name }}
+                        </a>
+                      </h6>
+                      <small class="text-muted" style="font-size: 0.7rem;">{{ $related->client_company ?? 'Client' }}</small>
                     </div>
+                  </div>
+                  <div class="text-warning mb-2" style="font-size: 0.75rem;">
+                    @for ($i = 0; $i < ($related->rating ?: 5); $i++)
+                      <i class="fas fa-star"></i>
+                    @endfor
+                  </div>
+                  <p class="small text-muted mb-0" style="line-height: 1.5; font-style: italic;">
+                    "{{ Str::limit($related->testimonial, 90) }}"
+                  </p>
                 </div>
-            @endif
-        </div>
+              @endforeach
+            </div>
+          </div>
+        @endif
+
+      </aside>
     </div>
-</div>
+  </div>
+</section>
 @endsection
+
