@@ -106,7 +106,7 @@
                       <p class="hero-subtitle mb-3">{{ $slide->subtitle }}</p>
                     @endif
 
-                    <h1 class="display-4 fw-bold">{{ $slide->title }}</h1>
+                    <h1 class="display-4 fw-bold">{!! nl2br(e($slide->title)) !!}</h1>
 
                     @if($slide->description)
                       <p class="lead mt-4">{{ $slide->description }}</p>

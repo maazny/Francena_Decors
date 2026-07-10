@@ -20,17 +20,23 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@fancydecorators.test',
-            'password' => 'password',
-        ]);
+        $adminUser = User::firstOrCreate(
+            ['email' => 'admin@fancydecorators.test'],
+            [
+                'name' => 'Admin User',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+            ]
+        );
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'test@example.com'],
+            [
+                'name' => 'Test User',
+                'password' => bcrypt('password'),
+                'email_verified_at' => now(),
+            ]
+        );
 
         \App\Models\SiteSetting::firstOrCreate([])->update([
             'site_name' => 'Fancy Decorators',
@@ -392,11 +398,11 @@ class DatabaseSeeder extends Seeder
             // Seed Hero Sliders
             $slidesData = [
                 [
-                    'title' => 'Building Your Dream Into Reality',
-                    'subtitle' => 'Luxury Construction & Design',
-                    'description' => 'Premium craftsmanship for elite residential, commercial and interior architecture.',
+                    'title' => "Building the Future\nWith Quality & Trust",
+                    'subtitle' => '',
+                    'description' => 'We deliver premium construction, renovation, interior, and architectural solutions with quality craftsmanship and modern design.',
                     'image_url' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80',
-                    'badge_text' => 'Luxury Construction & Design',
+                    'badge_text' => 'WELCOME TO FANCY DECORATORS',
                     'display_order' => 1,
                 ],
                 [
