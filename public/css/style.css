@@ -1,17 +1,17 @@
 :root {
-  --primary-color-val: var(--primary-color, #D32F2F);
-  --secondary-color-val: var(--secondary-color, #FF5A5F);
-  --accent-color-val: var(--accent-color, #D32F2F);
+  --primary-color-val: var(--primary-color, #D4AF37);
+  --secondary-color-val: var(--secondary-color, #E6C25E);
+  --accent-color-val: var(--accent-color, #D4AF37);
   --background-color-val: var(--background-color, #FFFFFF);
   --surface-color-val: var(--surface-color, #F8FAFC);
 
   --bg: var(--background-color, #FFFFFF);
   --surface: var(--surface-color, #F8FAFC);
   --surface-strong: var(--surface-color, #FFFFFF);
-  --gold: var(--primary-color, #D32F2F);
-  --gold-soft: var(--secondary-color, #FF5A5F);
+  --gold: var(--primary-color, #D4AF37);
+  --gold-soft: var(--secondary-color, #E6C25E);
   --white: var(--text-color, #1F2937);
-  --muted: var(--text-color, #4B5563);
+  --muted: var(--text-color, #555555);
   --shadow: var(--box-shadow, 0 10px 30px rgba(0, 0, 0, 0.03));
   --border: var(--card-border-color, #E8EAF0);
 }
@@ -20,17 +20,17 @@
   --primary-color-val: #D4AF37;
   --secondary-color-val: #E6C25E;
   --accent-color-val: #D4AF37;
-  --background-color-val: #0C0A0F;
-  --surface-color-val: #141218;
+  --background-color-val: #111111;
+  --surface-color-val: #1C1A22;
 
-  --bg: #0C0A0F;
-  --surface: #141218;
-  --surface-strong: #141218;
+  --bg: #111111;
+  --surface: #1A1A1A;
+  --surface-strong: #222222;
   --gold: #D4AF37;
   --gold-soft: #E6C25E;
-  --white: #EEEEEE;
-  --muted: #A0A0A0;
-  --shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  --white: #FFFFFF;
+  --muted: #BDBDBD;
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   --border: rgba(255, 255, 255, 0.08);
 }
 
@@ -232,10 +232,24 @@ button, input, textarea {
 
 .hero-cms-slide {
   min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-slide-bg-image {
+  position: absolute;
+  inset: 0;
   background-image: var(--hero-desktop-image);
   background-size: cover;
   background-position: center;
-  position: relative;
+  z-index: 0;
+  transform: scale(1);
+}
+
+@media (max-width: 767.98px) {
+  .hero-slide-bg-image {
+    background-image: var(--hero-mobile-image);
+  }
 }
 
 .hero-cms-overlay {
@@ -282,6 +296,122 @@ button, input, textarea {
   height: 100%;
   object-fit: cover;
   z-index: 0;
+  transform: scale(1);
+}
+
+/* Staggered slide transition animations */
+.carousel-item .hero-cms-badge,
+.carousel-item .hero-subtitle,
+.carousel-item h1,
+.carousel-item .lead,
+.carousel-item .hero-buttons,
+.carousel-item .hero-trust-bar,
+.carousel-item .hero-badges-row {
+  opacity: 0;
+  transform: translateY(25px);
+  transition: none;
+}
+
+/* Disable whole container animations when active to let staggered children animations shine */
+.carousel-item.active .hero-cms-content {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Active Slide - Background slow zoom (very subtle) */
+.carousel-item.active .hero-slide-bg-image,
+.carousel-item.active .hero-background-video {
+  animation: heroBgSlowZoom 12s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+/* Active Slide - Staggered children transitions */
+.carousel-item.active .hero-cms-badge {
+  animation: heroTextFadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 150ms;
+}
+
+/* Heading: Fade-up */
+.carousel-item.active h1 {
+  animation: heroTextFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 300ms;
+}
+
+/* Subtitle: Fade-up (slight delay) */
+.carousel-item.active .hero-subtitle {
+  animation: heroTextFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 500ms;
+}
+
+.carousel-item.active .lead {
+  animation: heroTextFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 650ms;
+}
+
+/* Buttons: Slide-up (larger slide movement for physical presence) */
+.carousel-item.active .hero-buttons {
+  animation: heroButtonsSlideUp 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 800ms;
+}
+
+.carousel-item.active .hero-trust-bar {
+  animation: heroTextFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 950ms;
+}
+
+.carousel-item.active .hero-badges-row {
+  animation: heroTextFadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: 1100ms;
+}
+
+@keyframes heroBgSlowZoom {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+@keyframes heroTextFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroButtonsSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(35px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-item .hero-cms-badge,
+  .carousel-item .hero-subtitle,
+  .carousel-item h1,
+  .carousel-item .lead,
+  .carousel-item .hero-buttons,
+  .carousel-item .hero-trust-bar,
+  .carousel-item .hero-badges-row {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+  }
+  .carousel-item.active .hero-slide-bg-image,
+  .carousel-item.active .hero-background-video {
+    animation: none !important;
+    transform: none !important;
+  }
 }
 
 .hero-cms-content {
@@ -2135,11 +2265,22 @@ html {
 
 /* Custom Cursor Desktop Only */
 @media (min-width: 992px) {
-  body {
+  body:not(.admin-body) {
     cursor: none;
   }
   
-  a, button, input, select, textarea, .btn, .btn-gold, .btn-outline-light, .navbar-toggler, [role="button"], .project-card, .gallery-item img {
+  body:not(.admin-body) a, 
+  body:not(.admin-body) button, 
+  body:not(.admin-body) input, 
+  body:not(.admin-body) select, 
+  body:not(.admin-body) textarea, 
+  body:not(.admin-body) .btn, 
+  body:not(.admin-body) .btn-gold, 
+  body:not(.admin-body) .btn-outline-light, 
+  body:not(.admin-body) .navbar-toggler, 
+  body:not(.admin-body) [role="button"], 
+  body:not(.admin-body) .project-card, 
+  body:not(.admin-body) .gallery-item img {
     cursor: none !important;
   }
   

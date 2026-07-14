@@ -31,21 +31,83 @@
         -webkit-backdrop-filter: blur(12px) !important;
         border: 1px solid rgba(255, 255, 255, 0.08) !important;
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35) !important;
-        max-width: 90%;
+        max-width: 95%;
+        border-radius: 50px;
       }
-      @media (max-width: 575.98px) {
-        .stats-glass-container {
-          flex-direction: column !important;
-          border-radius: 20px !important;
-          padding: 1.25rem 2rem !important;
-          gap: 0.75rem !important;
+      
+      /* Mobile styling: viewport under 768px */
+      @media (max-width: 767.98px) {
+        .hero-cms-slide h1 {
+          font-size: clamp(2.2rem, 6.5vw, 3rem) !important;
+          line-height: 1.15 !important;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .hero-cms-slide .lead {
+          font-size: 0.95rem !important;
+          margin-top: 1rem !important;
+        }
+        .hero-buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 0.85rem;
           width: 100%;
+          max-width: 290px;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        .hero-buttons .btn {
+          width: 100% !important;
+          margin: 0 !important;
+          padding: 0.9rem 1.75rem !important;
+          font-size: 0.95rem !important;
+        }
+        .stats-glass-container {
+          display: grid !important;
+          grid-template-columns: repeat(2, 1fr) !important;
+          gap: 1.25rem 1rem !important;
+          border-radius: 24px !important;
+          padding: 1.5rem 1.25rem !important;
+          max-width: 100% !important;
+          width: 100% !important;
         }
         .stats-glass-container .vr {
           display: none !important;
         }
         .hero-stats-bar {
-          padding-bottom: 1.5rem !important;
+          padding-bottom: 2rem !important;
+        }
+        .stat-item {
+          display: flex;
+          flex-direction: column !important;
+          align-items: center !important;
+          justify-content: center !important;
+        }
+        .stat-item span.text-uppercase {
+          margin-left: 0 !important;
+          margin-top: 0.25rem !important;
+          font-size: 0.68rem !important;
+        }
+      }
+
+      /* Tablet styling: viewport between 768px and 1024px */
+      @media (min-width: 768px) and (max-width: 1024px) {
+        .hero-cms-slide h1 {
+          font-size: clamp(2.8rem, 5vw, 3.8rem) !important;
+        }
+        .hero-cms-slide .lead {
+          font-size: 1.05rem !important;
+        }
+        .hero-buttons .btn {
+          padding: 0.85rem 1.75rem !important;
+        }
+        .hero-buttons {
+          display: flex;
+          justify-content: center;
+          gap: 1rem;
         }
       }
     </style>
@@ -89,6 +151,9 @@
             class="carousel-item hero-cms-slide h-100 {{ $loop->first ? 'active' : '' }}"
             style="--hero-desktop-image: url('{{ $desktopImage }}'); --hero-mobile-image: url('{{ $mobileImage }}'); --hero-overlay: {{ $slide->overlay_rgba }};"
           >
+            <!-- Background Image fallback with slow zoom -->
+            <div class="hero-slide-bg-image"></div>
+
             @if($videoUrl)
               <video class="hero-background-video" autoplay muted loop playsinline preload="metadata">
                 <source src="{{ $videoUrl }}" type="{{ $slide->backgroundVideo->mime_type }}">
@@ -200,6 +265,7 @@
       $aboutSection = $aboutData['section'] ?? null;
       $completedProjects = $aboutSection?->completed_projects ?? 500;
       $experienceYears = $aboutSection?->experience_years ?? 15;
+      $teamMembers = $aboutSection?->team_members ?? 120;
       $happyClients = $aboutSection?->happy_clients ?? 98;
     @endphp
 
@@ -211,22 +277,38 @@
     </a>
 
     <div class="hero-stats-bar position-absolute bottom-0 start-50 translate-middle-x z-3 w-100 pb-4">
-      <div class="container d-flex justify-content-center">
-        <div class="stats-glass-container d-flex align-items-center justify-content-center gap-4 py-3 px-5 rounded-pill shadow-lg"
+      <div class="container d-flex justify-content-center px-3">
+        <div class="stats-glass-container d-grid d-md-flex align-items-center justify-content-center gap-3 gap-md-4 py-3 px-4 px-md-5 rounded-pill shadow-lg"
              style="background: rgba(17, 17, 17, 0.45); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08) !important;">
-          <div class="stat-item text-center d-flex align-items-center">
-            <span class="fw-bold text-uppercase" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">{{ $completedProjects }}+</span>
+          
+          <!-- Projects -->
+          <div class="stat-item text-center d-flex align-items-center justify-content-center">
+            <span class="fw-bold text-uppercase counter" data-target="{{ $completedProjects }}" data-suffix="+" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">0+</span>
             <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Projects</span>
           </div>
-          <div class="vr bg-secondary opacity-25" style="height: 24px; width: 1px;"></div>
-          <div class="stat-item text-center d-flex align-items-center">
-            <span class="fw-bold text-uppercase" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">{{ $experienceYears }}+</span>
+
+          <div class="vr bg-secondary opacity-25 d-none d-md-block" style="height: 24px; width: 1px;"></div>
+
+          <!-- Years -->
+          <div class="stat-item text-center d-flex align-items-center justify-content-center">
+            <span class="fw-bold text-uppercase counter" data-target="{{ $experienceYears }}" data-suffix="+" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">0+</span>
             <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Years</span>
           </div>
-          <div class="vr bg-secondary opacity-25" style="height: 24px; width: 1px;"></div>
-          <div class="stat-item text-center d-flex align-items-center">
-            <span class="fw-bold text-uppercase" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">{{ $happyClients }}%</span>
-            <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Happy</span>
+
+          <div class="vr bg-secondary opacity-25 d-none d-md-block" style="height: 24px; width: 1px;"></div>
+
+          <!-- Team -->
+          <div class="stat-item text-center d-flex align-items-center justify-content-center">
+            <span class="fw-bold text-uppercase counter" data-target="{{ $teamMembers }}" data-suffix="+" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">0+</span>
+            <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Team</span>
+          </div>
+
+          <div class="vr bg-secondary opacity-25 d-none d-md-block" style="height: 24px; width: 1px;"></div>
+
+          <!-- Happy -->
+          <div class="stat-item text-center d-flex align-items-center justify-content-center">
+            <span class="fw-bold text-uppercase counter" data-target="{{ $happyClients }}" data-suffix="%" style="color: var(--gold); font-family: 'Montserrat', sans-serif; font-size: 1.5rem;">0%</span>
+            <span class="text-uppercase text-muted-custom ms-2" style="font-size: 0.75rem; letter-spacing: 1.5px; color: rgba(255, 255, 255, 0.55); font-weight: 500;">Satisfaction</span>
           </div>
         </div>
       </div>
