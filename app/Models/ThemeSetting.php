@@ -153,7 +153,7 @@ class ThemeSetting extends Model
         ])
             ->filter()
             ->map(fn ($value, $key) => "{$key}: {$value};")
-            ->implode('\n');
+            ->implode("\n");
     }
 
     /**

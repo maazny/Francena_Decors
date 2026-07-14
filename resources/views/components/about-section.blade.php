@@ -50,13 +50,13 @@
               <div class="row g-3 mt-2">
                 @if($about->mission)
                   <div class="col-md-6">
-                    <h5 class="fw-bold mb-2" style="color: #111111 !important;"><i class="fa-solid fa-bullseye me-2" style="color: var(--gold);"></i>Mission</h5>
+                    <h5 class="fw-bold mb-2" style="color: var(--white) !important;"><i class="fa-solid fa-bullseye me-2" style="color: var(--gold);"></i>Mission</h5>
                     <p style="color: var(--white); font-size: 0.95rem;">{{ $about->mission }}</p>
                   </div>
                 @endif
                 @if($about->vision)
                   <div class="col-md-6">
-                    <h5 class="fw-bold mb-2" style="color: #111111 !important;"><i class="fa-solid fa-eye me-2" style="color: var(--gold);"></i>Vision</h5>
+                    <h5 class="fw-bold mb-2" style="color: var(--white) !important;"><i class="fa-solid fa-eye me-2" style="color: var(--gold);"></i>Vision</h5>
                     <p style="color: var(--white); font-size: 0.95rem;">{{ $about->vision }}</p>
                   </div>
                 @endif
@@ -66,22 +66,28 @@
             <!-- Achievements (Stats Counters) -->
             <div class="achievements-section border-top border-bottom py-4 my-4" style="border-color: var(--border) !important;">
               <div class="row g-3">
-                <div class="col-4 text-center">
+                <div class="col-6 col-md-3 text-center">
                   <div class="counter-card-simple">
-                    <div class="h2 fw-bold text-primary m-0 counter" style="color: #111111 !important;" data-target="{{ $about->completed_projects }}" data-suffix="+">0</div>
-                    <p class="text-muted text-uppercase mb-0 mt-1" style="font-size: 0.7rem; letter-spacing: 1px;">Projects Completed</p>
+                    <div class="h2 fw-bold m-0 counter" style="color: var(--white) !important;" data-target="50" data-suffix="+">0</div>
+                    <p class="text-muted text-uppercase mb-0 mt-1" style="font-size: 0.7rem; letter-spacing: 1px;">Completed Projects</p>
                   </div>
                 </div>
-                <div class="col-4 text-center border-start border-end" style="border-color: var(--border) !important;">
+                <div class="col-6 col-md-3 text-center border-start-md" style="border-color: var(--border) !important;">
                   <div class="counter-card-simple">
-                    <div class="h2 fw-bold text-primary m-0 counter" style="color: #111111 !important;" data-target="{{ $about->team_members }}" data-suffix="+">0</div>
-                    <p class="text-muted text-uppercase mb-0 mt-1" style="font-size: 0.7rem; letter-spacing: 1px;">Team Members</p>
+                    <div class="h2 fw-bold m-0 counter" style="color: var(--white) !important;" data-target="15" data-suffix="+">0</div>
+                    <p class="text-muted text-uppercase mb-0 mt-1" style="font-size: 0.7rem; letter-spacing: 1px;">Years Experience</p>
                   </div>
                 </div>
-                <div class="col-4 text-center">
+                <div class="col-6 col-md-3 text-center border-start-md" style="border-color: var(--border) !important;">
                   <div class="counter-card-simple">
-                    <div class="h2 fw-bold text-primary m-0 counter" style="color: #111111 !important;" data-target="{{ $about->happy_clients }}" data-suffix="%">0</div>
-                    <p class="text-muted text-uppercase mb-0 mt-1" style="font-size: 0.7rem; letter-spacing: 1px;">Happy Clients</p>
+                    <div class="h2 fw-bold m-0 counter" style="color: var(--white) !important;" data-target="120" data-suffix="+">0</div>
+                    <p class="text-muted text-uppercase mb-0 mt-1" style="font-size: 0.7rem; letter-spacing: 1px;">Professional Team</p>
+                  </div>
+                </div>
+                <div class="col-6 col-md-3 text-center border-start-md" style="border-color: var(--border) !important;">
+                  <div class="counter-card-simple">
+                    <div class="h2 fw-bold m-0 counter" style="color: var(--white) !important;" data-target="95" data-suffix="%">0</div>
+                    <p class="text-muted text-uppercase mb-0 mt-1" style="font-size: 0.7rem; letter-spacing: 1px;">Client Satisfaction</p>
                   </div>
                 </div>
               </div>
@@ -96,7 +102,7 @@
                     <div class="timeline-compact-item d-flex gap-3 mb-3">
                       <span class="badge text-dark py-1 px-2 fw-bold" style="background: var(--gold); font-size: 0.8rem; height: fit-content; border-radius: 4px;">{{ $timeline->year }}</span>
                       <div>
-                        <h6 class="fw-bold m-0" style="color: #111111;">{{ $timeline->title }}</h6>
+                        <h6 class="fw-bold m-0" style="color: var(--white);">{{ $timeline->title }}</h6>
                         @if($timeline->description)<p class="text-muted mb-0 small" style="line-height: 1.4;">{{ $timeline->description }}</p>@endif
                       </div>
                     </div>
@@ -112,7 +118,7 @@
                   <p class="fst-italic text-muted mb-2" style="font-size: 0.95rem;">"{{ $about->chairman_message }}"</p>
                 @endif
                 @if($about->chairman_name)
-                  <h5 class="fw-bold m-0" style="color: #111111; font-size: 1rem;">{{ $about->chairman_name }}</h5>
+                  <h5 class="fw-bold m-0" style="color: var(--white); font-size: 1rem;">{{ $about->chairman_name }}</h5>
                 @endif
                 @if($about->chairman_designation)
                   <p class="text-muted m-0 small">{{ $about->chairman_designation }}</p>

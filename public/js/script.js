@@ -48,6 +48,7 @@ window.addEventListener('load', () => {
     typedText.textContent = typedPhrases[0];
   }
   revealVisible();
+  handleCounterScroll();
   updateScrollProgress();
   setThemeFromStorage();
   initHeroSlider();

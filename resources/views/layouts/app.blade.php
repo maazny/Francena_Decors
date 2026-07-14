@@ -139,6 +139,17 @@
     .section-bg {
       background-color: var(--surface-color, #0a0a0a) !important;
     }
+
+    .dark-theme {
+      --background-color: #0C0A0F !important;
+      --surface-color: #141218 !important;
+      --text-color: #EEEEEE !important;
+      --heading-color: #FFFFFF !important;
+      --card-background: #1e1e24 !important;
+      --card-border-color: rgba(255, 255, 255, 0.08) !important;
+      --border: rgba(255, 255, 255, 0.08) !important;
+      --white: #EEEEEE !important;
+    }
   </style>
   @stack('head')
 </head>

@@ -216,6 +216,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::middleware('can:view_projects')->group(function () {
             Route::post('project-categories/bulk', [ProjectCategoryController::class, 'bulk'])->name('project-categories.bulk');
+            Route::post('project-categories/{projectCategory}/toggle-status', [ProjectCategoryController::class, 'toggleStatus'])->name('project-categories.toggle-status');
+            Route::post('project-categories/{projectCategory}/restore', [ProjectCategoryController::class, 'restore'])->name('project-categories.restore');
             Route::resource('project-categories', ProjectCategoryController::class)->except(['show']);
 
             Route::post('projects/bulk', [ProjectController::class, 'bulk'])->name('projects.bulk');

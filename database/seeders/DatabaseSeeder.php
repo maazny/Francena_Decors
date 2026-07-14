@@ -402,6 +402,7 @@ class DatabaseSeeder extends Seeder
                     'subtitle' => '',
                     'description' => 'We deliver premium construction, renovation, interior, and architectural solutions with quality craftsmanship and modern design.',
                     'image_url' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80',
+                    'video_url' => 'https://cdn.coverr.co/videos/coverr-taking-photos-of-a-house-under-construction-2417/1080p.mp4',
                     'badge_text' => 'WELCOME TO FANCY DECORATORS',
                     'display_order' => 1,
                 ],
@@ -448,12 +449,47 @@ class DatabaseSeeder extends Seeder
                         'uploaded_by' => $adminUser->id,
                     ]);
 
+                    $videoMediaId = null;
+                    if (!empty($slide['video_url'])) {
+                        $videoFileName = 'hero_video_' . $num . '.mp4';
+                        $videoFilePath = 'media/' . $videoFileName;
+
+                        $opts = [
+                            'http' => [
+                                'method' => 'GET',
+                                'header' => "Referer: https://coverr.co/\r\n"
+                            ]
+                        ];
+                        $context = stream_context_create($opts);
+                        $videoContent = @file_get_contents($slide['video_url'], false, $context);
+
+                        if ($videoContent !== false) {
+                            \Illuminate\Support\Facades\Storage::disk('public')->put($videoFilePath, $videoContent);
+
+                            $videoMedia = \App\Models\Media::create([
+                                'title' => $slide['title'] . ' Video',
+                                'alt_text' => $slide['title'] . ' Video',
+                                'file_name' => $videoFileName,
+                                'original_name' => $videoFileName,
+                                'file_path' => $videoFilePath,
+                                'disk' => 'public',
+                                'mime_type' => 'video/mp4',
+                                'extension' => 'mp4',
+                                'file_size' => \Illuminate\Support\Facades\Storage::disk('public')->size($videoFilePath),
+                                'is_image' => false,
+                                'uploaded_by' => $adminUser->id,
+                            ]);
+                            $videoMediaId = $videoMedia->id;
+                        }
+                    }
+
                     \App\Models\HeroSlider::create([
                         'title' => $slide['title'],
                         'subtitle' => $slide['subtitle'],
                         'description' => $slide['description'],
                         'desktop_image_id' => $media->id,
                         'mobile_image_id' => $media->id,
+                        'background_video_id' => $videoMediaId,
                         'badge_text' => $slide['badge_text'],
                         'badge_color' => '#d4af5f',
                         'button_one_text' => 'Get Free Quote',

@@ -203,6 +203,13 @@
       $happyClients = $aboutSection?->happy_clients ?? 98;
     @endphp
 
+    <!-- Scroll Down indicator -->
+    <a href="#about" class="hero-scroll-down position-absolute start-50 translate-middle-x z-3 text-decoration-none d-flex flex-column align-items-center" 
+       style="bottom: 95px; color: var(--white); cursor: pointer; transition: all 0.3s ease;">
+      <span class="fs-4 bounce-animation" style="color: var(--gold); line-height: 1; margin-bottom: 2px;">↓</span>
+      <span class="text-uppercase tracking-wider font-monospace" style="font-size: 0.62rem; opacity: 0.75; font-weight: 500;">Scroll Down</span>
+    </a>
+
     <div class="hero-stats-bar position-absolute bottom-0 start-50 translate-middle-x z-3 w-100 pb-4">
       <div class="container d-flex justify-content-center">
         <div class="stats-glass-container d-flex align-items-center justify-content-center gap-4 py-3 px-5 rounded-pill shadow-lg"

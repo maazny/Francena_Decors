@@ -2313,3 +2313,37 @@ html {
   background: var(--surface-strong) !important;
 }
 
+@media (min-width: 768px) {
+  .border-start-md {
+    border-left: 1px solid var(--border) !important;
+  }
+}
+
+/* Scroll Down Indicator & Bounce Animation */
+@keyframes gentle-bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.bounce-animation {
+  animation: gentle-bounce 2s infinite ease-in-out;
+  display: inline-block;
+}
+
+.hero-scroll-down {
+  opacity: 0.75;
+}
+
+.hero-scroll-down:hover {
+  opacity: 1 !important;
+  transform: translate(-50%, -3px) !important;
+}
+
+.hero-scroll-down:hover span {
+  color: var(--gold) !important;
+}
+
