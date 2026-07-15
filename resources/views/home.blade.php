@@ -11,11 +11,12 @@
 
     <section id="services" class="py-5 section-bg" data-aos="fade-up">
       <div class="container">
-        <div class="section-header text-center mb-5">
+          <div class="section-header text-center mb-5">
           <span class="section-label">Our Services</span>
-          <h2>Complete Luxury Construction Services</h2>
-          <p>From custom residential builds to executive commercial fit-outs, our construction services are designed to support premium projects from concept through completion.</p>
+          <h2>{{ $siteSetting->services_heading ?? 'Complete Luxury Construction Services' }}</h2>
+          <p>{{ $siteSetting->services_description ?? 'From custom residential builds to executive commercial fit-outs, our construction services are designed to support premium projects from concept through completion.' }}</p>
         </div>
+
         <div class="search-box mb-4" role="search" aria-label="Search services">
           <input id="serviceSearch" type="text" class="form-control search-input" placeholder="Search services..." aria-label="Search services" />
         </div>
@@ -51,11 +52,12 @@
 
     <section id="projects" class="py-5 bg-white" data-aos="fade-up">
       <div class="container">
-        <div class="section-header text-center mb-5">
+          <div class="section-header text-center mb-5">
           <span class="section-label">Featured Projects</span>
-          <h2>Exceptional Projects for Distinctive Spaces</h2>
-          <p>A curated gallery of premium residential, commercial, interior and exterior work.</p>
+          <h2>{{ $siteSetting->projects_heading ?? 'Exceptional Projects for Distinctive Spaces' }}</h2>
+          <p>{{ $siteSetting->projects_description ?? 'A curated gallery of premium residential, commercial, interior and exterior work.' }}</p>
         </div>
+
         <div class="text-center mb-4">
           <div class="btn-group" role="group" aria-label="Project filter">
             <button type="button" class="btn btn-outline-light active filter-btn" aria-pressed="true" data-filter="all">All</button>
@@ -102,9 +104,11 @@
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Transformations</span>
-          <h2>Before & After Interactive Showcase</h2>
-          <p>Drag the slider handle in the center left or right to witness our master structural renovations from skeleton to absolute luxury.</p>
+          <h2>{{ $siteSetting->transformations_heading ?? 'Before & After Interactive Showcase' }}</h2>
+          <p>{{ $siteSetting->transformations_description ?? 'Drag the slider handle in the center left or right to witness our master structural renovations from skeleton to absolute luxury.' }}</p>
         </div>
+
+
         
         <div class="row justify-content-center">
           <div class="col-lg-10">
@@ -137,9 +141,10 @@
       <section id="testimonials" class="py-5 section-bg" data-aos="fade-up">
         <div class="container">
           <div class="section-header text-center mb-5">
-            <span class="section-label">Testimonials</span>
-            <h2>What Our Clients Say</h2>
-            <p>Trusted by clients who appreciate luxury, transparency, and exceptional delivery.</p>
+          <span class="section-label">Testimonials</span>
+            <h2>{{ $siteSetting->testimonials_heading ?? 'What Our Clients Say' }}</h2>
+            <p>{{ $siteSetting->testimonials_description ?? 'Trusted by clients who appreciate luxury, transparency, and exceptional delivery.' }}</p>
+
           </div>
           <div class="testimonial-slider position-relative">
             @foreach($testimonials as $index => $testimonial)
@@ -202,7 +207,8 @@
           <div class="col-lg-6" data-aos="fade-right">
             <span class="section-label">Join Our Team</span>
             <h2>Build Your Legacy With Us</h2>
-            <p class="opacity-75 my-4">At {{ $siteSetting->site_name ?? 'Francena Decors' }}, we craft sophistication and luxury. We are constantly searching for talented designers, architects, and project managers to join our team.</p>
+            <p class="opacity-75 my-4">{{ $siteSetting->careers_intro ?? 'At ' . ($siteSetting->site_name ?? 'Francena Decors') . ', we craft sophistication and luxury. We are constantly searching for talented designers, architects, and project managers to join our team.' }}</p>
+
             <div class="row g-3 mb-4">
               <div class="col-6">
                 <div class="d-flex align-items-center gap-2">
@@ -245,8 +251,9 @@
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Our Journal</span>
-          <h2>Latest Insights & Elegance</h2>
-          <p>Read our latest articles on luxury architectural design, home renovation tips, and corporate fit-outs.</p>
+          <h2>{{ $siteSetting->blog_heading ?? 'Latest Insights & Elegance' }}</h2>
+          <p>{{ $siteSetting->blog_description ?? 'Read our latest articles on luxury architectural design, home renovation tips, and corporate fit-outs.' }}</p>
+
         </div>
         <div class="row g-4">
           @forelse($latestPosts as $post)
@@ -273,8 +280,9 @@
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Our Process</span>
-          <h2>From Vision to Premium Delivery</h2>
-          <p>A refined five-step process built for clarity and luxury execution.</p>
+          <h2>{{ $siteSetting->process_heading ?? 'From Vision to Premium Delivery' }}</h2>
+          <p>{{ $siteSetting->process_description ?? 'A refined five-step process built for clarity and luxury execution.' }}</p>
+
         </div>
         <div class="row g-4">
           <div class="col-md-6 col-lg-4 col-xl-2">
@@ -320,8 +328,9 @@
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">FAQ</span>
-          <h2>Frequently Asked Questions</h2>
-          <p>Answers to common questions about our luxury construction process.</p>
+          <h2>{{ $siteSetting->faq_heading ?? 'Frequently Asked Questions' }}</h2>
+          <p>{{ $siteSetting->faq_description ?? 'Answers to common questions about our luxury construction process.' }}</p>
+
         </div>
         <div class="accordion" id="faqAccordion">
           @forelse($serviceFaqs as $index => $faq)
@@ -344,8 +353,9 @@
       <div class="container">
         <div class="section-header text-center mb-5">
           <span class="section-label">Contact</span>
-          <h2>Start Your Luxury Project</h2>
-          <p>Contact {{ $siteSetting->site_name ?? 'Francena Decors' }} today to schedule a consultation for sophisticated home builds, commercial construction, or high-end renovation services.</p>
+          <h2>{{ $siteSetting->contact_heading ?? 'Start Your Luxury Project' }}</h2>
+          <p>{{ $siteSetting->contact_description ?? ('Contact ' . ($siteSetting->site_name ?? 'Francena Decors') . ' today to schedule a consultation for sophisticated home builds, commercial construction, or high-end renovation services.') }}</p>
+
         </div>
         <div class="row g-4">
           <div class="col-lg-6">
