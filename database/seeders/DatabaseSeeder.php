@@ -53,27 +53,29 @@ class DatabaseSeeder extends Seeder
         ]);
 
         \App\Models\ThemeSetting::firstOrCreate([])->update([
-            'primary_color' => '#D4AF37', // Accent
-            'secondary_color' => '#E6C25E',
-            'accent_color' => '#D4AF37',
-            'background_color' => '#F5F5F5', // Gray
+            'primary_color' => '#004AAD', // Primary Blue
+            'secondary_color' => '#003380',
+            'accent_color' => '#FF6B07', // Accent Orange
+            'background_color' => '#F8FAFC', // Light Gray
             'surface_color' => '#FFFFFF', // White
-            'text_color' => '#555555', // Text
-            'heading_color' => '#111111', // Primary
-            'link_color' => '#D4AF37',
-            'link_hover_color' => '#B89020',
-            'button_background' => '#D4AF37',
+            'text_color' => '#1E293B',
+            'heading_color' => '#0F172A',
+            'link_color' => '#004AAD',
+            'link_hover_color' => '#003380',
+            'button_background' => '#004A99',
             'button_text_color' => '#FFFFFF',
-            'button_hover_background' => '#B89020',
+            'button_hover_background' => '#003380',
             'button_hover_text' => '#FFFFFF',
-            'navbar_background' => '#111111',
+            'navbar_background' => '#0F172A',
             'navbar_text_color' => '#FFFFFF',
-            'footer_background' => '#111111',
+            'footer_background' => '#0F172A',
             'footer_text_color' => '#FFFFFF',
             'card_background' => '#FFFFFF',
-            'card_border_color' => '#E5E5E5',
+            'card_border_color' => '#E2E8F0',
             'input_background' => '#FFFFFF',
-            'input_border_color' => '#D3D3D3',
+            'input_border_color' => '#CBD5E1',
+            'font_family' => 'Inter',
+            'heading_font' => 'Montserrat',
         ]);
 
         \App\Models\CompanyTimeline::create([

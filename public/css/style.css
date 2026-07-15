@@ -1,15 +1,15 @@
 :root {
-  --primary-color-val: var(--primary-color, #D4AF37);
-  --secondary-color-val: var(--secondary-color, #E6C25E);
-  --accent-color-val: var(--accent-color, #D4AF37);
+  --primary-color-val: var(--primary-color, #004AAD);
+  --secondary-color-val: var(--secondary-color, #FF6B07);
+  --accent-color-val: var(--accent-color, #FF6B07);
   --background-color-val: var(--background-color, #FFFFFF);
   --surface-color-val: var(--surface-color, #F8FAFC);
 
   --bg: var(--background-color, #FFFFFF);
   --surface: var(--surface-color, #F8FAFC);
   --surface-strong: var(--surface-color, #FFFFFF);
-  --gold: var(--primary-color, #D4AF37);
-  --gold-soft: var(--secondary-color, #E6C25E);
+  --gold: var(--primary-color, #004AAD);
+  --gold-soft: var(--accent-color, #FF6B07);
   --white: var(--text-color, #1F2937);
   --muted: var(--text-color, #555555);
   --shadow: var(--box-shadow, 0 10px 30px rgba(0, 0, 0, 0.03));
@@ -17,17 +17,17 @@
 }
 
 .dark-theme {
-  --primary-color-val: #D4AF37;
-  --secondary-color-val: #E6C25E;
-  --accent-color-val: #D4AF37;
+  --primary-color-val: #004AAD;
+  --secondary-color-val: #FF6B07;
+  --accent-color-val: #FF6B07;
   --background-color-val: #111111;
   --surface-color-val: #1C1A22;
 
   --bg: #111111;
   --surface: #1A1A1A;
   --surface-strong: #222222;
-  --gold: #D4AF37;
-  --gold-soft: #E6C25E;
+  --gold: #004AAD;
+  --gold-soft: #FF6B07;
   --white: #FFFFFF;
   --muted: #BDBDBD;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
@@ -52,7 +52,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, .page-title, .display-1, .display-2, .display-3, .display-4, .display-5 {
-  font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', sans-serif !important;
+  font-family: 'Montserrat', 'Noto Sans Tamil', sans-serif !important;
   text-wrap: balance;
 }
 
@@ -63,7 +63,7 @@ h1, h2, h3, h4, h5, h6, .page-title, .display-1, .display-2, .display-3, .displa
 .nav-link,
 h5,
 h6 {
-  font-family: 'Manrope', 'Noto Sans Tamil', sans-serif !important;
+  font-family: 'Montserrat', 'Noto Sans Tamil', sans-serif !important;
 }
 
 body, p, span, li, a, input, select, textarea {
