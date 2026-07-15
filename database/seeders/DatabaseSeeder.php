@@ -21,7 +21,7 @@ class DatabaseSeeder extends Seeder
         // User::factory(10)->create();
 
         $adminUser = User::firstOrCreate(
-            ['email' => 'admin@fancydecorators.test'],
+            ['email' => 'admin@francenadecors.test'],
             [
                 'name' => 'Admin User',
                 'password' => bcrypt('password'),
@@ -39,8 +39,8 @@ class DatabaseSeeder extends Seeder
         );
 
         \App\Models\SiteSetting::firstOrCreate([])->update([
-            'site_name' => 'Fancy Decorators',
-            'company_name' => 'Fancy Decorators',
+            'site_name' => 'Francena Decors',
+            'company_name' => 'Francena Decors',
             'tagline' => 'Premium Construction & Interior Solutions Since 2012',
         ]);
 
@@ -166,7 +166,7 @@ class DatabaseSeeder extends Seeder
             'client_designation' => 'Project Manager',
             'rating' => 5,
             'title' => 'Exceptional Quality and Service',
-            'testimonial' => 'The team at Fancy Decorators delivered outstanding results for our corporate event. Their attention to detail and professionalism exceeded all expectations. Highly recommended!',
+            'testimonial' => 'The team at Francena Decors delivered outstanding results for our corporate event. Their attention to detail and professionalism exceeded all expectations. Highly recommended!',
             'location' => 'New York, USA',
             'featured' => true,
             'homepage_featured' => true,
@@ -174,7 +174,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'published',
             'approved_at' => now(),
             'seo_title' => 'Sarah Johnson - ABC Corporation Testimonial',
-            'seo_description' => 'Read Sarah Johnson\'s testimonial about Fancy Decorators\' exceptional service and quality.',
+            'seo_description' => 'Read Sarah Johnson\'s testimonial about Francena Decors\' exceptional service and quality.',
             'seo_keywords' => 'testimonial, decoration, corporate event, quality service',
         ]);
 
@@ -187,7 +187,7 @@ class DatabaseSeeder extends Seeder
             'client_designation' => 'Store Manager',
             'rating' => 5,
             'title' => 'Transformed Our Store',
-            'testimonial' => 'Fancy Decorators completely transformed our retail space. The design suggestions were innovative and helped increase foot traffic significantly. A fantastic investment!',
+            'testimonial' => 'Francena Decors completely transformed our retail space. The design suggestions were innovative and helped increase foot traffic significantly. A fantastic investment!',
             'location' => 'Los Angeles, USA',
             'featured' => true,
             'homepage_featured' => true,
@@ -195,7 +195,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'published',
             'approved_at' => now(),
             'seo_title' => 'Michael Chen - XYZ Retail Testimonial',
-            'seo_description' => 'Learn how Fancy Decorators transformed XYZ Retail Solutions\' store.',
+            'seo_description' => 'Learn how Francena Decors transformed XYZ Retail Solutions\' store.',
             'seo_keywords' => 'retail decoration, store design, business improvement',
         ]);
 
@@ -208,7 +208,7 @@ class DatabaseSeeder extends Seeder
             'client_designation' => 'Event Director',
             'rating' => 4,
             'title' => 'Creative and Professional',
-            'testimonial' => 'Working with Fancy Decorators for our wedding events has been a wonderful experience. Their creative vision and professional execution made our clients extremely happy.',
+            'testimonial' => 'Working with Francena Decors for our wedding events has been a wonderful experience. Their creative vision and professional execution made our clients extremely happy.',
             'location' => 'Chicago, USA',
             'featured' => false,
             'homepage_featured' => false,
@@ -216,7 +216,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'published',
             'approved_at' => now(),
             'seo_title' => 'Emily Williams - Elite Event Planning Testimonial',
-            'seo_description' => 'Emily Williams shares her experience with Fancy Decorators for wedding events.',
+            'seo_description' => 'Emily Williams shares her experience with Francena Decors for wedding events.',
             'seo_keywords' => 'wedding decoration, event planning, professional service',
         ]);
 
@@ -229,7 +229,7 @@ class DatabaseSeeder extends Seeder
             'client_designation' => 'Director of Operations',
             'rating' => 5,
             'title' => 'Perfect Execution Every Time',
-            'testimonial' => 'We\'ve worked with Fancy Decorators on multiple projects and they deliver consistent excellence. Their team understands our brand and translates it beautifully into our spaces.',
+            'testimonial' => 'We\'ve worked with Francena Decors on multiple projects and they deliver consistent excellence. Their team understands our brand and translates it beautifully into our spaces.',
             'location' => 'San Francisco, USA',
             'featured' => true,
             'homepage_featured' => true,
@@ -237,7 +237,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'published',
             'approved_at' => now(),
             'seo_title' => 'David Martinez - Tech Innovations Testimonial',
-            'seo_description' => 'David Martinez praises Fancy Decorators for consistent excellence in corporate decoration.',
+            'seo_description' => 'David Martinez praises Francena Decors for consistent excellence in corporate decoration.',
             'seo_keywords' => 'corporate decoration, brand design, professional execution',
         ]);
 
@@ -250,7 +250,7 @@ class DatabaseSeeder extends Seeder
             'client_designation' => 'Owner',
             'rating' => 5,
             'title' => 'Brought Our Vision to Life',
-            'testimonial' => 'Fancy Decorators understood our boutique\'s aesthetic perfectly. They created an elegant shopping environment that reflects our brand values and attracts our target customers.',
+            'testimonial' => 'Francena Decors understood our boutique\'s aesthetic perfectly. They created an elegant shopping environment that reflects our brand values and attracts our target customers.',
             'location' => 'Miami, USA',
             'featured' => false,
             'homepage_featured' => false,
@@ -258,7 +258,7 @@ class DatabaseSeeder extends Seeder
             'status' => 'published',
             'approved_at' => now(),
             'seo_title' => 'Jennifer Lee - Fashion Boutique Testimonial',
-            'seo_description' => 'Jennifer Lee shares how Fancy Decorators transformed her fashion boutique.',
+            'seo_description' => 'Jennifer Lee shares how Francena Decors transformed her fashion boutique.',
             'seo_keywords' => 'boutique decoration, retail design, brand aesthetic',
         ]);
 
@@ -388,7 +388,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RbacSeeder::class);
 
         // Assign super_admin role to default admin user
-        $adminUser = User::where('email', 'admin@fancydecorators.test')->first();
+        $adminUser = User::where('email', 'admin@francenadecors.test')->first();
         if ($adminUser) {
             $superAdminRole = \App\Models\Role::where('name', 'super_admin')->first();
             if ($superAdminRole) {
@@ -403,7 +403,7 @@ class DatabaseSeeder extends Seeder
                     'description' => 'We deliver premium construction, renovation, interior, and architectural solutions with quality craftsmanship and modern design.',
                     'image_url' => 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80',
                     'video_url' => 'https://cdn.coverr.co/videos/coverr-taking-photos-of-a-house-under-construction-2417/1080p.mp4',
-                    'badge_text' => 'WELCOME TO FANCY DECORATORS',
+                    'badge_text' => 'WELCOME TO FRANCENA DECORS',
                     'display_order' => 1,
                 ],
                 [
@@ -618,7 +618,7 @@ class DatabaseSeeder extends Seeder
             if (\App\Models\FooterSetting::count() === 0) {
                 $f = \App\Models\FooterSetting::create([
                     'layout' => 'four_columns',
-                    'company_description' => 'Fancy Decorators: Crafting landmarks of luxury and distinction since 2012.',
+                    'company_description' => 'Francena Decors: Crafting landmarks of luxury and distinction since 2012.',
                     'show_logo' => false,
                     'show_description' => true,
                     'show_columns' => true,
@@ -634,9 +634,9 @@ class DatabaseSeeder extends Seeder
                     'contact_heading' => 'Contact Us',
                     'contact_address' => '25 Royal Avenue, Downtown City',
                     'contact_phone' => '+1 234 567 890',
-                    'contact_email' => 'hello@fancydecorators.com',
+                    'contact_email' => 'hello@francenadecors.com',
                     'business_hours_heading' => 'Working Hours',
-                    'copyright_text' => '© 2026 Fancy Decorators. All Rights Reserved.',
+                    'copyright_text' => '© 2026 Francena Decors. All Rights Reserved.',
                     'bottom_bar_text' => 'Designed with Excellence.',
                     'bottom_bar_enabled' => true,
                     'status' => true,

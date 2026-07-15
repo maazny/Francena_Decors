@@ -58,13 +58,13 @@ class SeoViewComposer
         $ogImageFallback = 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80';
         
         $seo = [
-            'site_name' => $settings->site_name ?? 'Fancy Decorators',
-            'title' => $page->title ?? $settings->meta_title ?? 'Fancy Decorators | Luxury Construction Company',
+            'site_name' => $settings->site_name ?? 'Francena Decors',
+            'title' => $page->title ?? $settings->meta_title ?? 'Francena Decors | Luxury Construction Company',
             'meta_description' => $page->meta_description ?? $settings->meta_description ?? 'Premium residential & commercial building renovations.',
             'meta_keywords' => $page->meta_keywords ?? $settings->meta_keywords ?? 'builder, renovation, architecture',
             'robots' => $page->robots ?? $settings->robots ?? 'index, follow',
             'canonical_url' => $page->canonical_url ?? ($settings->canonical_url ? url($settings->canonical_url) : request()->url()),
-            'og_title' => $page->og_title ?? $page->title ?? $settings->og_title ?? $settings->meta_title ?? 'Fancy Decorators',
+            'og_title' => $page->og_title ?? $page->title ?? $settings->og_title ?? $settings->meta_title ?? 'Francena Decors',
             'og_description' => $page->og_description ?? $page->meta_description ?? $settings->og_description ?? $settings->meta_description ?? 'Renovations.',
             'og_image' => $page->og_image ?? $settings->og_image ?? $ogImageFallback,
             'og_type' => $settings->og_type ?? 'website',

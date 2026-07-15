@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Fancy Decorators | Luxury Construction Company')
+@section('title', ($siteSetting->site_name ?? 'Francena Decors') . ' | Luxury Construction Company')
 
 @section('content')
   <main>
@@ -202,7 +202,7 @@
           <div class="col-lg-6" data-aos="fade-right">
             <span class="section-label">Join Our Team</span>
             <h2>Build Your Legacy With Us</h2>
-            <p class="opacity-75 my-4">At Fancy Decorators, we craft sophistication and luxury. We are constantly searching for talented designers, architects, and project managers to join our team.</p>
+            <p class="opacity-75 my-4">At {{ $siteSetting->site_name ?? 'Francena Decors' }}, we craft sophistication and luxury. We are constantly searching for talented designers, architects, and project managers to join our team.</p>
             <div class="row g-3 mb-4">
               <div class="col-6">
                 <div class="d-flex align-items-center gap-2">
@@ -345,7 +345,7 @@
         <div class="section-header text-center mb-5">
           <span class="section-label">Contact</span>
           <h2>Start Your Luxury Project</h2>
-          <p>Contact Fancy Decorators today to schedule a consultation for sophisticated home builds, commercial construction, or high-end renovation services.</p>
+          <p>Contact {{ $siteSetting->site_name ?? 'Francena Decors' }} today to schedule a consultation for sophisticated home builds, commercial construction, or high-end renovation services.</p>
         </div>
         <div class="row g-4">
           <div class="col-lg-6">
@@ -402,7 +402,7 @@
                     <i class="fa-solid fa-envelope text-gold fs-5"></i>
                     <div>
                       <strong>Email:</strong><br>
-                      <a href="mailto:{{ $siteSetting->company_email ?: 'hello@fancydecorators.com' }}" class="text-white text-decoration-none hover-gold">{{ $siteSetting->company_email ?: 'hello@fancydecorators.com' }}</a>
+                      <a href="mailto:{{ $siteSetting->company_email ?: 'hello@francenadecors.com' }}" class="text-white text-decoration-none hover-gold">{{ $siteSetting->company_email ?: 'hello@francenadecors.com' }}</a>
                     </div>
                   </li>
                   
@@ -434,7 +434,7 @@
   <div class="quick-actions" aria-label="Quick contact actions">
     <a href="https://wa.me/1234567890" target="_blank" rel="noopener noreferrer" class="action-btn whatsapp" aria-label="Chat on WhatsApp"><i class="fab fa-whatsapp" aria-hidden="true"></i></a>
     <a href="tel:+1234567890" class="action-btn call" aria-label="Call us"><i class="fa-solid fa-phone" aria-hidden="true"></i></a>
-    <a href="mailto:hello@fancydecorators.com" class="action-btn email" aria-label="Email us"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
+    <a href="mailto:hello@francenadecors.com" class="action-btn email" aria-label="Email us"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
   </div>
 
   <div id="galleryModal" class="gallery-modal" role="dialog" aria-modal="true" aria-labelledby="galleryCaption" aria-hidden="true">

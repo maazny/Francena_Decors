@@ -8,7 +8,7 @@
     @stack('head')
     <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 </head>
-<body>
+<body class="admin-body">
     <header>
         <h1>Admin</h1>
     </header>

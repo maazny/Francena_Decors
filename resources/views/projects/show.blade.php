@@ -15,7 +15,7 @@
 
 @extends('layouts.app')
 
-@section('title', ($project->seo_title ?: $project->title) . ' | Fancy Decorators')
+@section('title', ($project->seo_title ?: $project->title) . ' | Francena Decors')
 @section('meta_description', $project->seo_description ?: $project->short_description)
 @section('meta_keywords', $project->seo_keywords)
 @section('og_title', $project->seo_title ?: $project->title)

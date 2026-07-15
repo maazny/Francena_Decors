@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Join Our Newsletter | Fancy Decorators')
-@section('meta_description', 'Sign up to receive design inspirations, elite construction guides, and updates from Fancy Decorators.')
+@section('title', 'Join Our Newsletter | Francena Decors')
+@section('meta_description', 'Sign up to receive design inspirations, elite construction guides, and updates from Francena Decors.')
 
 @section('content')
 <section class="newsletter-landing-section py-5 section-bg" style="min-height: 70vh; display: flex; align-items: center;">

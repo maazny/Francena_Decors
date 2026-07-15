@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
-@section('title', 'Contact Us - Fancy Decorators | Luxury Construction & Design')
-@section('meta_description', 'Contact Fancy Decorators. Inquire about our custom luxury construction, premium residential and commercial builds, renovations, or interior design services.')
-@section('meta_keywords', 'contact fancy decorators, luxury construction contact, hire builder, commercial contractor inquiry')
+@section('title', 'Contact Us - Francena Decors | Luxury Construction & Design')
+@section('meta_description', 'Contact Francena Decors. Inquire about our custom luxury construction, premium residential and commercial builds, renovations, or interior design services.')
+@section('meta_keywords', 'contact francena decors, luxury construction contact, hire builder, commercial contractor inquiry')
 @section('canonical', route('contact.index'))
 
 @section('schema')
@@ -10,14 +10,14 @@
 {
   "@@context": "https://schema.org",
   "@@type": "ContactPage",
-  "name": "Contact Fancy Decorators",
+  "name": "Contact Francena Decors",
   "description": "Contact our team for premium luxury construction, renovations, and custom interior design inquiries.",
   "url": "{{ route('contact.index') }}",
   "mainEntity": {
     "@@type": "HomeAndConstructionBusiness",
-    "name": "{{ $siteSetting->company_name ?: 'Fancy Decorators' }}",
+    "name": "{{ $siteSetting->company_name ?: 'Francena Decors' }}",
     "telephone": "{{ $siteSetting->phone ?: '+1 234 567 890' }}",
-    "email": "{{ $siteSetting->company_email ?: 'info@fancydecorators.com' }}",
+    "email": "{{ $siteSetting->company_email ?: 'info@francenadecors.com' }}",
     "address": {
       "@@type": "PostalAddress",
       "streetAddress": "{{ $siteSetting->address ?: '25 Royal Avenue' }}",
@@ -51,10 +51,10 @@
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8">
-        <span class="text-warning small text-uppercase tracking-wider mb-2 d-block">Fancy Decorators Philosophy</span>
+        <span class="text-warning small text-uppercase tracking-wider mb-2 d-block">Francena Decors Philosophy</span>
         <h2 class="h3 fw-bold mb-3">Crafting Landmarks of Luxury & Distinction</h2>
         <p class="text-white-50 lead fs-6">
-          At Fancy Decorators, we shape luxurious spaces and build landmarks of distinction. Whether you are seeking a custom residential build, a sophisticated commercial fit-out, or elite interior styling, our specialists are ready to consult on your vision.
+          At Francena Decors, we shape luxurious spaces and build landmarks of distinction. Whether you are seeking a custom residential build, a sophisticated commercial fit-out, or elite interior styling, our specialists are ready to consult on your vision.
         </p>
       </div>
     </div>
@@ -169,8 +169,8 @@
               <div>
                 <h5 class="h6 fw-bold mb-1">Email Inquiries</h5>
                 <p class="text-white-50 mb-0">
-                  General: <a href="mailto:{{ $siteSetting->company_email ?: 'info@fancydecorators.com' }}" class="text-warning text-decoration-none">{{ $siteSetting->company_email ?: 'info@fancydecorators.com' }}</a><br>
-                  Support: <a href="mailto:{{ $siteSetting->support_email ?: 'support@fancydecorators.com' }}" class="text-warning text-decoration-none">{{ $siteSetting->support_email ?: 'support@fancydecorators.com' }}</a>
+                  General: <a href="mailto:{{ $siteSetting->company_email ?: 'info@francenadecors.com' }}" class="text-warning text-decoration-none">{{ $siteSetting->company_email ?: 'info@francenadecors.com' }}</a><br>
+                  Support: <a href="mailto:{{ $siteSetting->support_email ?: 'support@francenadecors.com' }}" class="text-warning text-decoration-none">{{ $siteSetting->support_email ?: 'support@francenadecors.com' }}</a>
                 </p>
               </div>
             </div>

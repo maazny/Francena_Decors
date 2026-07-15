@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Audit Logs Document | Fancy Decorators</title>
+    <title>Audit Logs Document | {{ $siteSetting->site_name ?? 'Francena Decors' }}</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -75,7 +75,7 @@
     </div>
 
     <div class="header">
-        <h1>Fancy Decorators CMS</h1>
+        <h1>{{ $siteSetting->site_name ?? 'Francena Decors' }} CMS</h1>
         <div style="font-size: 14px; color: #666666;">Security & Audit Log Document</div>
     </div>
 
@@ -199,7 +199,7 @@
     @endif
 
     <div style="margin-top: 50px; font-size: 11px; text-align: center; border-top: 1px solid #dddddd; padding-top: 10px; color: #777777;">
-        Confidential Document – Generated from Fancy Decorators Administration Control Panel.
+        Confidential Document – Generated from {{ $siteSetting->site_name ?? 'Francena Decors' }} Administration Control Panel.
     </div>
 
     <script>

@@ -26,7 +26,7 @@
 
                     <div class="mb-3">
                         <label for="subject" class="form-label">Default Subject</label>
-                        <input type="text" name="subject" id="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject', $template->subject) }}" placeholder="e.g. Latest Updates from Fancy Decorators">
+                        <input type="text" name="subject" id="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject', $template->subject) }}" placeholder="e.g. Latest Updates from Francena Decors">
                         @error('subject')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

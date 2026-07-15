@@ -10,7 +10,7 @@
            decoding="async">
     @else
       <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80" 
-           alt="Fancy Decorators journal card" 
+           alt="Francena Decors journal card" 
            class="card-img-top w-100 h-100 object-fit-cover" 
            loading="lazy" 
            decoding="async">

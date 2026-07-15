@@ -27,7 +27,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="site_name" class="form-label fw-semibold small text-muted uppercase">Site Name</label>
-                            <input type="text" name="site_name" id="site_name" class="form-control" value="{{ old('site_name', $settings->site_name) }}" placeholder="e.g. Fancy Decorators">
+                            <input type="text" name="site_name" id="site_name" class="form-control" value="{{ old('site_name', $settings->site_name) }}" placeholder="e.g. Francena Decors">
                         </div>
                         <div class="col-md-6">
                             <label for="meta_title" class="form-label fw-semibold small text-muted uppercase">Default Meta Title</label>

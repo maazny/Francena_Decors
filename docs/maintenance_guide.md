@@ -1,6 +1,6 @@
-# Fancy Decorators CMS – System Maintenance Guide
+# Francena Decors CMS – System Maintenance Guide
 
-This guide details standard operating procedures for ongoing maintenance, cache flushing, log audits, and queue monitoring of the Fancy Decorators CMS application.
+This guide details standard operating procedures for ongoing maintenance, cache flushing, log audits, and queue monitoring of the Francena Decors CMS application.
 
 ---
 

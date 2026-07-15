@@ -63,7 +63,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>FANCY DECORATORS</h1>
+            <h1>{{ strtoupper($siteSetting->site_name ?? 'Francena Decors') }}</h1>
         </div>
         <div class="content">
             <p>Hello {{ $name }},</p>
@@ -72,10 +72,10 @@
                 <a href="{{ $verificationUrl }}" class="cta-btn">Confirm Subscription</a>
             </div>
             <p>If you did not make this request, you can safely ignore this email.</p>
-            <p>Warm regards,<br>The Fancy Decorators Team</p>
+            <p>Warm regards,<br>The {{ $siteSetting->site_name ?? 'Francena Decors' }} Team</p>
         </div>
         <div class="footer">
-            &copy; {{ date('Y') }} Fancy Decorators. All rights reserved.
+            &copy; {{ date('Y') }} {{ $siteSetting->site_name ?? 'Francena Decors' }}. All rights reserved.
         </div>
     </div>
 </body>

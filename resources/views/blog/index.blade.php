@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Journal & Insights | Fancy Decorators')
+@section('title', 'Journal & Insights | Francena Decors')
 @section('meta_description', 'Read the latest trends, insights, and design tips from our luxury architecture and construction experts.')
 
 @section('content')

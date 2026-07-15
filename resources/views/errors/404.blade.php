@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Page Not Found | Fancy Decorators')
+@section('title', 'Page Not Found | Francena Decors')
 
 @section('content')
 <section class="error-page py-5 bg-dark text-white d-flex align-items-center justify-content-center" style="min-height: 70vh;">

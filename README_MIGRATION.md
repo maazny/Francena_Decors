@@ -1,4 +1,4 @@
-# Fancy Decorators — Static to Laravel Migration (Guide)
+# Francena Decors — Static to Laravel Migration (Guide)
 
 This repository currently contains the original static site files and a small Blade scaffold to start migrating into a Laravel 12 application.
 

@@ -65,7 +65,7 @@ class NewsletterModuleTest extends TestCase
         // 4. Create Template
         $template = NewsletterCampaignTemplate::create([
             'name' => 'Standard Newsletter Layout',
-            'subject' => 'Welcome to Fancy Decorators',
+            'subject' => 'Welcome to Francena Decors',
             'html_content' => '<h1>Hello</h1>',
         ]);
 
@@ -83,7 +83,7 @@ class NewsletterModuleTest extends TestCase
             'html_content' => '<h1>Decorations Trends for July 2026</h1>',
             'status' => CampaignStatus::DRAFT,
             'sender_name' => 'Fancy Admin',
-            'sender_email' => 'admin@fancydecorators.test',
+            'sender_email' => 'admin@francenadecors.test',
         ]);
 
         $this->assertDatabaseHas('newsletter_campaigns', [

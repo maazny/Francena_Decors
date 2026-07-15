@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Fancy Decorators CMS REST API",
-    "description": "Enterprise-grade REST API v1 for the Fancy Decorators Content Management System (CMS). Supports public queries, client operations, authenticated settings updates, and Spatie-based RBAC administration routes.",
+    "title": "Francena Decors CMS REST API",
+    "description": "Enterprise-grade REST API v1 for the Francena Decors Content Management System (CMS). Supports public queries, client operations, authenticated settings updates, and Spatie-based RBAC administration routes.",
     "version": "1.0.0"
   },
   "servers": [

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Email Subscription Preferences | Fancy Decorators')
+@section('title', 'Email Subscription Preferences | Francena Decors')
 
 @section('content')
 <section class="preferences-section py-5 section-bg" style="min-height: 75vh;">

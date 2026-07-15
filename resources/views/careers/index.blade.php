@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Careers at Fancy Decorators | Join Our Team')
-@section('meta_description', 'Build a premium career with Fancy Decorators. Discover job openings, team benefits, and see how we construct luxury residential and commercial masterpieces.')
+@section('title', 'Careers at Francena Decors | Join Our Team')
+@section('meta_description', 'Build a premium career with Francena Decors. Discover job openings, team benefits, and see how we construct luxury residential and commercial masterpieces.')
 @section('meta_keywords', 'careers, job openings, constructor job, luxury builder hiring, interior designer hiring, engineering jobs')
 
 @section('content')
@@ -56,7 +56,7 @@
         <div class="col-lg-6">
           <span class="text-uppercase small tracking-wider" style="color: var(--gold);">Our Identity</span>
           <h2 class="h1 fw-bold mb-4 font-serif" style="font-family: 'Playfair Display', serif;">Company Culture & Values</h2>
-          <p class="lead opacity-80 mb-4">At Fancy Decorators, we believe that premium execution requires a creative environment built on trust, design excellence, and continuous development.</p>
+          <p class="lead opacity-80 mb-4">At Francena Decors, we believe that premium execution requires a creative environment built on trust, design excellence, and continuous development.</p>
           <div class="d-flex align-items-start mb-4">
             <div class="p-3 bg-dark rounded-circle me-3" style="color: var(--gold) !important; background: rgba(206, 154, 95, 0.18) !important;">
               <i class="fa-solid fa-gem fa-xl"></i>

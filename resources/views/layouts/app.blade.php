@@ -6,19 +6,19 @@
   <meta name="description" content="@yield('meta_description', $seo->meta_description ?? '')" />
   <meta name="keywords" content="@yield('meta_keywords', $seo->meta_keywords ?? '')" />
   <meta name="robots" content="@yield('robots', $seo->robots ?? 'index, follow')" />
-  <title>@yield('title', $seo->title ?? 'Fancy Decorators | Luxury Construction')</title>
+  <title>@yield('title', $seo->title ?? ($siteSetting->site_name ?? 'Francena Decors') . ' | Luxury Construction')</title>
   <meta name="theme-color" content="{{ $seo->theme_color ?? '#d4af5f' }}" />
   <meta property="og:title" content="@yield('og_title', $seo->og_title ?? '')" />
   <meta property="og:description" content="@yield('og_description', $seo->og_description ?? '')" />
   <meta property="og:type" content="@yield('og_type', $seo->og_type ?? 'website')" />
   <meta property="og:url" content="@yield('og_url', $seo->canonical_url ?? request()->url())" />
   <meta property="og:image" content="@yield('og_image', $seo->og_image ?? '')" />
-  <meta property="og:site_name" content="{{ $seo->site_name ?? 'Fancy Decorators' }}" />
+  <meta property="og:site_name" content="{{ $seo->site_name ?? ($siteSetting->site_name ?? 'Francena Decors') }}" />
   <meta name="twitter:card" content="{{ $seo->twitter_card ?? 'summary_large_image' }}" />
   <meta name="twitter:title" content="@yield('twitter_title', $seo->og_title ?? '')" />
   <meta name="twitter:description" content="@yield('twitter_description', $seo->og_description ?? '')" />
   <meta name="twitter:image" content="@yield('twitter_image', $seo->og_image ?? '')" />
-  <meta name="twitter:site" content="@{{ $seo->site_name ?? 'FancyDecorators' }}" />
+  <meta name="twitter:site" content="{{ '@' . str_replace(' ', '', $seo->site_name ?? ($siteSetting->site_name ?? 'Francena Decors')) }}" />
   <link rel="canonical" href="@yield('canonical', $seo->canonical_url ?? request()->url())" />
   @yield('schema')
   {!! $seo->structured_data ?? '' !!}
@@ -27,9 +27,9 @@
   {
     "@@context": "https://schema.org",
     "@@type": "HomeAndConstructionBusiness",
-    "name": "Fancy Decorators",
-    "url": "https://www.fancydecorators.com/",
-    "logo": "https://www.fancydecorators.com/logo.png",
+    "name": "{{ $siteSetting->company_name ?? 'Francena Decors' }}",
+    "url": "{{ url('/') }}",
+    "logo": "{{ $siteSetting->logo_url ?? asset('logo.png') }}",
     "image": "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1800&q=80",
     "description": "Premium luxury construction, high-end renovations, and custom interior design services for residential and commercial clients.",
     "telephone": "+1 234 567 890",
@@ -54,9 +54,9 @@
       }
     ],
     "sameAs": [
-      "https://www.facebook.com/FancyDecorators",
-      "https://www.instagram.com/FancyDecorators",
-      "https://www.linkedin.com/company/FancyDecorators"
+      "https://www.facebook.com/FrancenaDecors",
+      "https://www.instagram.com/FrancenaDecors",
+      "https://www.linkedin.com/company/FrancenaDecors"
     ]
   }
   </script>

@@ -53,6 +53,7 @@ body {
 
 h1, h2, h3, h4, h5, h6, .page-title, .display-1, .display-2, .display-3, .display-4, .display-5 {
   font-family: 'Plus Jakarta Sans', 'Noto Sans Tamil', sans-serif !important;
+  text-wrap: balance;
 }
 
 .hero-subtitle,
@@ -2257,10 +2258,11 @@ html {
   top: 0;
   left: 0;
   height: 3px;
-  background: var(--gold) !important;
+  background: linear-gradient(to right, var(--gold), var(--gold-soft)) !important;
   z-index: 9999999;
   width: 0;
   transition: width 0.1s ease-out;
+  box-shadow: 0 0 10px var(--gold), 0 0 4px var(--gold-soft);
 }
 
 /* Custom Cursor Desktop Only */
@@ -2486,5 +2488,89 @@ html {
 
 .hero-scroll-down:hover span {
   color: var(--gold) !important;
+}
+
+/* Custom Scrollbar for a luxurious experience */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+  border: 2px solid var(--bg);
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* Premium Focus Indicators */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+.btn:focus-visible,
+.nav-link:focus-visible {
+  outline: 2px solid var(--gold) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 8px rgba(212, 175, 95, 0.5) !important;
+}
+
+/* Scroll-Driven Shrinking Header (Native CSS supported browsers) */
+@supports ((animation-timeline: scroll()) and (animation-range: 0% 100%)) {
+  .header-nav {
+    animation: shrinkHeader auto linear both;
+    animation-timeline: scroll(block root);
+    animation-range: 0px 100px;
+  }
+  @keyframes shrinkHeader {
+    to {
+      padding-top: 0.3rem !important;
+      padding-bottom: 0.3rem !important;
+      background: rgba(6, 5, 8, 0.92) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+  }
+}
+
+/* Before-After Drag Compare Slider Pulse and Drag Indicator */
+.slider-handle::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  animation: handle-pulse 2s infinite;
+  pointer-events: none;
+  opacity: 0;
+  z-index: -1;
+}
+
+@keyframes handle-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.4);
+    opacity: 0;
+  }
+}
+
+.before-after-slider {
+  cursor: grab;
+}
+
+.before-after-slider:active {
+  cursor: grabbing;
 }
 

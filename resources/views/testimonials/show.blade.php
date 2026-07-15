@@ -15,7 +15,7 @@
 
 @extends('layouts.app')
 
-@section('title', ($testimonial->seo_title ?? $testimonial->client_name . ' Testimonial') . ' | Fancy Decorators')
+@section('title', ($testimonial->seo_title ?? $testimonial->client_name . ' Testimonial') . ' | Francena Decors')
 @section('meta_description', $testimonial->seo_description ?: $testimonial->testimonial)
 @section('meta_keywords', $testimonial->seo_keywords)
 @section('og_title', $testimonial->seo_title ?: $testimonial->client_name . ' Testimonial')

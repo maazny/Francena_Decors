@@ -15,7 +15,7 @@
 
 @extends('layouts.app')
 
-@section('title', ($service->seo_title ?: $service->title) . ' | Fancy Decorators')
+@section('title', ($service->seo_title ?: $service->title) . ' | Francena Decors')
 @section('meta_description', $service->seo_description ?: $service->short_description)
 @section('meta_keywords', $service->seo_keywords)
 @section('og_title', $service->seo_title ?: $service->title)

@@ -53,7 +53,7 @@
 
                 <div class="mb-3">
                     <label for="custom_json_ld" class="form-label small fw-semibold text-muted uppercase">Custom JSON-LD Script</label>
-                    <textarea name="custom_json_ld" id="custom_json_ld" class="form-control font-monospace" rows="8" placeholder='{&#10;  "@context": "https://schema.org",&#10;  "@type": "WebSite",&#10;  "name": "Fancy Decorators"&#10;}' required></textarea>
+                    <textarea name="custom_json_ld" id="custom_json_ld" class="form-control font-monospace" rows="8" placeholder='{&#10;  "@context": "https://schema.org",&#10;  "@type": "WebSite",&#10;  "name": "Francena Decors"&#10;}' required></textarea>
                     
                     <!-- Live JSON Validation Alert -->
                     <div class="mt-2 d-none" id="json-validation-msg">

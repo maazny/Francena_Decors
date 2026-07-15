@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ($member->seo_title ?: $member->full_name . ' - ' . $member->designation) . ' | Fancy Decorators')
+@section('title', ($member->seo_title ?: $member->full_name . ' - ' . $member->designation) . ' | Francena Decors')
 @section('meta_description', $member->seo_description ?: $member->short_bio)
 @section('meta_keywords', $member->seo_keywords)
 @section('og_title', $member->seo_title ?: $member->full_name)

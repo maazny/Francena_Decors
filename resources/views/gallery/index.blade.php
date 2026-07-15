@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Gallery Portfolio | Fancy Decorators')
+@section('title', 'Gallery Portfolio | Francena Decors')
 
 @section('content')
 <div class="container py-5">

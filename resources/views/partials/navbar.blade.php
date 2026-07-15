@@ -1,13 +1,13 @@
 <nav class="navbar navbar-expand-lg navbar-dark px-4 py-3" aria-label="Primary navigation" style="{{ ($headerSettings->transparent_header ?? false) ? 'background-color: transparent !important;' : '' }}">
   <a class="navbar-brand d-flex align-items-center" href="{{ url('/') }}">
     @if($headerLogo->desktop_logo && $headerLogo->desktopLogo)
-      <img src="{{ image_url($headerLogo->desktopLogo) }}" alt="{{ $siteSetting->site_name ?? 'Fancy Decorators' }}" style="max-height: 40px;" />
+      <img src="{{ image_url($headerLogo->desktopLogo) }}" alt="{{ $siteSetting->site_name ?? 'Francena Decors' }}" style="max-height: 40px;" />
     @elseif($siteSetting->logo)
-      <img src="{{ $siteSetting->logo_url }}" alt="{{ $siteSetting->site_name ?? 'Fancy Decorators' }}" style="max-height: 40px;" />
+      <img src="{{ $siteSetting->logo_url }}" alt="{{ $siteSetting->site_name ?? 'Francena Decors' }}" style="max-height: 40px;" />
     @else
       <div class="brand-mark">FD</div>
       <div class="brand-text ms-3">
-        <span class="brand-title">{{ $siteSetting->site_name ?? 'Fancy Decorators' }}</span>
+        <span class="brand-title">{{ $siteSetting->site_name ?? 'Francena Decors' }}</span>
         <p>{{ $siteSetting->tagline ?? 'Luxury Construction' }}</p>
       </div>
     @endif

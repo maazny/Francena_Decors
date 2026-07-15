@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Our Services | Fancy Decorators')
+@section('title', 'Our Services | Francena Decors')
 
 @section('content')
 <!-- Page Banner -->

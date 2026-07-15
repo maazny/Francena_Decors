@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $success ? 'Subscription Verified | Fancy Decorators' : 'Verification Failed | Fancy Decorators')
+@section('title', $success ? 'Subscription Verified | Francena Decors' : 'Verification Failed | Francena Decors')
 
 @section('content')
 <section class="verify-section py-5 section-bg" style="min-height: 60vh; display: flex; align-items: center;">
@@ -14,7 +14,7 @@
                         </div>
                         <h1 class="h3 font-heading mb-3">Subscription Confirmed!</h1>
                         <p class="text-muted mb-4">
-                            Thank you for verifying your email address. You have successfully subscribed to the Fancy Decorators newsletter.
+                            Thank you for verifying your email address. You have successfully subscribed to the Francena Decors newsletter.
                         </p>
                         
                         @if($subscriber)

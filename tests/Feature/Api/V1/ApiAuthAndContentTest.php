@@ -29,9 +29,9 @@ class ApiAuthAndContentTest extends TestCase
         parent::setUp();
 
         SiteSetting::create([
-            'site_name' => 'Fancy Decorators',
-            'company_name' => 'Fancy Decorators LLC',
-            'company_email' => 'info@fancydecorators.com',
+            'site_name' => 'Francena Decors',
+            'company_name' => 'Francena Decors LLC',
+            'company_email' => 'info@francenadecors.com',
             'tagline' => 'Decorate your dreams',
             'status' => true,
         ]);
@@ -66,12 +66,12 @@ class ApiAuthAndContentTest extends TestCase
         $response = $this->getJson('/api/v1/home');
         $response->assertStatus(200);
         $response->assertJsonPath('success', true);
-        $response->assertJsonPath('data.settings.site.site_name', 'Fancy Decorators');
+        $response->assertJsonPath('data.settings.site.site_name', 'Francena Decors');
 
         $response = $this->getJson('/api/v1/settings');
         $response->assertStatus(200);
         $response->assertJsonPath('success', true);
-        $response->assertJsonPath('data.site.company_name', 'Fancy Decorators LLC');
+        $response->assertJsonPath('data.site.company_name', 'Francena Decors LLC');
     }
 
     /**

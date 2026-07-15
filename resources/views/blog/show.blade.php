@@ -29,7 +29,7 @@
   },
   "publisher": {
     "@@type": "Organization",
-    "name": "Fancy Decorators",
+    "name": "Francena Decors",
     "logo": {
       "@@type": "ImageObject",
       "url": "{{ url('/logo.png') }}"
@@ -163,10 +163,10 @@
             </div>
             <div>
               <h5 class="h6 mb-1">{{ $post->author?->name ?? 'Administrator' }}</h5>
-              <span class="text-muted small">Fancy Decorators Contributor</span>
+              <span class="text-muted small">Francena Decors Contributor</span>
             </div>
           </div>
-          <p class="small text-muted mb-0">Author and design consultant at Fancy Decorators, specializing in high-end architecture and renovations.</p>
+          <p class="small text-muted mb-0">Author and design consultant at Francena Decors, specializing in high-end architecture and renovations.</p>
         </div>
 
         <!-- Latest Posts Widget -->

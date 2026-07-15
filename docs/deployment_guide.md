@@ -1,6 +1,6 @@
-# Fancy Decorators CMS – Production Deployment Guide
+# Francena Decors CMS – Production Deployment Guide
 
-This guide details the step-by-step instructions to deploy the Fancy Decorators Laravel 12 application to a production server environment.
+This guide details the step-by-step instructions to deploy the Francena Decors Laravel 12 application to a production server environment.
 
 ---
 
@@ -31,7 +31,7 @@ sudo chmod -R 775 /var/www/fancy-decorators/bootstrap/cache
 Make sure the following variables are configured for production:
 
 ```env
-APP_NAME="Fancy Decorators"
+APP_NAME="Francena Decors"
 APP_ENV=production
 APP_DEBUG=false
 APP_URL=https://your-domain.com

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', ($job->seo_title ?: $job->title) . ' - Careers | Fancy Decorators')
+@section('title', ($job->seo_title ?: $job->title) . ' - Careers | Francena Decors')
 @section('meta_description', $job->seo_description ?: ($job->short_description ?: Str::limit(strip_tags($job->description), 150)))
 @section('meta_keywords', $job->seo_keywords ?: 'career vacancy, ' . $job->title . ', job application, hiring ' . $job->category?->name)
 @section('canonical', route('careers.show', $job->slug))
@@ -19,7 +19,7 @@
   "employmentType": "{{ $job->employment_type }}",
   "hiringOrganization": {
     "@type": "Organization",
-    "name": "Fancy Decorators",
+    "name": "Francena Decors",
     "sameAs": "{{ url('/') }}"
   },
   "jobLocation": {
@@ -193,7 +193,7 @@
             <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(request()->url()) }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle text-center" style="width: 36px; height: 36px; line-height: 24px;"><i class="fa-brands fa-facebook-f"></i></a>
             <a href="https://twitter.com/intent/tweet?url={{ urlencode(request()->url()) }}&text={{ urlencode($job->title) }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle text-center" style="width: 36px; height: 36px; line-height: 24px;"><i class="fa-brands fa-x-twitter"></i></a>
             <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ urlencode(request()->url()) }}&title={{ urlencode($job->title) }}" target="_blank" class="btn btn-sm btn-outline-light rounded-circle text-center" style="width: 36px; height: 36px; line-height: 24px;"><i class="fa-brands fa-linkedin-in"></i></a>
-            <a href="mailto:?subject={{ rawurlencode('Job Opportunity: ' . $job->title) }}&body={{ rawurlencode('Check out this career opening at Fancy Decorators: ' . request()->url()) }}" class="btn btn-sm btn-outline-light rounded-circle text-center" style="width: 36px; height: 36px; line-height: 24px;"><i class="fa-solid fa-envelope"></i></a>
+            <a href="mailto:?subject={{ rawurlencode('Job Opportunity: ' . $job->title) }}&body={{ rawurlencode('Check out this career opening at Francena Decors: ' . request()->url()) }}" class="btn btn-sm btn-outline-light rounded-circle text-center" style="width: 36px; height: 36px; line-height: 24px;"><i class="fa-solid fa-envelope"></i></a>
           </div>
         </div>
 

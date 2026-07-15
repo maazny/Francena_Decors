@@ -1,6 +1,6 @@
-# Fancy Decorators CMS – Backup & Restore Guide
+# Francena Decors CMS – Backup & Restore Guide
 
-This guide details the procedures to automate, verify, and restore backups of the Fancy Decorators Laravel 12 application.
+This guide details the procedures to automate, verify, and restore backups of the Francena Decors Laravel 12 application.
 
 ---
 

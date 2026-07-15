@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $projectCategory->name . ' Projects | Fancy Decorators')
+@section('title', $projectCategory->name . ' Projects | Francena Decors')
 
 @section('content')
 <!-- Page Banner -->

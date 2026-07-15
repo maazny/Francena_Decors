@@ -77,7 +77,7 @@ class SeoModuleTest extends TestCase
         $seoPage = SeoPage::create([
             'page_type' => SeoPageType::MODULE,
             'slug' => '/blog/chic-living-spaces',
-            'title' => 'Bespoke Chic Living Spaces | Fancy Decorators',
+            'title' => 'Bespoke Chic Living Spaces | Francena Decors',
             'seo_pageable_type' => BlogPost::class,
             'seo_pageable_id' => $post->id,
         ]);
@@ -95,7 +95,7 @@ class SeoModuleTest extends TestCase
             'page_type' => SeoPageType::STATIC,
             'page_key' => 'home',
             'slug' => '/',
-            'title' => 'Fancy Decorators',
+            'title' => 'Francena Decors',
         ]);
 
         $structured = SeoStructuredData::create([

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
-@section('title', 'Find Jobs - Careers Portal | Fancy Decorators')
-@section('meta_description', 'Search and filter active job openings at Fancy Decorators. Discover full-time, part-time, and custom roles in design, architecture, and construction.')
+@section('title', 'Find Jobs - Careers Portal | Francena Decors')
+@section('meta_description', 'Search and filter active job openings at Francena Decors. Discover full-time, part-time, and custom roles in design, architecture, and construction.')
 @section('meta_keywords', 'jobs, job vacancies, builder hiring, interior designer, construction engineering vacancies')
 
 @section('content')
@@ -21,7 +21,7 @@
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
         <h1 class="display-5 fw-bold font-serif" style="font-family: 'Playfair Display', serif; color: var(--gold);">Open Positions</h1>
-        <p class="text-muted mb-0">Discover your next professional milestone at Fancy Decorators.</p>
+        <p class="text-muted mb-0">Discover your next professional milestone at Francena Decors.</p>
       </div>
       <div class="col-md-6 text-md-end mt-3 mt-md-0">
         <div class="d-inline-flex gap-2">

@@ -64,7 +64,7 @@
 
                         <div class="col-md-4">
                             <label for="sender_name" class="form-label">Sender Name <span class="text-danger">*</span></label>
-                            <input type="text" name="sender_name" id="sender_name" class="form-control @error('sender_name') is-invalid @enderror" value="{{ old('sender_name', 'Fancy Decorators') }}" required>
+                            <input type="text" name="sender_name" id="sender_name" class="form-control @error('sender_name') is-invalid @enderror" value="{{ old('sender_name', 'Francena Decors') }}" required>
                             @error('sender_name')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -72,7 +72,7 @@
 
                         <div class="col-md-4">
                             <label for="sender_email" class="form-label">Sender Email <span class="text-danger">*</span></label>
-                            <input type="email" name="sender_email" id="sender_email" class="form-control @error('sender_email') is-invalid @enderror" value="{{ old('sender_email', 'newsletter@fancydecorators.test') }}" required>
+                            <input type="email" name="sender_email" id="sender_email" class="form-control @error('sender_email') is-invalid @enderror" value="{{ old('sender_email', 'newsletter@francenadecors.test') }}" required>
                             @error('sender_email')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -101,7 +101,7 @@
                             <label for="html_content" class="form-label mb-0">HTML Content <span class="text-danger">*</span></label>
                             <span class="text-muted small">Placeholders: <code>@{{name}}</code>, <code>@{{email}}</code>, <code>@{{unsubscribe_url}}</code></span>
                         </div>
-                        <textarea name="html_content" id="html_content" class="form-control rich-editor @error('html_content') is-invalid @enderror" rows="15">{{ old('html_content', '<h1>Fancy Decorators Newsletter</h1><p>Hello {{name}},</p><p>We are excited to share our latest design updates with you...</p>') }}</textarea>
+                        <textarea name="html_content" id="html_content" class="form-control rich-editor @error('html_content') is-invalid @enderror" rows="15">{{ old('html_content', '<h1>Francena Decors Newsletter</h1><p>Hello {{name}},</p><p>We are excited to share our latest design updates with you...</p>') }}</textarea>
                         @error('html_content')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

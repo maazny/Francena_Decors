@@ -25,7 +25,7 @@
 
                     <div class="mb-3">
                         <label for="subject" class="form-label">Default Subject</label>
-                        <input type="text" name="subject" id="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject') }}" placeholder="e.g. Latest Updates from Fancy Decorators">
+                        <input type="text" name="subject" id="subject" class="form-control @error('subject') is-invalid @enderror" value="{{ old('subject') }}" placeholder="e.g. Latest Updates from Francena Decors">
                         @error('subject')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -36,7 +36,7 @@
                             <label for="html_content" class="form-label mb-0">HTML Content <span class="text-danger">*</span></label>
                             <span class="text-muted small">Placeholders: <code>@{{name}}</code>, <code>@{{email}}</code>, <code>@{{unsubscribe_url}}</code></span>
                         </div>
-                        <textarea name="html_content" id="html_content" class="form-control rich-editor @error('html_content') is-invalid @enderror" rows="15">{{ old('html_content', '<h1>Fancy Decorators</h1><p>Hello {{name}},</p><p>Add your newsletter content here...</p><hr><p>To stop receiving emails, click here: <a href="{{unsubscribe_url}}">Unsubscribe</a></p>') }}</textarea>
+                        <textarea name="html_content" id="html_content" class="form-control rich-editor @error('html_content') is-invalid @enderror" rows="15">{{ old('html_content', '<h1>Francena Decors</h1><p>Hello {{name}},</p><p>Add your newsletter content here...</p><hr><p>To stop receiving emails, click here: <a href="{{unsubscribe_url}}">Unsubscribe</a></p>') }}</textarea>
                         @error('html_content')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

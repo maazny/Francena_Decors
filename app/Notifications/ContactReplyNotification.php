@@ -32,7 +32,7 @@ class ContactReplyNotification extends Notification implements ShouldQueue
         $mail = (new MailMessage)
             ->subject($subject)
             ->greeting("Dear {$contact->name},")
-            ->line("Thank you for contacting Fancy Decorators. Here is a response regarding your inquiry:")
+            ->line("Thank you for contacting Francena Decors. Here is a response regarding your inquiry:")
             ->line("---")
             ->line($this->reply->message)
             ->line("---");
@@ -50,7 +50,7 @@ class ContactReplyNotification extends Notification implements ShouldQueue
 
         $mail->line("If you have any further questions, feel free to reply directly to this email.")
              ->line("Best regards,")
-             ->line("Fancy Decorators Team");
+             ->line("Francena Decors Team");
 
         return $mail;
     }

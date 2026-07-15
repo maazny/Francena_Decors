@@ -43,7 +43,7 @@ class BackupCompletedNotification extends Notification
             ->line("Disk: {$this->backup->storage_disk}")
             ->line("Size: " . number_format($this->backup->file_size / 1024 / 1024, 2) . " MB")
             ->action("View Backup details", url("/admin/backups/{$this->backup->id}"))
-            ->line("Thank you for using Fancy Decorators CMS!");
+            ->line("Thank you for using Francena Decors CMS!");
     }
 
     /**

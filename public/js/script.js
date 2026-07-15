@@ -92,6 +92,9 @@ window.addEventListener('scroll', () => {
 });
 
 function handleHeaderScroll() {
+  if (window.CSS && CSS.supports && CSS.supports('(animation-timeline: scroll()) and (animation-range: 0% 100%)')) {
+    return;
+  }
   const header = document.querySelector('.header-nav');
   if (header) {
     if (window.scrollY > 50) {
@@ -303,16 +306,24 @@ function setThemeFromStorage() {
 }
 
 function applyTheme(theme) {
-  if (theme === 'dark') {
-    document.documentElement.classList.add('dark-theme');
-    themeToggle.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
-    themeToggle.setAttribute('aria-pressed', 'true');
+  const transition = () => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark-theme');
+      themeToggle.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
+      themeToggle.setAttribute('aria-pressed', 'true');
+    } else {
+      document.documentElement.classList.remove('dark-theme');
+      themeToggle.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i>';
+      themeToggle.setAttribute('aria-pressed', 'false');
+    }
+    localStorage.setItem('siteTheme', theme);
+  };
+
+  if (document.startViewTransition && !prefersReducedMotion) {
+    document.startViewTransition(transition);
   } else {
-    document.documentElement.classList.remove('dark-theme');
-    themeToggle.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i>';
-    themeToggle.setAttribute('aria-pressed', 'false');
+    transition();
   }
-  localStorage.setItem('siteTheme', theme);
 }
 
 if (themeToggle) {
@@ -550,6 +561,7 @@ function initBeforeAfterSlider() {
   }
 
   container.addEventListener('mousedown', (e) => {
+    e.preventDefault();
     isDragging = true;
     updateSlider(e.clientX);
   });
@@ -576,6 +588,60 @@ function initBeforeAfterSlider() {
   container.addEventListener('touchend', () => {
     isDragging = false;
   });
+
+  // Prevent ghost image drag behavior
+  container.querySelectorAll('img').forEach(img => {
+    img.addEventListener('dragstart', (e) => e.preventDefault());
+  });
+
+  // Interactivity hint: subtle wiggle nudge when visible
+  let nudged = false;
+  const triggerNudge = () => {
+    if (nudged) return;
+    nudged = true;
+    
+    setTimeout(() => {
+      beforeImgContainer.style.transition = 'width 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+      handle.style.transition = 'left 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
+      
+      // Swing left
+      beforeImgContainer.style.width = '42%';
+      handle.style.left = '42%';
+      
+      setTimeout(() => {
+        // Swing right
+        beforeImgContainer.style.width = '58%';
+        handle.style.left = '58%';
+        
+        setTimeout(() => {
+          // Center back
+          beforeImgContainer.style.width = '50%';
+          handle.style.left = '50%';
+          
+          setTimeout(() => {
+            // Remove transition for instant drag response
+            beforeImgContainer.style.transition = '';
+            handle.style.transition = '';
+          }, 800);
+        }, 800);
+      }, 900);
+    }, 500);
+  };
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          triggerNudge();
+          observer.unobserve(container);
+        }
+      });
+    }, { threshold: 0.25 });
+    observer.observe(container);
+  } else {
+    // Fallback if IntersectionObserver is not supported
+    setTimeout(triggerNudge, 1500);
+  }
 }
 
 // Lightbox Modal for Gallery Portfolio

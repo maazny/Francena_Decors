@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Unsubscribe from Newsletter | Fancy Decorators')
+@section('title', 'Unsubscribe from Newsletter | Francena Decors')
 
 @section('content')
 <section class="unsubscribe-section py-5 section-bg" style="min-height: 60vh; display: flex; align-items: center;">
