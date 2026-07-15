@@ -5,41 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="{{ csrf_token() }}" />
   <title>@yield('title', 'Admin Panel') | {{ $siteSetting->site_name ?? 'Francena Decors' }}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
-  <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-  <style>
-    .admin-sidebar {
-      min-height: 100vh;
-      border-right: 1px solid rgba(255, 255, 255, .08);
-    }
-
-    .admin-sidebar .nav-link {
-      color: rgba(255, 255, 255, .85);
-    }
-
-    .admin-sidebar .nav-link.active,
-    .admin-sidebar .nav-link:hover {
-      color: #ffffff;
-      background-color: rgba(255, 255, 255, .08);
-    }
-
-    .admin-sidebar .sidebar-header {
-      font-size: 1rem;
-      letter-spacing: .05em;
-      text-transform: uppercase;
-      opacity: .75;
-    }
-  </style>
+  <link href="{{ asset('css/admin.css') }}" rel="stylesheet" />
+  @stack('styles')
 </head>
 <body class="bg-light admin-body">
   <div class="container-fluid">
     <div class="row g-0">
-      <aside class="col-auto admin-sidebar bg-dark text-white p-3">
+      <aside class="col-auto admin-sidebar text-white p-3">
         <div class="mb-5">
           <a href="{{ route('admin.dashboard') }}" class="text-white text-decoration-none d-flex align-items-center gap-2">
-            <i class="fa-solid fa-hard-hat fa-lg"></i>
-            <span class="fs-5 fw-semibold">Admin Panel</span>
+            @if($siteSetting->logo)
+              <img src="{{ Storage::url($siteSetting->logo) }}"
+                   alt="{{ $siteSetting->site_name ?? 'Francena Decors' }}"
+                   class="sidebar-logo-img"
+                   style="height:40px;width:auto;object-fit:contain;" />
+            @else
+              <i class="fa-solid fa-paintbrush fa-lg" style="color:#E8551A;"></i>
+              <span class="fs-5 fw-semibold" style="font-family:'Montserrat',sans-serif;">Francena Decors</span>
+            @endif
           </a>
         </div>
         <div class="mb-4 sidebar-header">Settings</div>

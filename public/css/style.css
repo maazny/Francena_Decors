@@ -1,35 +1,50 @@
+/* ============================================================
+   FRANCENA DECORS — Brand Color System
+   Primary Blue : #1659B8  (paint roller in logo)
+   Accent Orange: #E8551A  (pill background in logo)
+   Dark Navy    : #0F172A  (navbar / footer)
+   ============================================================ */
 :root {
-  --primary-color-val: var(--primary-color, #004AAD);
-  --secondary-color-val: var(--secondary-color, #FF6B07);
-  --accent-color-val: var(--accent-color, #FF6B07);
+  --brand-blue:      #1659B8;
+  --brand-blue-dark: #0F4A9B;
+  --brand-blue-light:#3B7DD8;
+  --brand-orange:    #E8551A;
+  --brand-orange-dk: #C44512;
+  --brand-white:     #FFFFFF;
+  --brand-black:     #0F172A;
+  --brand-gray:      #F5F7FA;
+
+  --primary-color-val: var(--primary-color, #1659B8);
+  --secondary-color-val: var(--secondary-color, #0F4A9B);
+  --accent-color-val: var(--accent-color, #E8551A);
   --background-color-val: var(--background-color, #FFFFFF);
   --surface-color-val: var(--surface-color, #F8FAFC);
 
   --bg: var(--background-color, #FFFFFF);
   --surface: var(--surface-color, #F8FAFC);
   --surface-strong: var(--surface-color, #FFFFFF);
-  --gold: var(--primary-color, #004AAD);
-  --gold-soft: var(--accent-color, #FF6B07);
+  --gold: var(--primary-color, #1659B8);
+  --gold-soft: var(--accent-color, #E8551A);
   --white: var(--text-color, #1F2937);
   --muted: var(--text-color, #555555);
-  --shadow: var(--box-shadow, 0 10px 30px rgba(0, 0, 0, 0.03));
-  --border: var(--card-border-color, #E8EAF0);
+  --shadow: var(--box-shadow, 0 10px 30px rgba(0, 0, 0, 0.06));
+  --border: var(--card-border-color, #E2E8F0);
 }
 
 .dark-theme {
-  --primary-color-val: #004AAD;
-  --secondary-color-val: #FF6B07;
-  --accent-color-val: #FF6B07;
-  --background-color-val: #111111;
-  --surface-color-val: #1C1A22;
+  --primary-color-val: #1659B8;
+  --secondary-color-val: #0F4A9B;
+  --accent-color-val: #E8551A;
+  --background-color-val: #0F172A;
+  --surface-color-val: #1E293B;
 
-  --bg: #111111;
-  --surface: #1A1A1A;
-  --surface-strong: #222222;
-  --gold: #004AAD;
-  --gold-soft: #FF6B07;
+  --bg: #0F172A;
+  --surface: #1E293B;
+  --surface-strong: #263248;
+  --gold: #3B7DD8;
+  --gold-soft: #F0701F;
   --white: #FFFFFF;
-  --muted: #BDBDBD;
+  --muted: #94A3B8;
   --shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
   --border: rgba(255, 255, 255, 0.08);
 }
