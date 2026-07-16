@@ -38,8 +38,7 @@
   </div>
 @endif
 
-<header class="{{ ($headerSettings->sticky_header ?? false) ? 'sticky-top' : '' }} header-nav"
-        style="{{ ($headerSettings->transparent_header ?? false) ? 'background-color: transparent !important; position: absolute; width: 100%; z-index: 1030; border-bottom: none !important;' : '' }}">
+<header class="header-nav">
   @include('partials.navbar')
 </header>
 

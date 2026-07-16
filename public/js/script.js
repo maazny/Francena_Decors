@@ -307,16 +307,21 @@ function setThemeFromStorage() {
 
 function applyTheme(theme) {
   const transition = () => {
+    if (!themeToggle) return;
+    themeToggle.classList.add('toggling');
     if (theme === 'dark') {
       document.documentElement.classList.add('dark-theme');
-      themeToggle.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
+      themeToggle.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i>';
       themeToggle.setAttribute('aria-pressed', 'true');
     } else {
       document.documentElement.classList.remove('dark-theme');
-      themeToggle.innerHTML = '<i class="fa-solid fa-sun" aria-hidden="true"></i>';
+      themeToggle.innerHTML = '<i class="fa-solid fa-moon" aria-hidden="true"></i>';
       themeToggle.setAttribute('aria-pressed', 'false');
     }
     localStorage.setItem('siteTheme', theme);
+    setTimeout(() => {
+      themeToggle.classList.remove('toggling');
+    }, 400);
   };
 
   if (document.startViewTransition && !prefersReducedMotion) {
