@@ -1,9 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-dark px-4 py-2" aria-label="Primary navigation" style="{{ ($headerSettings->transparent_header ?? false) ? 'background-color: transparent !important;' : '' }}">
+<nav class="navbar navbar-expand-lg navbar-dark px-4 py-2" id="mainNavbar" aria-label="Primary navigation">
   <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url('/') }}">
     @if($headerLogo->desktop_logo && $headerLogo->desktopLogo)
-      <img src="{{ image_url($headerLogo->desktopLogo) }}" alt="{{ $siteSetting->site_name ?? 'Francena Decors' }}" class="navbar-logo-img" />
+      <div class="logo-container">
+        <img src="{{ image_url($headerLogo->desktopLogo) }}" alt="{{ $siteSetting->site_name ?? 'Francena Decors' }}" class="navbar-logo-img" />
+      </div>
     @elseif($siteSetting->logo)
-      <img src="{{ Storage::url($siteSetting->logo) }}" alt="{{ $siteSetting->site_name ?? 'Francena Decors' }}" class="navbar-logo-img" />
+      <div class="logo-container">
+        <img src="{{ Storage::url($siteSetting->logo) }}" alt="{{ $siteSetting->site_name ?? 'Francena Decors' }}" class="navbar-logo-img" />
+      </div>
     @else
       <div class="brand-mark">FD</div>
       <div class="brand-text ms-2">
@@ -25,11 +29,11 @@
         <a class="nav-link dropdown-toggle {{ request()->routeIs('services.*') ? 'active' : '' }}" href="{{ route('services.index') }}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Services
         </a>
-        <ul class="dropdown-menu bg-dark border-secondary" aria-labelledby="servicesDropdown">
-          <li><a class="dropdown-item text-white" href="{{ route('services.index') }}">All Services</a></li>
-          <li><hr class="dropdown-divider border-secondary"></li>
+        <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
+          <li><a class="dropdown-item" href="{{ route('services.index') }}">All Services</a></li>
+          <li><hr class="dropdown-divider"></li>
           @foreach(\App\Models\ServiceCategory::active()->ordered()->get() as $cat)
-            <li><a class="dropdown-item text-white" href="{{ route('services.category', $cat->slug) }}">{{ $cat->name }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('services.category', $cat->slug) }}">{{ $cat->name }}</a></li>
           @endforeach
         </ul>
       </li>
@@ -39,11 +43,11 @@
         <a class="nav-link dropdown-toggle {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
           Projects
         </a>
-        <ul class="dropdown-menu bg-dark border-secondary" aria-labelledby="projectsDropdown">
-          <li><a class="dropdown-item text-white" href="{{ route('projects.index') }}">All Projects</a></li>
-          <li><hr class="dropdown-divider border-secondary"></li>
+        <ul class="dropdown-menu" aria-labelledby="projectsDropdown">
+          <li><a class="dropdown-item" href="{{ route('projects.index') }}">All Projects</a></li>
+          <li><hr class="dropdown-divider"></li>
           @foreach(\App\Models\ProjectCategory::active()->ordered()->get() as $cat)
-            <li><a class="dropdown-item text-white" href="{{ route('projects.category', $cat->slug) }}">{{ $cat->name }}</a></li>
+            <li><a class="dropdown-item" href="{{ route('projects.category', $cat->slug) }}">{{ $cat->name }}</a></li>
           @endforeach
         </ul>
       </li>
@@ -73,8 +77,8 @@
         </li>
       @endif
 
-      <li class="nav-item ms-3">
-        <button id="themeToggle" type="button" class="btn btn-outline-light btn-sm" aria-label="Toggle color theme"><i class="fa-solid fa-moon"></i></button>
+      <li class="nav-item ms-2">
+        <button id="themeToggle" type="button" class="theme-toggle-btn" aria-label="Toggle color theme" aria-pressed="false"><i class="fa-solid fa-sun" aria-hidden="true"></i></button>
       </li>
     </ul>
   </div>
@@ -102,4 +106,3 @@
     </div>
   </div>
 </div>
-

@@ -154,7 +154,7 @@ class ActivityLogService implements ActivityLogServiceInterface
             'description' => $data['description'] ?? null,
             'old_values' => $data['old_values'] ?? null,
             'new_values' => $data['new_values'] ?? null,
-            'status' => $data['status'] instanceof ActivityStatus ? $data['status'] : ActivityStatus::tryFrom($data['status'] ?? 'success') ?? ActivityStatus::SUCCESS,
+            'status' => ($data['status'] ?? null) instanceof ActivityStatus ? $data['status'] : ActivityStatus::tryFrom($data['status'] ?? 'success') ?? ActivityStatus::SUCCESS,
         ]);
 
         if (config('activitylog.queue_logging', false)) {

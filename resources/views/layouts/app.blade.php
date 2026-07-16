@@ -98,10 +98,7 @@
       color: var(--link-hover-color, #0a58ca);
     }
 
-    .navbar, .header-nav {
-      background-color: var(--navbar-background, #000000) !important;
-      color: var(--navbar-text-color, #ffffff) !important;
-    }
+    /* Header nav handled by glassmorphism CSS — do not override here */
 
     .footer-copy,
     .footer-list a,
