@@ -19,6 +19,33 @@ class ProjectsModuleTest extends TestCase
         $this->assertTrue(route('admin.projects.index') !== null);
     }
 
+    public function test_projects_index_page_loads_successfully(): void
+    {
+        $category = \App\Models\ProjectCategory::create([
+            'name' => 'Architecture Design',
+            'slug' => 'architecture-design',
+            'display_order' => 1,
+            'status' => true,
+        ]);
+
+        \App\Models\Project::create([
+            'title' => 'Luxury Mansion',
+            'slug' => 'luxury-mansion',
+            'project_category_id' => $category->id,
+            'start_date' => '2026-01-15',
+            'status' => 'published',
+            'display_order' => 1,
+        ]);
+
+        $response = $this->get(route('projects.index'));
+
+        $response->assertOk();
+        $response->assertSee('Luxury Mansion');
+        
+        $viewYears = $response->original->getData()['years']->toArray();
+        $this->assertContains('2026', $viewYears);
+    }
+
     public function test_admin_can_toggle_project_category_status(): void
     {
         $user = \App\Models\User::factory()->create();

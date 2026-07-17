@@ -27,7 +27,19 @@ class ProjectsController extends Controller
             ->withQueryString();
 
         $categories = Cache::rememberForever('project_categories', fn () => ProjectCategory::active()->ordered()->get());
-        $years = Project::query()->published()->selectRaw('EXTRACT(YEAR FROM start_date) as year')->groupBy('year')->orderBy('year', 'desc')->pluck('year');
+        
+        $driver = \Illuminate\Support\Facades\DB::connection()->getDriverName();
+        $yearExpression = $driver === 'sqlite'
+            ? "strftime('%Y', start_date) as year"
+            : "EXTRACT(YEAR FROM start_date) as year";
+
+        $years = Project::query()
+            ->published()
+            ->selectRaw($yearExpression)
+            ->groupBy('year')
+            ->orderBy('year', 'desc')
+            ->pluck('year');
+
         $featuredProject = Project::query()->with(['category', 'coverImage'])->published()->featured()->ordered()->first();
 
         return view('projects.index', compact('projects', 'categories', 'years', 'filters', 'featuredProject'));
