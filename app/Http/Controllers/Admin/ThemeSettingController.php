@@ -12,7 +12,7 @@ class ThemeSettingController extends Controller
 {
     public function index(): RedirectResponse
     {
-        return redirect()->route('admin.theme-settings.edit');
+        return redirect()->route('admin.theme.settings.edit');
     }
 
     public function edit(): View
@@ -35,6 +35,6 @@ class ThemeSettingController extends Controller
         $themeSetting->update($data);
         ThemeSetting::clearCache();
 
-        return redirect()->route('admin.theme-settings.edit')->with('success', 'Theme settings updated successfully.');
+        return redirect()->route('admin.theme.settings.edit')->with('success', 'Theme settings updated successfully.');
     }
 }

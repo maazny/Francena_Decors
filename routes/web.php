@@ -31,9 +31,6 @@ use App\Http\Controllers\ServicePageController;
 use App\Http\Controllers\TestimonialsController;
 use Illuminate\Support\Facades\Route;
 
-Route::put('/admin/theme-settings/update', [ThemeSettingController::class, 'update'])
-    ->name('theme.settings.update');
-
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Frontend Team pages

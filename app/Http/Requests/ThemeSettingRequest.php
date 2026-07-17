@@ -68,21 +68,18 @@ class ThemeSettingRequest extends FormRequest
         ];
     }
 
-    /**
-     * Sanitize validated data before using it.
-     *
-     * @return array<string, mixed>
-     */
-    public function validated(): array
+    public function validated($key = null, $default = null): mixed
     {
-        $data = parent::validated();
+        $data = parent::validated($key, $default);
 
-        if (array_key_exists('custom_css', $data)) {
-            $data['custom_css'] = strip_tags($data['custom_css'], '<style><br><span><div><p><strong><em><u><a><ul><ol><li><blockquote><hr><code><pre>');
-        }
+        if (is_array($data)) {
+            if (array_key_exists('custom_css', $data)) {
+                $data['custom_css'] = strip_tags($data['custom_css'], '<style><br><span><div><p><strong><em><u><a><ul><ol><li><blockquote><hr><code><pre>');
+            }
 
-        if (array_key_exists('custom_js', $data)) {
-            $data['custom_js'] = strip_tags($data['custom_js']);
+            if (array_key_exists('custom_js', $data)) {
+                $data['custom_js'] = strip_tags($data['custom_js']);
+            }
         }
 
         return $data;

@@ -31,7 +31,7 @@
       </div>
     @endif
 
-    <form id="theme-settings-form" method="POST" action="{{ route('theme.settings.update') }}" novalidate>
+    <form id="theme-settings-form" method="POST" action="{{ route('admin.theme.settings.update') }}" novalidate>
       @csrf
       @method('PUT')
 
