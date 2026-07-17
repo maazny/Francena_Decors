@@ -50,7 +50,7 @@
     <div class="error-code-display" aria-hidden="true">404</div>
 
     {{-- Label --}}
-    <span class="error-label">Page Not Found</span>
+    <span class="error-label">Error 404: Page Not Found</span>
 
     {{-- Heading --}}
     <h1 id="error-heading-404" class="error-heading">This Blueprint Doesn't Exist</h1>
