@@ -16,7 +16,7 @@
       </div>
     @endif
   </a>
-  <button class="navbar-toggler" type="button" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" aria-label="Toggle navigation" aria-expanded="false" aria-controls="fullscreenMenu">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse justify-content-end" id="navMenu">
@@ -26,7 +26,7 @@
       
       <!-- Services Dropdown -->
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle {{ request()->routeIs('services.*') ? 'active' : '' }}" href="{{ route('services.index') }}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle {{ request()->routeIs('services.*') ? 'active' : '' }}" href="{{ route('services.index') }}" id="servicesDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Services
         </a>
         <ul class="dropdown-menu" aria-labelledby="servicesDropdown">
@@ -40,7 +40,7 @@
 
       <!-- Projects Dropdown -->
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link dropdown-toggle {{ request()->routeIs('projects.*') ? 'active' : '' }}" href="{{ route('projects.index') }}" id="projectsDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Projects
         </a>
         <ul class="dropdown-menu" aria-labelledby="projectsDropdown">

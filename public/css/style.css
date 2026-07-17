@@ -302,7 +302,30 @@ body {
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3) !important;
   padding: 0.5rem 0;
   margin-top: 0.5rem;
-  animation: dropdownReveal 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (min-width: 992px) {
+  .header-nav .nav-item.dropdown .dropdown-menu {
+    display: block !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(12px) scale(0.97);
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1), transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.35s;
+  }
+  
+  .header-nav .nav-item.dropdown:hover .dropdown-menu,
+  .header-nav .nav-item.dropdown .dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .header-nav .dropdown-menu.show {
+    display: block !important;
+    animation: dropdownReveal 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
 }
 
 @keyframes dropdownReveal {
@@ -2862,5 +2885,102 @@ select:focus-visible,
 
 .before-after-slider:active {
   cursor: grabbing;
+}
+
+/* ==============================================================
+   PHASE 2 - ADVANCED FRONTIER POLISH & MICRO-INTERACTIONS
+   ============================================================== */
+
+/* --- Advanced Button Polish --- */
+.btn, .btn-gold, .btn-outline-light, .action-btn {
+  transition: all 0.35s cubic-bezier(0.25, 1, 0.5, 1) !important;
+}
+.btn:hover, .btn-gold:hover, .btn-outline-light:hover, .action-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212, 175, 95, 0.25) !important;
+}
+.btn:active, .btn-gold:active, .btn-outline-light:active, .action-btn:active {
+  transform: translateY(0);
+}
+
+/* --- Form Field Polish & Focus Micro-interactions --- */
+.form-control, .form-select {
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease !important;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(212, 175, 95, 0.22) !important;
+}
+.dark-theme .form-control, .dark-theme .form-select {
+  background-color: rgba(255, 255, 255, 0.03) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  color: #FFFFFF !important;
+}
+.dark-theme .form-control:focus, .dark-theme .form-select:focus {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+  border-color: var(--gold-soft) !important;
+  color: #FFFFFF !important;
+}
+
+/* Form validation enhancements */
+.form-control.is-invalid, .form-select.is-invalid {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.15) !important;
+}
+.invalid-feedback {
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  margin-top: 0.35rem !important;
+}
+
+/* --- Premium Empty States --- */
+.empty-state-card {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border: 1px dashed rgba(255, 255, 255, 0.1) !important;
+  border-radius: 16px !important;
+  padding: 4rem 2rem !important;
+  text-align: center;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+.empty-state-card i {
+  color: var(--gold);
+  opacity: 0.8;
+  margin-bottom: 1.25rem;
+  font-size: 3rem;
+}
+.empty-state-card h5 {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+  color: var(--white, #FFFFFF);
+  margin-bottom: 0.5rem;
+}
+.empty-state-card p {
+  color: var(--muted, #888888);
+  font-size: 0.9rem;
+  margin-bottom: 0;
+}
+
+/* --- Responsive Table Hover & Polish --- */
+.table-responsive {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: var(--box-shadow, 0 10px 30px rgba(0,0,0,0.04));
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+.table {
+  color: inherit !important;
+  margin-bottom: 0 !important;
+  border-collapse: separate !important;
+}
+.table-hover tbody tr {
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+.table-hover tbody tr:hover {
+  background-color: rgba(212, 175, 95, 0.04) !important;
+  color: inherit !important;
+}
+.dark-theme .table-hover tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.02) !important;
 }
 

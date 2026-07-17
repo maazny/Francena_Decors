@@ -219,8 +219,6 @@ heroPrev?.addEventListener('click', () => {
   resetHeroSlider();
 });
 
-setInterval(nextTestimonial, 8000);
-
 function updateScrollProgress() {
   const scroll = document.documentElement.scrollTop || document.body.scrollTop;
   const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
@@ -753,15 +751,50 @@ function initFullscreenMenu() {
     overlay.classList.remove('d-none');
     setTimeout(() => overlay.classList.add('show'), 10);
     document.body.style.overflow = 'hidden';
+    closeBtn?.focus();
   });
 
   function closeMenu() {
     overlay.classList.remove('show');
     setTimeout(() => overlay.classList.add('d-none'), 400);
     document.body.style.overflow = '';
+    toggler.focus();
   }
 
   closeBtn?.addEventListener('click', closeMenu);
+
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      closeMenu();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!overlay.classList.contains('show')) return;
+
+    if (e.key === 'Escape') {
+      closeMenu();
+    }
+
+    if (e.key === 'Tab') {
+      const focusables = Array.from(overlay.querySelectorAll('a, button'));
+      if (focusables.length === 0) return;
+      const first = focusables[0];
+      const last = focusables[focusables.length - 1];
+
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          last.focus();
+          e.preventDefault();
+        }
+      } else {
+        if (document.activeElement === last) {
+          first.focus();
+          e.preventDefault();
+        }
+      }
+    }
+  });
   
   menuLinks.forEach(link => {
     link.addEventListener('click', () => {
